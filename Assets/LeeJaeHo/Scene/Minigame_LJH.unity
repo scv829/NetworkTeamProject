@@ -8626,6 +8626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 911d42e2130aecb4294799b41b90d27e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 1534511237730611065, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
   playerSpawner1: {fileID: 795693243}
   playerSpawner2: {fileID: 951244318}
   playerSpawner3: {fileID: 711090599}

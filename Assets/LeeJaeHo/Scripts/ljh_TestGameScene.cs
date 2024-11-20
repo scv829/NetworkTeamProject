@@ -1,9 +1,11 @@
 using Photon.Chat.UtilityScripts;
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,33 +13,43 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
 {
     public const string RoomName = "Testroom";
 
+    [SerializeField] GameObject playerPrefab;
+
     Coroutine spawnRoutine;
+
     [SerializeField] GameObject playerSpawner1;
     [SerializeField] GameObject playerSpawner2;
     [SerializeField] GameObject playerSpawner3;
     [SerializeField] GameObject playerSpawner4;
 
-    [SerializeField] List<GameObject> playerSpawnerList;
-    Vector3 playerPos;
-    Queue<GameObject> playerposQ;
+    Vector3 playerPos1;
+    Vector3 playerPos2;
+    Vector3 playerPos3;
+    Vector3 playerPos4;
+
+    Color playerColor1;
+    Color playerColor2;
+    Color playerColor3;
+    Color playerColor4;
+
+
+    [SerializeField] Vector3 playerPos;
     Color playerColor;
-    Queue<Color> playerColorQ;
+
+    PhotonView pv;
+    int index;
 
     private void Start()
     {
-        playerposQ = new Queue<GameObject>();
+        playerPos1 = playerSpawner1.transform.position;
+        playerPos2 = playerSpawner2.transform.position;
+        playerPos3 = playerSpawner3.transform.position;
+        playerPos4 = playerSpawner4.transform.position;
 
-        playerposQ.Enqueue(playerSpawner1);
-        playerposQ.Enqueue(playerSpawner2);
-        playerposQ.Enqueue(playerSpawner3);
-        playerposQ.Enqueue(playerSpawner4);
-
-        playerColorQ = new Queue<Color>();
-
-        playerColorQ.Enqueue(Color.red);
-        playerColorQ.Enqueue(Color.blue);
-        playerColorQ.Enqueue(Color.green);
-        playerColorQ.Enqueue(Color.yellow);
+        playerColor1 = new (1, 0, 0);
+        playerColor2 = new (0, 0, 1);
+        playerColor3 = new (0, 1, 0);
+        playerColor4 = new (0, 0, 0);
 
         PhotonNetwork.LocalPlayer.NickName = $"Player{Random.Range(0000,9999)}";
         PhotonNetwork.ConnectUsingSettings();
@@ -79,56 +91,36 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
         {
             
         }
-   
     }
 
     private void PlayerSpawn()
     {
-        int playerNum = 1;
+        index = PhotonNetwork.LocalPlayer.ActorNumber - 1;
 
-        Vector3 playerPos1 = playerSpawner1.transform.position;
-        Vector3 playerPos2 = playerSpawner2.transform.position;
-        Vector3 playerPos3 = playerSpawner3.transform.position;
-        Vector3 playerPos4 = playerSpawner4.transform.position;
+        Vector3[] vectorPlayerSpawn = { playerPos1, playerPos2, playerPos3, playerPos4};
 
-        Vector3 playerPos;
-        Color playerColor;
+        playerPos = new Vector3(vectorPlayerSpawn[index].x, 0, vectorPlayerSpawn[index].z);
 
-        playerSpawnerList.Add(playerSpawner1);
+        GameObject player = PhotonNetwork.Instantiate("GameObject/ljh_Player", playerPos, Quaternion.identity);
 
-       // playerPos; //= SpawnerPick(playerposQ);
-       // playerColor = colorPick();
-       //
-       // GameObject player1 = PhotonNetwork.Instantiate("GameObject/ljh_Player", playerPos, Quaternion.identity);
-       // player1.GetComponentInChildren<Renderer>().material.color = Color.red;
-       //
-       // GameObject player2 = PhotonNetwork.Instantiate("GameObject/ljh_Player", playerPos, Quaternion.identity);
-       // player2.GetComponentInChildren<Renderer>().material.color = Color.blue;
-       //
-       // GameObject player3 = PhotonNetwork.Instantiate("GameObject/ljh_Player", playerPos, Quaternion.identity);
-       // player3.GetComponentInChildren<Renderer>().material.color = Color.green;
-       // 
-       // GameObject player4 = PhotonNetwork.Instantiate("GameObject/ljh_Player", playerPos, Quaternion.identity);
-       // player4.GetComponentInChildren<Renderer>().material.color = Color.yellow;
+        Color[] vectorColor = { playerColor1, playerColor2, playerColor3, playerColor4 };
+        Debug.Log(playerColor1.r);
+        Debug.Log(playerColor1.g);
+        Debug.Log(playerColor1.b);
+        playerColor = new Color(vectorColor[index].r, vectorColor[index].g, vectorColor[index].b, 1);
 
-        // Todo : 본인꺼 생성하게 해야함
+        player.GetComponentInChildren<Renderer>().material.color = playerColor;
+
+        // Todo : 다른 플레이어의 색깔 지정해야함
+
     }
 
-    public Vector3 SpawnerPick(Queue playerQue)
-    {
-        playerPos = playerposQ.Peek().transform.position;
-        playerposQ.Dequeue();
 
-        return playerPos;
-    }
 
-    public Color colorPick()
-    {
-        playerColor = playerColorQ.Peek();
-        playerColorQ.Dequeue();
-        return playerColor;
-    }
 
-   
-    
+
+
+
+
+
 }
