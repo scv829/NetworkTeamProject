@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputManager_ljh : MonoBehaviour
+public class ljh_InputManager : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()

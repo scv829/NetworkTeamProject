@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Boom_ljh : MonoBehaviour
+public class ljh_Boom : MonoBehaviour
 {
     
 
