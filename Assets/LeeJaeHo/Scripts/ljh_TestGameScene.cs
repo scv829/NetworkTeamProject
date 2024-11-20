@@ -96,20 +96,20 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
 
         playerSpawnerList.Add(playerSpawner1);
 
-        playerPos; //= SpawnerPick(playerposQ);
-        playerColor = colorPick();
-
-        GameObject player1 = PhotonNetwork.Instantiate("GameObject/ljh_Player", playerPos, Quaternion.identity);
-        player1.GetComponentInChildren<Renderer>().material.color = Color.red;
-
-        GameObject player2 = PhotonNetwork.Instantiate("GameObject/ljh_Player", playerPos, Quaternion.identity);
-        player2.GetComponentInChildren<Renderer>().material.color = Color.blue;
-
-        GameObject player3 = PhotonNetwork.Instantiate("GameObject/ljh_Player", playerPos, Quaternion.identity);
-        player3.GetComponentInChildren<Renderer>().material.color = Color.green;
-        
-        GameObject player4 = PhotonNetwork.Instantiate("GameObject/ljh_Player", playerPos, Quaternion.identity);
-        player4.GetComponentInChildren<Renderer>().material.color = Color.yellow;
+       // playerPos; //= SpawnerPick(playerposQ);
+       // playerColor = colorPick();
+       //
+       // GameObject player1 = PhotonNetwork.Instantiate("GameObject/ljh_Player", playerPos, Quaternion.identity);
+       // player1.GetComponentInChildren<Renderer>().material.color = Color.red;
+       //
+       // GameObject player2 = PhotonNetwork.Instantiate("GameObject/ljh_Player", playerPos, Quaternion.identity);
+       // player2.GetComponentInChildren<Renderer>().material.color = Color.blue;
+       //
+       // GameObject player3 = PhotonNetwork.Instantiate("GameObject/ljh_Player", playerPos, Quaternion.identity);
+       // player3.GetComponentInChildren<Renderer>().material.color = Color.green;
+       // 
+       // GameObject player4 = PhotonNetwork.Instantiate("GameObject/ljh_Player", playerPos, Quaternion.identity);
+       // player4.GetComponentInChildren<Renderer>().material.color = Color.yellow;
 
         // Todo : 본인꺼 생성하게 해야함
     }
