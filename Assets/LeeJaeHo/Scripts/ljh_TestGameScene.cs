@@ -100,7 +100,6 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
         Vector3[] vectorPlayerSpawn = { playerPos1, playerPos2, playerPos3, playerPos4};
 
         playerPos = new Vector3(vectorPlayerSpawn[index].x, 0, vectorPlayerSpawn[index].z);
-
         GameObject player = PhotonNetwork.Instantiate("ljh_Player", playerPos, Quaternion.identity);
 
         Color[] vectorColor = { playerColor1, playerColor2, playerColor3, playerColor4 };
@@ -108,7 +107,6 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
 
         player.GetComponentInChildren<Renderer>().material.color = playerColor;
 
-        // Todo : 다른 플레이어의 색깔 지정해야함
 
     }
 

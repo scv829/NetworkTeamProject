@@ -8,11 +8,15 @@ public class ljh_Player : MonoBehaviour
 {
     [SerializeField] ljh_InputManager inputManagerScript;
     [SerializeField] Vector3 playerPos;
+    [SerializeField] GameObject testSpawner;
     
     private void OnEnable()
     {
         inputManagerScript = GameObject.FindWithTag("GameController").GetComponent<ljh_InputManager>();
-        inputManagerScript.enabled = true;
+        
+        Debug.Log(inputManagerScript.buttonPos3);
+        Debug.Log("는 플레이어꺼");
+        transform.position = testSpawner.transform.position;
     }
     private void Start()
     {
@@ -21,12 +25,12 @@ public class ljh_Player : MonoBehaviour
 
     public void Update()
     {
-        playerPos = inputManagerScript.curPos;
+        //playerPos = inputManagerScript.curPos;
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            transform.position = playerPos;
-        }
+       // if (Input.GetKeyDown(KeyCode.Space))
+       // {
+       //     transform.position = playerPos;
+       // }
           
     }
 

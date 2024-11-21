@@ -2,19 +2,29 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
+
+enum State
+{ 
+    idle,
+    move,
+    choice
+};
+
 
 public class ljh_InputManager : MonoBehaviour
 {
     PhotonView photonView;
     [SerializeField] GameObject player;
+    [SerializeField] GameObject button;
 
     public Vector3 curPos;
 
-    [SerializeField] Vector3 buttonPos1;
-    [SerializeField] Vector3 buttonPos2;
-    [SerializeField] Vector3 buttonPos3;
-    [SerializeField] Vector3 buttonPos4;
-    [SerializeField] Vector3 buttonPos5;
+    Vector3 buttonPos1;
+    Vector3 buttonPos2;
+    public Vector3 buttonPos3;
+    Vector3 buttonPos4;
+    Vector3 buttonPos5;
 
     [SerializeField] GameObject buttonObj1;
     [SerializeField] GameObject buttonObj2;
@@ -22,18 +32,28 @@ public class ljh_InputManager : MonoBehaviour
     [SerializeField] GameObject buttonObj4;
     [SerializeField] GameObject buttonObj5;
 
+    State curState;
+
     int defaultIndex;
     int minus;
     [SerializeField] int index;
 
+    private void OnEnable()
+    {
+        curState = State.idle;
+    }
     private void Start()
     {
+        Vector3[] buttonPos = { buttonPos1, buttonPos2, buttonPos3, buttonPos4, buttonPos5 };
+        GameObject[] buttonObj = { buttonObj1, buttonObj2, buttonObj3, buttonObj4, buttonObj5 };
+        
 
-        buttonPos1 = buttonObj1.transform.position;
-        buttonPos2 = buttonObj2.transform.position;
-        buttonPos3 = buttonObj3.transform.position;
-        buttonPos4 = buttonObj4.transform.position;
-        buttonPos5 = buttonObj5.transform.position;
+        for (int i = 0; i < buttonPos.Length - 1; i++)
+        {
+            buttonPos[i] = buttonObj[i].transform.position;
+        }
+        Debug.Log(buttonPos[3]);
+        Debug.Log("는 인풋매니저꺼");
 
         defaultIndex = 2;
         minus = 0;
@@ -41,8 +61,31 @@ public class ljh_InputManager : MonoBehaviour
 
     private void Update()
     {
-        FindPlayer();
+        // Comment : 테스트용도
+        if (Input.GetKeyDown(KeyCode.R))
+            curState = State.choice;
+
+        if (Input.GetKeyDown(KeyCode.T))
+            curState = State.idle;
+
+
+        switch(curState)
+        {
+            case State.idle:
+                FindPlayer();
+                break;
+
+            case State.move:
+                break;
+            
+            case State.choice:
+                ChoiceAnswer();
+                SelectButton(curPos);
+                break;
+
+        }
         
+
     }
 
     public void FindPlayer()
@@ -50,9 +93,6 @@ public class ljh_InputManager : MonoBehaviour
         if (player == null)
             player = GameObject.FindWithTag("Player");
 
-        //else if (player != null)
-           // ChoiceAnswer();
-        
     }
 
     public void ChoiceAnswer()
@@ -69,10 +109,18 @@ public class ljh_InputManager : MonoBehaviour
 
         Vector3[] buttonPos = { buttonPos1, buttonPos2, buttonPos3, buttonPos4, buttonPos5 };
 
-        //curPos = new Vector3(buttonPos[index].x, 0, buttonPos[index].z);
         curPos = buttonPos[index];
+    }
 
-        //curPos = player.transform.position;
-        Debug.Log($"인풋매니저에서 계산한 위치값{curPos}");
+    public void SelectButton(Vector3 pos)
+    {
+        Vector3[] buttonPos = { buttonPos1, buttonPos2, buttonPos3, buttonPos4, buttonPos5 };
+        GameObject[] buttonObj = { buttonObj1, buttonObj2, buttonObj3, buttonObj4, buttonObj5 };
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (pos == buttonPos[index])
+                button.GetComponent<ljh_Button>().PushedButton(buttonObj[index]);
+        }
     }
 }
