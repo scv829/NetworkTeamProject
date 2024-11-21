@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Purchasing;
 using UnityEngine;
 
 public class HYJ_Monster : MonoBehaviour
@@ -25,5 +26,8 @@ public class HYJ_Monster : MonoBehaviour
         }
     }
 
-
+    public void Hit()
+    {
+        Debug.Log("공격 받음!");
+    }
 }

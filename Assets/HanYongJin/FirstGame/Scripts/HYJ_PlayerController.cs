@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class HYJ_PlayerController : MonoBehaviour
 {
+    [SerializeField] HYJ_Monster monster;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("스페이스바 입력");
-            StartCoroutine( Attack());
+            if(monster.transform.childCount > 0)
+            {
+                StartCoroutine( Attack());
+            }
+            
         }
     }
     IEnumerator Attack()
