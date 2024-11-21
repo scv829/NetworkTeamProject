@@ -24,11 +24,20 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks
     private float _gameTimer;
     public int[] _totalCount;   // TODO : 배열 초기화 해야함. 매치메이킹 이후에 이루어지는 작업진행
 
+    public int _playersLoaded = 0;
+    private int _totalplayers;
+
     // Start 함수
     private void Start()
     {
         // 게임씬에 진입했을시에는 false
         IsStarted = false;
+
+        // 마스터 클라이언트만 진행
+        if(PhotonNetwork.IsMasterClient)
+        {
+            _totalplayers = PhotonNetwork.CurrentRoom.PlayerCount;  // 총 플레이어 수 저장
+        }
     }
 
     // Update 함수
@@ -61,6 +70,7 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks
                 // 현재 플레이어 컨트롤러가 배열에 할당되지 않았으면 break.
                 if(_playerController[i] == null)
                     break;
+
                 // 플레이어들의 총합 입력수를 입력
                 _totalCount[i] = _playerController[i].TotalInputCount;
                 Debug.Log($"Player {i} 총 입력 횟수 : {_totalCount[i]}");
@@ -74,7 +84,8 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         // 준비시간 조금 가지는 코루틴 실행
-        StartCoroutine(StartDelayRoutine());
+        photonView.RPC("PlayerReady", RpcTarget.MasterClient);
+        //StartCoroutine(StartDelayRoutine());
     }
 
     // 네트워크에 진입 후 준비에 필요한 시간 살짝 주는 함수
@@ -161,4 +172,20 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks
         Debug.Log("Start!!!");
         IsStarted = true; // 게임 시작 상태로 변경
     }
+
+    [PunRPC]
+    public void PlayerReady()
+    {
+        {
+            _playersLoaded++;
+            Debug.Log($"현재 로딩된 플레이어 : {_playersLoaded}");
+
+            if (_playersLoaded == 2)
+            {
+                StartCoroutine(StartDelayRoutine());
+            }
+        }
+    }
+
+
 }

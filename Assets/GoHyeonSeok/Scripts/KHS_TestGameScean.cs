@@ -22,4 +22,5 @@ public class KHS_TestGameScean : MonoBehaviourPunCallbacks
 
         PhotonNetwork.JoinOrCreateRoom(RoomName, options, TypedLobby.Default);
     }
+
 }

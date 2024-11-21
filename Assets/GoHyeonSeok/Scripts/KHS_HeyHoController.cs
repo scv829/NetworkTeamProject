@@ -1,9 +1,7 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class KHS_HeyHoController : MonoBehaviour
+public class KHS_HeyHoController : MonoBehaviourPun
 {
     [SerializeField] private KHS_MechaMarathonGameManager _mechaMarathonGameManager;
     [SerializeField] private float _moveSpeed;
@@ -19,15 +17,15 @@ public class KHS_HeyHoController : MonoBehaviour
 
     private void Start()
     {
-        _mechaMarathonGameManager.HeyHoController[PhotonNetwork.LocalPlayer.ActorNumber] = this;
-        Debug.Log($"{PhotonNetwork.LocalPlayer.ActorNumber}번째 헤이호");
+        ReadyHeyHo();
+
     }
 
     private void Update()
     {
-        if(_mechaMarathonGameManager.IsFinished  == true && _isMoved == false)
+        if (_mechaMarathonGameManager.IsFinished == true && _isMoved == false && photonView.IsMine)
         {
-            MoveHeyHo(_mechaMarathonGameManager._totalCount[PhotonNetwork.LocalPlayer.ActorNumber]);
+            MoveHeyHo(_mechaMarathonGameManager._totalCount[photonView.Owner.ActorNumber]);
             Debug.Log("헤이호 움직이는중");
         }
         else if (_isMoved == true)
@@ -47,9 +45,22 @@ public class KHS_HeyHoController : MonoBehaviour
 
         transform.position = Vector3.MoveTowards(transform.position, targetPos, _moveSpeed * Time.deltaTime);
 
-        if(transform.position.z >= targetPos.z && _isMoved == false)
+        if (transform.position.z >= targetPos.z && _isMoved == false)
         {
-           _isMoved = true; // 목표 위치에 도달했음을 표시
+            _isMoved = true; // 목표 위치에 도달했음을 표시
         }
+    }
+
+    private void ReadyHeyHo()
+    {
+        photonView.RPC("ReadyHeyHoRPC", RpcTarget.AllBuffered);
+    }
+
+
+    [PunRPC]
+    private void ReadyHeyHoRPC()
+    {
+        _mechaMarathonGameManager.HeyHoController[photonView.Owner.ActorNumber] = this;
+        Debug.Log($"{PhotonNetwork.LocalPlayer.ActorNumber}번째 헤이호");
     }
 }

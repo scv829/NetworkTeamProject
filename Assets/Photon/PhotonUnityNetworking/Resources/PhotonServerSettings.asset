@@ -40,6 +40,10 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - SpawnerPickRPC
+  - RPC_Ready
+  - PlayerReady
+  - ReadyRPC
+  - ReadyHeyHoRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
