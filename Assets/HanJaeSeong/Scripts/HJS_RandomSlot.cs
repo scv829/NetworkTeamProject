@@ -1,3 +1,6 @@
+using ExitGames.Client.Photon;
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
@@ -5,7 +8,7 @@ using UnityEngine;
 /// <summary>
 /// 랜덤으로 이미지를 설정하는 클래스
 /// </summary>
-public class HJS_RandomSlot : MonoBehaviour
+public class HJS_RandomSlot : MonoBehaviourPun
 {
     public enum AnswerDirection { Top, Botton, Right, Left, None }
 
@@ -16,20 +19,17 @@ public class HJS_RandomSlot : MonoBehaviour
 
     public AnswerDirection Answer => answer;
 
-    private void Start()
-    {
-        Setting();
-        
-    }
-
     /// <summary>
-    /// 슬롯의 상태를 설정해주는 함수
+    /// 슬롯의 심볼을 설정해주는 함수
     /// </summary>
     public void Setting()
     {
-        deque.Clear(); // 초기화
+        // 초기화
+        deque.Clear();
+        heartIndex = -1;
+        answer = AnswerDirection.None;
 
-        for(int i = 0; i < 5; i++)                              // 앞 또는 뒤에 숫자를 넣어서 무작위로 배치한다
+        for (int i = 0; i < 5; i++)                              // 앞 또는 뒤에 숫자를 넣어서 무작위로 배치한다
         {
             if(Random.Range(0, 1f) > 0.5f) deque.AddFirst(i);   
             else deque.AddLast(i);
