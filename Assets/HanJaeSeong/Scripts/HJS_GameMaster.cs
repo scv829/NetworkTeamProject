@@ -6,14 +6,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using Photon.Pun.UtilityScripts;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
 {
+    [Header("Game")]
     [SerializeField] HJS_RandomSlot slotMaster;     // 슬롯 마스터
     [SerializeField] float delayTime = 3f;          // 정답을 맞출 수 있는 대기시간
     [SerializeField] bool isOver;                   // 입력받을 수 있는 시간을 초과했는지 여부
     [SerializeField] UnityEvent inputStopEvent;     // 초과했을 때 실행할 이벤트 함수
+    [Header("UI")]
+    [SerializeField] HJS_scoreUI[] scoreUIs;
+    [SerializeField] Color[] playerColors;  // 플레이어의 색상
+
 
     private Dictionary<Player, int> scoreDictionary = new Dictionary<Player, int>();     // 플레이어와 점수
     private List<(Player, float)> selectResult = new List<(Player, float)>();   // 플레이어의 걸린시간
@@ -21,11 +27,13 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Start()
     {
-        Init();   
+        Init();
 
         if (PhotonNetwork.IsMasterClient == false) return;
+
         StartCoroutine(SlotSettingRoutine());
     }
+
 
     private IEnumerator SlotSettingRoutine()
     {
@@ -53,6 +61,8 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
             scoreDictionary[playerResult.Item1] += rank;                    // 순위에 따른 점수 저장
             rank -= 2;                                                      // 점수는 순위가 늦어짐에 따라 계속 내려간다 , 7 -> 5 -> 3 -> 1
         }
+
+        UpdateUI();
     }
 
 
@@ -70,6 +80,22 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
         foreach(Player player in PhotonNetwork.PlayerList)
         {
             scoreDictionary[player] = 0;
+
+            int number = player.GetPlayerNumber();
+            scoreUIs[number].SetProfile(playerColors[number]);
+            scoreUIs[number].gameObject.SetActive(true);
+        }
+
+    }
+
+    private void UpdateUI()
+    {
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            if (player.GetPlayerNumber() == -1) continue;
+
+            int number = player.GetPlayerNumber();
+            scoreUIs[number].SetScore(scoreDictionary[player]);
         }
     }
 
