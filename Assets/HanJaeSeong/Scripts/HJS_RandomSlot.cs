@@ -19,7 +19,7 @@ using UnityEngine;
     public AnswerDirection Answer => answer;
 
     /// <summary>
-    /// 슬롯의 상태를 설정해주는 함수
+    /// 슬롯의 심볼을 설정해주는 함수
     /// </summary>
     public void Setting()
     {
