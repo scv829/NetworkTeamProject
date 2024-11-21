@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 6561618}
   - component: {fileID: 6561617}
   - component: {fileID: 6561619}
+  - component: {fileID: 6561620}
   m_Layer: 5
   m_Name: Right
   m_TagString: Untagged
@@ -219,6 +220,28 @@ MonoBehaviour:
   - {fileID: 0}
   slotImage: {fileID: 0}
   curSlot: 0
+--- !u!114 &6561620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6561615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 5
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &33704807
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,6 +254,7 @@ GameObject:
   - component: {fileID: 33704810}
   - component: {fileID: 33704809}
   - component: {fileID: 33704811}
+  - component: {fileID: 33704812}
   m_Layer: 5
   m_Name: Left
   m_TagString: Untagged
@@ -316,6 +340,28 @@ MonoBehaviour:
   - {fileID: 0}
   slotImage: {fileID: 0}
   curSlot: 0
+--- !u!114 &33704812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33704807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 4
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &427420904
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,6 +374,7 @@ GameObject:
   - component: {fileID: 427420907}
   - component: {fileID: 427420906}
   - component: {fileID: 427420908}
+  - component: {fileID: 427420909}
   m_Layer: 5
   m_Name: Top
   m_TagString: Untagged
@@ -413,6 +460,28 @@ MonoBehaviour:
   - {fileID: 0}
   slotImage: {fileID: 0}
   curSlot: 0
+--- !u!114 &427420909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 427420904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 3
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &551680829
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,7 +512,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   answer: 4
-  slotMaster: {fileID: 1842943160}
 --- !u!4 &551680831
 Transform:
   m_ObjectHideFlags: 0
@@ -607,6 +675,112 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 994105620}
   m_CullTransparentMesh: 1
+--- !u!1 &1369906922
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1369906925}
+  - component: {fileID: 1369906924}
+  - component: {fileID: 1369906923}
+  - component: {fileID: 1369906926}
+  m_Layer: 0
+  m_Name: GameMaster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1369906923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369906922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4c9419fd2d5db4b9c74f6d225da8fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slots:
+  - {fileID: 427420908}
+  - {fileID: 1458071619}
+  - {fileID: 6561619}
+  - {fileID: 33704811}
+  heartIndex: -1
+  answer: 0
+--- !u!114 &1369906924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369906922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d68de9642268f9641b5db6da64df0138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotMaster: {fileID: 1369906923}
+  delayTime: 3
+  isOver: 0
+  inputStopEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 551680830}
+        m_TargetAssemblyTypeName: HJS_PlayerController, Assembly-CSharp
+        m_MethodName: StopInput
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!4 &1369906925
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369906922}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 517.6995, y: 300.27414, z: 566.2504}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1369906926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369906922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 1369906924}
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1458071615
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,6 +793,7 @@ GameObject:
   - component: {fileID: 1458071618}
   - component: {fileID: 1458071617}
   - component: {fileID: 1458071619}
+  - component: {fileID: 1458071620}
   m_Layer: 5
   m_Name: Bottom
   m_TagString: Untagged
@@ -704,6 +879,28 @@ MonoBehaviour:
   - {fileID: 0}
   slotImage: {fileID: 0}
   curSlot: 0
+--- !u!114 &1458071620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1458071615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1590939092
 GameObject:
   m_ObjectHideFlags: 0
@@ -800,7 +997,6 @@ GameObject:
   - component: {fileID: 1842943158}
   - component: {fileID: 1842943157}
   - component: {fileID: 1842943156}
-  - component: {fileID: 1842943160}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -891,25 +1087,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1842943160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1842943155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e4c9419fd2d5db4b9c74f6d225da8fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slots:
-  - {fileID: 427420908}
-  - {fileID: 1458071619}
-  - {fileID: 6561619}
-  - {fileID: 33704811}
-  heartIndex: -1
-  answer: 0
 --- !u!1 &2040445808
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,9 +1,10 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HJS_CircleSlot : MonoBehaviour
+public class HJS_CircleSlot : MonoBehaviourPun
 {
     private enum Slot { Heart, Clover, Spade, Diamond, Empty, Size }
 
@@ -21,6 +22,12 @@ public class HJS_CircleSlot : MonoBehaviour
     /// </summary>
     /// <param name="index">슬롯의 번호</param>
     public void SetSlot(int index)
+    {
+        photonView.RPC("SettingRPC", RpcTarget.All, index);
+    }
+
+    [PunRPC]
+    private void SettingRPC(int index)
     {
         curSlot = (Slot)index;
         Debug.Log($"{gameObject.name} : {curSlot}");

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+public class HJS_PlayerController : MonoBehaviourPun
 {
     [SerializeField] HJS_RandomSlot.AnswerDirection answer; // 플레이어의 입력한 값
 
@@ -24,6 +25,8 @@ using UnityEngine.Events;
 
     IEnumerator InputRoutine()
     {
+        double time = PhotonNetwork.Time;
+
         // 입력 대기
         yield return new WaitUntil(() => 
         {

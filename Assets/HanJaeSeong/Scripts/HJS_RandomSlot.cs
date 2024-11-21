@@ -8,6 +8,7 @@ using UnityEngine;
 /// <summary>
 /// 랜덤으로 이미지를 설정하는 클래스
 /// </summary>
+public class HJS_RandomSlot : MonoBehaviourPun
 {
     public enum AnswerDirection { Top, Botton, Right, Left, None }
 
