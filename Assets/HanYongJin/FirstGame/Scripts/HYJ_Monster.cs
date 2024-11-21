@@ -8,6 +8,8 @@ public class HYJ_Monster : MonoBehaviour
     [SerializeField] int Hp;
     [SerializeField] bodyType monsterBodyType;
 
+    private HYJ_MonsterController monsterController;
+
     enum bodyType
     {
         Body,
@@ -26,8 +28,22 @@ public class HYJ_Monster : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if(Hp <= 0)
+        {
+            Destroy(gameObject);
+            transform.GetComponentInParent<HYJ_MonsterController>().MonsterBodyDown();
+            if (monsterBodyType == bodyType.Head)
+            {
+                // TODO : 머리를 0으로 만들면 해당 플레이어는 게임 종료!
+                transform.GetComponentInParent<HYJ_MonsterController>().MonsterDie();
+            }
+        }
+    }
+
     public void Hit()
     {
-        Debug.Log("공격 받음!");
+        Hp--;
     }
 }

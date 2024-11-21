@@ -4,23 +4,26 @@ using UnityEngine;
 
 public class HYJ_PlayerController : MonoBehaviour
 {
-    [SerializeField] HYJ_Monster monster;
+    private HYJ_MonsterSearch monster;
+    private void Start()
+    {
+        monster = transform.GetComponentInParent<HYJ_MonsterSearch>();
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("스페이스바 입력");
-            if(monster.transform.childCount > 0)
+            if(monster.monsterCount > 0)
             {
-                StartCoroutine( Attack());
+                StartCoroutine(Attack());
             }
-            
         }
     }
     IEnumerator Attack()
     {
-        Debug.Log("공격");
         transform.Rotate(new Vector3(0, -90, 0));
+        monster.GetComponent<HYJ_MonsterSearch>().MonsterBringHit();
         yield return new WaitForSeconds(0.1f);
         transform.Rotate(new Vector3(0, 90, 0));
     }
