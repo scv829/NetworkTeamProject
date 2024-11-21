@@ -101,12 +101,9 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
 
         playerPos = new Vector3(vectorPlayerSpawn[index].x, 0, vectorPlayerSpawn[index].z);
 
-        GameObject player = PhotonNetwork.Instantiate("GameObject/ljh_Player", playerPos, Quaternion.identity);
+        GameObject player = PhotonNetwork.Instantiate("ljh_Player", playerPos, Quaternion.identity);
 
         Color[] vectorColor = { playerColor1, playerColor2, playerColor3, playerColor4 };
-        Debug.Log(playerColor1.r);
-        Debug.Log(playerColor1.g);
-        Debug.Log(playerColor1.b);
         playerColor = new Color(vectorColor[index].r, vectorColor[index].g, vectorColor[index].b, 1);
 
         player.GetComponentInChildren<Renderer>().material.color = playerColor;
