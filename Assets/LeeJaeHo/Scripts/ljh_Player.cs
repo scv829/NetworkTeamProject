@@ -12,15 +12,19 @@ public class ljh_Player : MonoBehaviour
     
     private void OnEnable()
     {
-        inputManagerScript = GameObject.FindWithTag("GameController").GetComponent<ljh_InputManager>();
         
-        Debug.Log(inputManagerScript.buttonPos3);
-        Debug.Log("는 플레이어꺼");
-        transform.position = testSpawner.transform.position;
     }
     private void Start()
     {
-       
+        testSpawner = GameObject.Find("Button3 Pos");
+
+        inputManagerScript = GameObject.FindWithTag("GameController").GetComponent<ljh_InputManager>();
+        transform.position = testSpawner.transform.position;
+    }
+
+    public void MovePlayer()
+    {
+        transform.position = inputManagerScript._curPos;//Todo: 버그 수정해야함 널레퍼런스뜸
     }
 
     public void Update()

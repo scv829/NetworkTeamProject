@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -17,12 +18,12 @@ public class ljh_InputManager : MonoBehaviour
     PhotonView photonView;
     [SerializeField] GameObject player;
     [SerializeField] GameObject button;
+    [SerializeField] GameObject spotlight;
 
-    public Vector3 curPos;
 
     Vector3 buttonPos1;
     Vector3 buttonPos2;
-    public Vector3 buttonPos3;
+    Vector3 buttonPos3;
     Vector3 buttonPos4;
     Vector3 buttonPos5;
 
@@ -32,10 +33,14 @@ public class ljh_InputManager : MonoBehaviour
     [SerializeField] GameObject buttonObj4;
     [SerializeField] GameObject buttonObj5;
 
+    Vector3[] buttonPos;
+
     State curState;
+    public Vector3 _curPos;
 
     int defaultIndex;
     int minus;
+    bool check;
     [SerializeField] int index;
 
     private void OnEnable()
@@ -44,17 +49,6 @@ public class ljh_InputManager : MonoBehaviour
     }
     private void Start()
     {
-        Vector3[] buttonPos = { buttonPos1, buttonPos2, buttonPos3, buttonPos4, buttonPos5 };
-        GameObject[] buttonObj = { buttonObj1, buttonObj2, buttonObj3, buttonObj4, buttonObj5 };
-        
-
-        for (int i = 0; i < buttonPos.Length - 1; i++)
-        {
-            buttonPos[i] = buttonObj[i].transform.position;
-        }
-        Debug.Log(buttonPos[3]);
-        Debug.Log("는 인풋매니저꺼");
-
         defaultIndex = 2;
         minus = 0;
     }
@@ -79,8 +73,9 @@ public class ljh_InputManager : MonoBehaviour
                 break;
             
             case State.choice:
-                ChoiceAnswer();
-                SelectButton(curPos);
+                _curPos = ChoiceAnswer();
+                Debug.Log($"얘는 언더바 {_curPos}");
+                SelectButton(player.transform.position);
                 break;
 
         }
@@ -95,21 +90,35 @@ public class ljh_InputManager : MonoBehaviour
 
     }
 
-    public void ChoiceAnswer()
+    public Vector3 ChoiceAnswer()
     {
         index = defaultIndex - minus;
         if (Input.GetKeyDown(KeyCode.A) && index >= 1)
         {
             minus++;
+            player.GetComponent<ljh_Player>().MovePlayer();
         }
         else if (Input.GetKeyDown(KeyCode.D) && index <= 3)
         {
             minus--;
+            player.GetComponent<ljh_Player>().MovePlayer();
+        }
+        check = false;
+        
+
+        Vector3[] buttonPos= { buttonPos1, buttonPos2, buttonPos3, buttonPos4, buttonPos5 } ;
+        GameObject[] buttonObj = { buttonObj1, buttonObj2, buttonObj3, buttonObj4, buttonObj5 };
+
+        for (int i = 0; i < buttonPos.Length; i++)
+        {
+            buttonPos[i] = buttonObj[i].transform.position;
         }
 
-        Vector3[] buttonPos = { buttonPos1, buttonPos2, buttonPos3, buttonPos4, buttonPos5 };
-
-        curPos = buttonPos[index];
+        Vector3 curPos = buttonPos[index];
+        spotlight.transform.LookAt(buttonPos[index]);
+        Debug.Log(curPos);
+        return curPos;
+        
     }
 
     public void SelectButton(Vector3 pos)
