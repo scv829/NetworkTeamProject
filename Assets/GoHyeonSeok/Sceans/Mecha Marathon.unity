@@ -518,5 +518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4521ce55c16f3e48b2bb39266d35900, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _PlayerController: []
+  _playerController:
+  - {fileID: 0}
   _isStarted: 0
+  _totalCount: 00000000
