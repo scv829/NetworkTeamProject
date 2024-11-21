@@ -11,14 +11,16 @@ public class HJS_PlayerController : MonoBehaviourPun
 
     private Coroutine coroutine;
 
-    private void Start()
+    public void StartInput()
     {
+        Debug.Log($"{PhotonNetwork.LocalPlayer.NickName} startInput");
         answer = HJS_RandomSlot.AnswerDirection.None;
         coroutine = StartCoroutine(InputRoutine());                  // 입력하기
     }
 
     public void StopInput()
     {
+        Debug.Log($"{PhotonNetwork.LocalPlayer.NickName} stopInput");
         StopCoroutine(coroutine);
         coroutine = null;
     }
@@ -56,5 +58,6 @@ public class HJS_PlayerController : MonoBehaviourPun
 
         // 선택한 내용 및 걸린 시간 전송
         PhotonNetwork.LocalPlayer.SetAnswer(answer, Mathf.Abs((float)(time - PhotonNetwork.Time)));
+        Debug.Log($"{PhotonNetwork.LocalPlayer.NickName} {answer}");
     }
 }

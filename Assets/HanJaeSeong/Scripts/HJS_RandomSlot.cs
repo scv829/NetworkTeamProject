@@ -24,9 +24,12 @@ public class HJS_RandomSlot : MonoBehaviourPun
     /// </summary>
     public void Setting()
     {
-        deque.Clear(); // 초기화
+        // 초기화
+        deque.Clear();
+        heartIndex = -1;
+        answer = AnswerDirection.None;
 
-        for(int i = 0; i < 5; i++)                              // 앞 또는 뒤에 숫자를 넣어서 무작위로 배치한다
+        for (int i = 0; i < 5; i++)                              // 앞 또는 뒤에 숫자를 넣어서 무작위로 배치한다
         {
             if(Random.Range(0, 1f) > 0.5f) deque.AddFirst(i);   
             else deque.AddLast(i);

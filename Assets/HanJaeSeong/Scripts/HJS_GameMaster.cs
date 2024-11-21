@@ -15,15 +15,17 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] HJS_RandomSlot slotMaster;     // 슬롯 마스터
     [SerializeField] float delayTime = 3f;          // 정답을 맞출 수 있는 대기시간
     [SerializeField] bool isOver;                   // 입력받을 수 있는 시간을 초과했는지 여부
-    [SerializeField] UnityEvent inputStopEvent;     // 초과했을 때 실행할 이벤트 함수
+    [SerializeField] UnityEvent inputStartEvent;    // 입력을 시작할 때 실행할 이벤트 함수
+    [SerializeField] UnityEvent inputStopEvent;     // 입력 시간을 초과했을 때 실행할 이벤트 함수
     [Header("UI")]
     [SerializeField] HJS_scoreUI[] scoreUIs;
     [SerializeField] Color[] playerColors;  // 플레이어의 색상
 
-
     private Dictionary<Player, int> scoreDictionary = new Dictionary<Player, int>();     // 플레이어와 점수
     private List<(Player, float)> selectResult = new List<(Player, float)>();   // 플레이어의 걸린시간
     private WaitForSeconds delay;
+
+    private Coroutine coroutine;
 
     private void Start()
     {
@@ -31,13 +33,27 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
 
         if (PhotonNetwork.IsMasterClient == false) return;
 
-        StartCoroutine(SlotSettingRoutine());
+        coroutine = StartCoroutine(SlotSettingRoutine());
     }
 
+    private void Update()
+    {
+        if (PhotonNetwork.IsMasterClient == false) return;
 
+        if (coroutine == null)
+        {
+            coroutine = StartCoroutine(SlotSettingRoutine());
+        }
+    }
+
+    
     private IEnumerator SlotSettingRoutine()
     {
+
         slotMaster.Setting();       // slotMaster에게 슬롯의 심볼 세팅 요청
+        selectResult.Clear();       // 플레이어의 걸린 시간 리스트 초기화
+        inputStartEvent?.Invoke();  // 입력 시작 이벤트 함수 실행
+        isOver = false;             // 초기화
 
         yield return delay;         // 입력 받을 수 있는 대기 시간동안 지연
 
@@ -45,6 +61,10 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
         inputStopEvent?.Invoke();   // 입력 중단 이벤트 함수 실행
 
         CalculateResult();          // 결과 계산 시작
+
+        yield return new WaitForSeconds(1f);  // 게임 재시작을 위해 1초 대기
+
+        coroutine = null;
     }
 
     /// <summary>
@@ -127,11 +147,13 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
     // 역할: 플레이어가 입력한 값을 판단해서 정답이면 저장해주는 역할
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
     {
+        Debug.Log("joi");
         // 1. 선택한 방향이 일치하는 지 확인
         if(!isOver && slotMaster.Answer.Equals(targetPlayer.GetAnswer().Item1))
         {
             // 2. 일치하면 정답 리스트에 유저와 시간입력
             selectResult.Add((targetPlayer, targetPlayer.GetAnswer().Item2));
+        Debug.Log("jo");
         }
     }
 
