@@ -1,3 +1,6 @@
+using ExitGames.Client.Photon;
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
@@ -5,7 +8,6 @@ using UnityEngine;
 /// <summary>
 /// 랜덤으로 이미지를 설정하는 클래스
 /// </summary>
-public class HJS_RandomSlot : MonoBehaviour
 {
     public enum AnswerDirection { Top, Botton, Right, Left, None }
 
@@ -15,12 +17,6 @@ public class HJS_RandomSlot : MonoBehaviour
     [SerializeField] AnswerDirection answer;  // 하트가 있는 방향
 
     public AnswerDirection Answer => answer;
-
-    private void Start()
-    {
-        Setting();
-        
-    }
 
     /// <summary>
     /// 슬롯의 상태를 설정해주는 함수
