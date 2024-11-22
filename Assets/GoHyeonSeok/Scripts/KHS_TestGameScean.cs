@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class KHS_TestGameScean : MonoBehaviourPunCallbacks
 {
-    public const string RoomName = "TestRoom";
+    public const string RoomName = "TestRoom_KHS";
 
     private void Start()
     {

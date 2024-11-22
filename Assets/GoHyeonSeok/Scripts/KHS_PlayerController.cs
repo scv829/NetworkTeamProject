@@ -21,8 +21,11 @@ public class KHS_PlayerController : MonoBehaviourPun, IPunObservable
 
     private void Start()
     {
-        // 현재 접속된 자신의 ActorNumber대로 이 스크립트를 참조시켜준다.
+        // 플레이어 오브젝트가 생성되면 준비완료했다고 신호를 보내준다.
         Ready();
+        _mechaMarathonGameManager.PlayerReady();
+        Debug.Log($"레디한 플레이어 : {photonView.Owner.ActorNumber}");
+
     }
 
     private void Update()
@@ -45,6 +48,7 @@ public class KHS_PlayerController : MonoBehaviourPun, IPunObservable
     private void Ready()
     {
         photonView.RPC("ReadyRPC", RpcTarget.AllBuffered);
+
     }
 
 
@@ -52,10 +56,7 @@ public class KHS_PlayerController : MonoBehaviourPun, IPunObservable
     private void ReadyRPC()
     {
         _mechaMarathonGameManager.PlayerController[photonView.Owner.ActorNumber] = this;
-        Debug.Log($"{PhotonNetwork.LocalPlayer.ActorNumber}번째 플레이어");
-
-        _mechaMarathonGameManager.PlayerReady();
-        Debug.Log($"레디한 플레이어 : {photonView.Owner.ActorNumber}");
+        Debug.Log($"{PhotonNetwork.LocalPlayer.ActorNumber}번째 플레이어 스크립트 참조 됨");
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -63,6 +64,7 @@ public class KHS_PlayerController : MonoBehaviourPun, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(_totalInputCount);
+            
         }
         else if (stream.IsReading)
         {

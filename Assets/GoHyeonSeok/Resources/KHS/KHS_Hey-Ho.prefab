@@ -117,8 +117,9 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 2
+  observableSearch: 0
   ObservedComponents:
+  - {fileID: -4496214199580985333}
   - {fileID: 3609343980634844308}
   sceneViewId: 0
   InstantiationId: 0
@@ -136,10 +137,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mechaMarathonGameManager: {fileID: 0}
+  _playerController: {fileID: 0}
   _moveSpeed: 3
   _isMoved: 0
   _isTargeted: 0
   targetPos: {x: 0, y: 0, z: 0}
+  _finishTime: 0
+  _onlineFinishTime: 0
 --- !u!114 &3609343980634844308
 MonoBehaviour:
   m_ObjectHideFlags: 0
