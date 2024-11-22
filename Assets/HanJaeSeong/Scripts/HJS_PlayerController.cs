@@ -8,6 +8,7 @@ using UnityEngine.Events;
 public class HJS_PlayerController : MonoBehaviourPun
 {
     [SerializeField] HJS_RandomSlot.AnswerDirection answer; // 플레이어의 입력한 값
+    [SerializeField] HJS_GameMaster gameMaster;
 
     private Coroutine coroutine;
 
@@ -57,7 +58,16 @@ public class HJS_PlayerController : MonoBehaviourPun
         });
 
         // 선택한 내용 및 걸린 시간 전송
-        PhotonNetwork.LocalPlayer.SetAnswer(answer, Mathf.Abs((float)(time - PhotonNetwork.Time)));
+        // PhotonNetwork.LocalPlayer.SetAnswer(answer, Mathf.Abs((float)(time - PhotonNetwork.Time)));
+
+        photonView.RPC("CheckAnswerPun", RpcTarget.MasterClient, answer);
         Debug.Log($"{PhotonNetwork.LocalPlayer.NickName} {answer}");
     }
+
+    [PunRPC]
+    public void CheckAnswerPun(HJS_RandomSlot.AnswerDirection answer, PhotonMessageInfo messageInfo)
+    {
+        gameMaster.AddPlayerAnswer(answer, messageInfo);
+    }
+
 }

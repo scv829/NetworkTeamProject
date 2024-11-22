@@ -22,7 +22,7 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] Color[] playerColors;  // 플레이어의 색상
 
     private Dictionary<Player, int> scoreDictionary = new Dictionary<Player, int>();     // 플레이어와 점수
-    private List<(Player, float)> selectResult = new List<(Player, float)>();   // 플레이어의 걸린시간
+    private List<(Player, double)> selectResult = new List<(Player, double)>();   // 플레이어의 걸린시간
     private WaitForSeconds delay;
 
     private Coroutine coroutine;
@@ -36,35 +36,25 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
         coroutine = StartCoroutine(SlotSettingRoutine());
     }
 
-    private void Update()
-    {
-        if (PhotonNetwork.IsMasterClient == false) return;
-
-        if (coroutine == null)
-        {
-            coroutine = StartCoroutine(SlotSettingRoutine());
-        }
-    }
-
     
     private IEnumerator SlotSettingRoutine()
     {
+        while (true)
+        {
+            slotMaster.Setting();       // slotMaster에게 슬롯의 심볼 세팅 요청
+            selectResult.Clear();       // 플레이어의 걸린 시간 리스트 초기화
+            photonView.RPC("StartInputRPC", RpcTarget.All);  // 입력 시작 이벤트 함수 실행
+            isOver = false;             // 초기화
 
-        slotMaster.Setting();       // slotMaster에게 슬롯의 심볼 세팅 요청
-        selectResult.Clear();       // 플레이어의 걸린 시간 리스트 초기화
-        inputStartEvent?.Invoke();  // 입력 시작 이벤트 함수 실행
-        isOver = false;             // 초기화
+            yield return delay;         // 입력 받을 수 있는 대기 시간동안 지연
 
-        yield return delay;         // 입력 받을 수 있는 대기 시간동안 지연
+            isOver = true;              // 시간이 지나면 끝났다고 설정하고
+            photonView.RPC("StopInputRPC", RpcTarget.All);   // 입력 중단 이벤트 함수 실행
 
-        isOver = true;              // 시간이 지나면 끝났다고 설정하고
-        inputStopEvent?.Invoke();   // 입력 중단 이벤트 함수 실행
+            CalculateResult();          // 결과 계산 시작
 
-        CalculateResult();          // 결과 계산 시작
-
-        yield return new WaitForSeconds(1f);  // 게임 재시작을 위해 1초 대기
-
-        coroutine = null;
+            yield return new WaitForSeconds(1f);  // 게임 재시작을 위해 1초 대기
+        }
     }
 
     /// <summary>
@@ -76,7 +66,7 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
         // 7 5 3 1
         int rank = 7;
         // 걸린 시간 순으로 정렬
-        foreach( (Player, float) playerResult in selectResult.OrderBy(s => s.Item2))
+        foreach( (Player, double) playerResult in selectResult.OrderBy(s => s.Item2))
         {
             scoreDictionary[playerResult.Item1] += rank;                    // 순위에 따른 점수 저장
             rank -= 2;                                                      // 점수는 순위가 늦어짐에 따라 계속 내려간다 , 7 -> 5 -> 3 -> 1
@@ -84,7 +74,6 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
 
         UpdateUI();
     }
-
 
     /// <summary>
     /// 초기화 작업
@@ -142,19 +131,37 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    public void AddPlayerAnswer(HJS_RandomSlot.AnswerDirection answer, PhotonMessageInfo messageInfo)
+    {
+        Debug.Log("send");
+        // 1. 선택한 방향이 일치하는 지 확인
+        if (!isOver && slotMaster.Answer.Equals(answer))
+        {
+            // 2. 일치하면 정답 리스트에 유저와 시간입력
+            Debug.Log("check");
+            selectResult.Add((messageInfo.Sender, messageInfo.SentServerTime));
+        }
+    }
+
+    [PunRPC]
+    public void StartInputRPC() => inputStartEvent?.Invoke();
+
+    [PunRPC]
+    public void StopInputRPC() => inputStopEvent?.Invoke();
+
 
     // 프로퍼티가 변경되었을 때 동작하는 콜백함수
     // 역할: 플레이어가 입력한 값을 판단해서 정답이면 저장해주는 역할
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
-    {
-        Debug.Log("joi");
-        // 1. 선택한 방향이 일치하는 지 확인
-        if(!isOver && slotMaster.Answer.Equals(targetPlayer.GetAnswer().Item1))
-        {
-            // 2. 일치하면 정답 리스트에 유저와 시간입력
-            selectResult.Add((targetPlayer, targetPlayer.GetAnswer().Item2));
-        Debug.Log("jo");
-        }
-    }
+    // public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
+    // {
+    //     Debug.Log("joi");
+    //     // 1. 선택한 방향이 일치하는 지 확인
+    //     if(!isOver && slotMaster.Answer.Equals(targetPlayer.GetAnswer().Item1))
+    //     {
+    //         // 2. 일치하면 정답 리스트에 유저와 시간입력
+    //         selectResult.Add((targetPlayer, targetPlayer.GetAnswer().Item2));
+    //     Debug.Log("jo");
+    //     }
+    // }
 
 }
