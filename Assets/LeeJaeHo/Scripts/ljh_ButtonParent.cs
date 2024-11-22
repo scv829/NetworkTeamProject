@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ljh_ButtonParent : MonoBehaviour
 {
-    GameObject[] buttonArray;
+    public ljh_Button[] buttonArray;
 
     bool deadBomb;
 
     public void OnEnable()
     {
-        buttonArray = GetComponentsInChildren<GameObject>();
-
+        buttonArray = GetComponentsInChildren<ljh_Button>();
         int deadNum = Random.Range(0, buttonArray.Length - 1);
 
 

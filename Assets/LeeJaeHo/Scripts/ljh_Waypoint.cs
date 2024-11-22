@@ -52,7 +52,6 @@ public class ljh_Waypoint : MonoBehaviour
         
         for (int i = 0; i < points.Length - 1; i++)
         {
-            Debug.Log(points[i].position);
             Vector3.MoveTowards(player.transform.position, points[i].position, Time.deltaTime * 3);
         }
     }
