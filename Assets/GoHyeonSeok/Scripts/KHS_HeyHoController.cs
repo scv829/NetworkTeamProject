@@ -9,6 +9,8 @@ public class KHS_HeyHoController : MonoBehaviourPun
     [SerializeField] private bool _isTargeted;
     [SerializeField] private Vector3 targetPos;
 
+    [SerializeField] private float _finishTime;
+
 
     private void Awake()
     {
@@ -41,6 +43,13 @@ public class KHS_HeyHoController : MonoBehaviourPun
             targetPos = new Vector3(transform.position.x, transform.position.y, transform.position.z + count);
             Debug.Log($"현재 타겟 위치 {targetPos}");
             _isTargeted = true;
+
+
+            // 헤이호와 타겟 위치 사이의 거리
+            float _distance = Vector3.Distance(transform.position, targetPos);
+
+            // 목표위치까지 걸리는 시간
+            _finishTime = _distance / _moveSpeed;
         }
 
         transform.position = Vector3.MoveTowards(transform.position, targetPos, _moveSpeed * Time.deltaTime);
@@ -61,6 +70,6 @@ public class KHS_HeyHoController : MonoBehaviourPun
     private void ReadyHeyHoRPC()
     {
         _mechaMarathonGameManager.HeyHoController[photonView.Owner.ActorNumber] = this;
-        Debug.Log($"{PhotonNetwork.LocalPlayer.ActorNumber}번째 헤이호");
+        Debug.Log($"{PhotonNetwork.LocalPlayer.ActorNumber}번째 헤이호 스크립트 참조 성공");
     }
 }

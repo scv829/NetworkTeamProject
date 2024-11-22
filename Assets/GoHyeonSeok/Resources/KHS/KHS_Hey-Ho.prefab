@@ -140,6 +140,7 @@ MonoBehaviour:
   _isMoved: 0
   _isTargeted: 0
   targetPos: {x: 0, y: 0, z: 0}
+  _finishTime: 0
 --- !u!114 &3609343980634844308
 MonoBehaviour:
   m_ObjectHideFlags: 0

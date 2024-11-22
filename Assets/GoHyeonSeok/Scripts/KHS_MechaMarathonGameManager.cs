@@ -1,10 +1,8 @@
 using Photon.Pun;
-using Photon.Realtime;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks
+public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObservable
 {
     [SerializeField] private KHS_PlayerController[] _playerController;  // TODO : 배열 초기화 해야함. 매치메이킹 이후에 이루어지는 작업진행
     public KHS_PlayerController[] PlayerController { get { return _playerController; } set { _playerController = value; } }
@@ -18,14 +16,12 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks
     [SerializeField] private bool _isFinished;
     public bool IsFinished { get { return _isFinished; ; } set { _isFinished = value; } }
 
-    //[SerializeField] private Player[] _sortedPlayers;
-    //public Player[] SortedPlayer { get { return _sortedPlayers; } set { _sortedPlayers = value; } }
-
     private float _gameTimer;
     public int[] _totalCount;   // TODO : 배열 초기화 해야함. 매치메이킹 이후에 이루어지는 작업진행
 
     public int _playersLoaded = 0;
     private int _totalplayers;
+    private float _finishTimer;
 
     // Start 함수
     private void Start()
@@ -34,7 +30,7 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks
         IsStarted = false;
 
         // 마스터 클라이언트만 진행
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
             _totalplayers = PhotonNetwork.CurrentRoom.PlayerCount;  // 총 플레이어 수 저장
         }
@@ -68,7 +64,7 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks
             for (int i = 1; i < _playerController.Length; i++)
             {
                 // 현재 플레이어 컨트롤러가 배열에 할당되지 않았으면 break.
-                if(_playerController[i] == null)
+                if (_playerController[i] == null)
                     break;
 
                 // 플레이어들의 총합 입력수를 입력
@@ -83,9 +79,9 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks
     // 방에 참가했을때 호출되는 함수
     public override void OnJoinedRoom()
     {
-        // 준비시간 조금 가지는 코루틴 실행
-        photonView.RPC("PlayerReady", RpcTarget.MasterClient);
-        //StartCoroutine(StartDelayRoutine());
+        
+        PlayerSpawn();  // 방에 들어왔을때 플레이어 생성
+        HeyHoSpawn();   // 방에 들어왔을때 헤이호 생성
     }
 
     // 네트워크에 진입 후 준비에 필요한 시간 살짝 주는 함수
@@ -98,18 +94,8 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks
     // 테스트 게임씬 시작 함수
     public void TestGameStart()
     {
-        Debug.Log("게임 시작");
-        // TODO : 테스트용 게임 시작 부분
-        PlayerSpawn();
-
-        //if (PhotonNetwork.IsMasterClient == false)
-        //    return;
-
-        //헤이호 생성
-        HeyHoSpawn();
-
-        // 플레이어, 헤이호 생성된 후 게임시작 카운트 다운 들어가기
-        StartCoroutine(DelayGameStart());
+         Debug.Log("게임 시작");
+         StartCoroutine(DelayGameStart());
     }
 
     // 플레이어, 헤이호의 위치를 위한 함수
@@ -123,7 +109,7 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks
             case 2:
                 return new Vector3(-3f, 1f, -8f);
             case 3:
-                return new Vector3(3f, 1f, -8f);  
+                return new Vector3(3f, 1f, -8f);
             case 4:
                 return new Vector3(7f, 1f, -8f);
         }
@@ -173,19 +159,51 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks
         IsStarted = true; // 게임 시작 상태로 변경
     }
 
-    [PunRPC]
     public void PlayerReady()
     {
-        {
-            _playersLoaded++;
-            Debug.Log($"현재 로딩된 플레이어 : {_playersLoaded}");
+        _playersLoaded++;
 
-            if (_playersLoaded == 2)
+        Debug.Log($"현재 로딩된 플레이어 : {_playersLoaded}");
+
+        if (_playersLoaded == 2)
+        {
+            if(PhotonNetwork.IsMasterClient)
             {
-                StartCoroutine(StartDelayRoutine());
+                //RPC
+                photonView.RPC("StartRPC", RpcTarget.All);
             }
         }
     }
 
+    [PunRPC]
+    private void StartRPC()
+    {
+        StartCoroutine(StartDelayRoutine());
+    }
 
+    [PunRPC]
+    private void FinishRPC()
+    {
+
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(_playersLoaded);    // 플레이어 로드된 인원 변수
+            stream.SendNext(_totalCount[1]);    // 1번 플레이어 총 카운트 횟수
+            stream.SendNext(_totalCount[2]);    // 2번 플레이어 총 카운트 횟수
+            stream.SendNext(_totalCount[3]);    // 3번 플레이어 총 카운트 횟수
+            stream.SendNext(_totalCount[4]);    // 4번 플레이어 총 카운트 횟수
+        }
+        else if (stream.IsReading)
+        {
+            _playersLoaded = (int)stream.ReceiveNext(); // 플레이어 로드된 인원 변수
+            _totalCount[1] = (int)stream.ReceiveNext(); // 1번 플레이어 총 카운트 횟수
+            _totalCount[2] = (int)stream.ReceiveNext(); // 2번 플레이어 총 카운트 횟수
+            _totalCount[3] = (int)stream.ReceiveNext(); // 3번 플레이어 총 카운트 횟수
+            _totalCount[4] = (int)stream.ReceiveNext(); // 4번 플레이어 총 카운트 횟수
+        }
+    }
 }
