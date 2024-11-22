@@ -2543,6 +2543,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Torch_5 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 9042583372597581775, guid: 266021e7bf793be45a19903541813c43, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 266021e7bf793be45a19903541813c43, type: 3}
 --- !u!4 &461539748 stripped
@@ -8295,6 +8299,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Torch_5
       objectReference: {fileID: 0}
+    - target: {fileID: 9042583372597581775, guid: 266021e7bf793be45a19903541813c43, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 266021e7bf793be45a19903541813c43, type: 3}
 --- !u!4 &1478190693 stripped
@@ -9954,6 +9962,100 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1827092811103533115, guid: 72237771460e9f347b46a2a749498754, type: 3}
   m_PrefabInstance: {fileID: 1766842754}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1771053363
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1771053365}
+  - component: {fileID: 1771053364}
+  m_Layer: 0
+  m_Name: Spot Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!108 &1771053364
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1771053363}
+  m_Enabled: 1
+  serializedVersion: 10
+  m_Type: 0
+  m_Shape: 0
+  m_Color: {r: 1, g: 0.019583862, b: 0, a: 1}
+  m_Intensity: 1
+  m_Range: 143.1
+  m_SpotAngle: 23.8
+  m_InnerSpotAngle: 1
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 2
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+--- !u!4 &1771053365
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1771053363}
+  m_LocalRotation: {x: 0.5021769, y: 0.4978136, z: -0.5021769, w: 0.4978136}
+  m_LocalPosition: {x: -3.985, y: 5.38, z: 2.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 90.5, y: 90, z: 0}
 --- !u!1001 &1794000091
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10787,14 +10889,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1911679157}
-  m_LocalRotation: {x: 0.72812897, y: 0.2693243, z: -0.40860695, w: 0.47993025}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalRotation: {x: 0.9012284, y: -0, z: -0, w: -0.43334442}
+  m_LocalPosition: {x: 0, y: 3, z: 3.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 113.22, y: 58.6, z: 0}
+  m_LocalEulerAnglesHint: {x: 231.36, y: 0, z: 0}
 --- !u!1001 &1940099656
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12221,6 +12323,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 876055254593014168, guid: cd9203482647cfe478b1255c1091dbeb, type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
+    - target: {fileID: 876055254593014168, guid: cd9203482647cfe478b1255c1091dbeb, type: 3}
       propertyPath: playerSpawner1
       value: 
       objectReference: {fileID: 795693243}
@@ -12281,29 +12387,37 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 876055254593014170, guid: cd9203482647cfe478b1255c1091dbeb, type: 3}
+      propertyPath: button
+      value: 
+      objectReference: {fileID: 543636440}
+    - target: {fileID: 876055254593014170, guid: cd9203482647cfe478b1255c1091dbeb, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
+    - target: {fileID: 876055254593014170, guid: cd9203482647cfe478b1255c1091dbeb, type: 3}
+      propertyPath: spotlight
+      value: 
+      objectReference: {fileID: 1771053363}
     - target: {fileID: 876055254593014170, guid: cd9203482647cfe478b1255c1091dbeb, type: 3}
       propertyPath: buttonObj1
       value: 
-      objectReference: {fileID: 172688044}
+      objectReference: {fileID: 2100399416}
     - target: {fileID: 876055254593014170, guid: cd9203482647cfe478b1255c1091dbeb, type: 3}
       propertyPath: buttonObj2
       value: 
-      objectReference: {fileID: 1395606590}
+      objectReference: {fileID: 49294657}
     - target: {fileID: 876055254593014170, guid: cd9203482647cfe478b1255c1091dbeb, type: 3}
       propertyPath: buttonObj3
       value: 
-      objectReference: {fileID: 625720557}
+      objectReference: {fileID: 1350306688}
     - target: {fileID: 876055254593014170, guid: cd9203482647cfe478b1255c1091dbeb, type: 3}
       propertyPath: buttonObj4
       value: 
-      objectReference: {fileID: 1176091350}
+      objectReference: {fileID: 2036051489}
     - target: {fileID: 876055254593014170, guid: cd9203482647cfe478b1255c1091dbeb, type: 3}
       propertyPath: buttonObj5
       value: 
-      objectReference: {fileID: 2008400134}
+      objectReference: {fileID: 17815097}
     - target: {fileID: 876055254593014175, guid: cd9203482647cfe478b1255c1091dbeb, type: 3}
       propertyPath: m_Name
       value: BoomGameManager

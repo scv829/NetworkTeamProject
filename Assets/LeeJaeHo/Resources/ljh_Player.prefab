@@ -88,6 +88,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputManagerScript: {fileID: 0}
   playerPos: {x: 0, y: 0, z: 0}
+  testSpawner: {fileID: 0}
 --- !u!1 &7441482654452507833
 GameObject:
   m_ObjectHideFlags: 0
