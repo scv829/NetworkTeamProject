@@ -22,7 +22,7 @@ public class HJS_RandomSlot : MonoBehaviourPun
     /// <summary>
     /// 슬롯의 심볼을 설정해주는 함수
     /// </summary>
-    public void Setting()
+    public void SlotSetting()
     {
         // 초기화
         deque.Clear();

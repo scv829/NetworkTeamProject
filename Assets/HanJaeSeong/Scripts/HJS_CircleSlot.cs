@@ -23,11 +23,11 @@ public class HJS_CircleSlot : MonoBehaviourPun
     /// <param name="index">슬롯의 번호</param>
     public void SetSlot(int index)
     {
-        photonView.RPC("SettingRPC", RpcTarget.All, index);
+        photonView.RPC("SlotSettingRPC", RpcTarget.All, index);
     }
 
     [PunRPC]
-    private void SettingRPC(int index)
+    private void SlotSettingRPC(int index)
     {
         curSlot = (Slot)index;
         slotImage.sprite = slotSprites[index];

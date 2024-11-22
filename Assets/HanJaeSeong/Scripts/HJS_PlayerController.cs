@@ -65,7 +65,7 @@ public class HJS_PlayerController : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void CheckAnswerPun(HJS_RandomSlot.AnswerDirection answer, PhotonMessageInfo messageInfo)
+    public void SendAnswerRPC(HJS_RandomSlot.AnswerDirection answer, PhotonMessageInfo messageInfo)
     {
         gameMaster.AddPlayerAnswer(answer, messageInfo);
     }
