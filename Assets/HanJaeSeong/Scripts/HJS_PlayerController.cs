@@ -1,21 +1,34 @@
 using Photon.Pun;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class HJS_PlayerController : MonoBehaviourPun
 {
     [SerializeField] HJS_RandomSlot.AnswerDirection answer; // 플레이어의 입력한 값
     [SerializeField] HJS_GameMaster gameMaster;
 
+    /* 색상 */
+    [SerializeField] Renderer bodyRenderer;
+    [SerializeField] Color color;
+
     private Coroutine coroutine;
+
+    private void Start()
+    {
+        // 색상 설정
+        Vector3 vectorColor = photonView.Owner.GetPlayerColor();
+        color.r = vectorColor.x; color.g = vectorColor.y; color.b = vectorColor.z;
+        bodyRenderer.material.color = color;
+
+
+        // GameMaster 할당
+        gameMaster = GameObject.FindWithTag("GameController").GetComponent<HJS_GameMaster>();
+        gameMaster.inputStartEvent.AddListener(StartInput);
+        gameMaster.inputStopEvent.AddListener(StopInput);
+    }
 
     public void StartInput()
     {
-        answer = HJS_RandomSlot.AnswerDirection.None;
-        coroutine = StartCoroutine(InputRoutine());                  // 입력하기
         if(coroutine == null)
         {
             answer = HJS_RandomSlot.AnswerDirection.None;
@@ -25,8 +38,6 @@ public class HJS_PlayerController : MonoBehaviourPun
 
     public void StopInput()
     {
-        StopCoroutine(coroutine);
-        coroutine = null;
         if(coroutine != null)
         {
             StopCoroutine(coroutine);
@@ -36,10 +47,10 @@ public class HJS_PlayerController : MonoBehaviourPun
 
     IEnumerator InputRoutine()
     {
-        double time = PhotonNetwork.Time;
+        if (photonView.IsMine == false) yield break;
 
         // 입력 대기
-        yield return new WaitUntil(() => 
+        yield return new WaitUntil(() =>
         {
             // 입력 
             if (Input.GetKeyDown(KeyCode.W))

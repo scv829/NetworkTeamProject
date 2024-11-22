@@ -8,18 +8,26 @@ using UnityEngine;
 using UnityEngine.Events;
 using Photon.Pun.UtilityScripts;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
+using TMPro;
+using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
-public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
+/// <summary>
+/// 게임 플레이를 담당하는 클래스
+/// </summary>
+public class HJS_GameMaster : MonoBehaviourPunCallbacks
 {
     [Header("Game")]
     [SerializeField] HJS_RandomSlot slotMaster;     // 슬롯 마스터
     [SerializeField] float delayTime = 3f;          // 정답을 맞출 수 있는 대기시간
     [SerializeField] bool isOver;                   // 입력받을 수 있는 시간을 초과했는지 여부
-    [SerializeField] UnityEvent inputStartEvent;    // 입력을 시작할 때 실행할 이벤트 함수
-    [SerializeField] UnityEvent inputStopEvent;     // 입력 시간을 초과했을 때 실행할 이벤트 함수
+    [SerializeField] public UnityEvent inputStartEvent;    // 입력을 시작할 때 실행할 이벤트 함수
+    [SerializeField] public UnityEvent inputStopEvent;     // 입력 시간을 초과했을 때 실행할 이벤트 함수
+    [SerializeField] int refeatTime;               // 게임의 반복횟수
     [Header("UI")]
     [SerializeField] HJS_scoreUI[] scoreUIs;
-    [SerializeField] Color[] playerColors;  // 플레이어의 색상
+    [SerializeField] HJS_InputUI[] inputUIs;
+    [SerializeField] HJS_TitleUI titleUI;
 
     private Dictionary<Player, int> scoreDictionary = new Dictionary<Player, int>();     // 플레이어와 점수
     private List<(Player, double)> selectResult = new List<(Player, double)>();   // 플레이어의 걸린시간
@@ -27,7 +35,10 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
 
     private Coroutine coroutine;
 
-    private void Start()
+    /// <summary>
+    /// 게임 시작
+    /// </summary>
+    public void GameStart()
     {
         Init();
 
@@ -36,12 +47,32 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
         coroutine = StartCoroutine(SlotSettingRoutine());
     }
 
+    /// <summary>
+    /// 게임 종료
+    /// </summary>
+    public void GameEnd()
+    {
+
+        slotMaster.SlotClear();     // 슬롯을 초기화 하고
+
+        for(int index = 0; index < PhotonNetwork.PlayerList.Length; index++) inputUIs[index].SetDirection("");
+
+        // TODO: 같은 점수에 대해서 예외처리
+        Player winnder= scoreDictionary.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
+
+        titleUI.UpdateUI(winnder.NickName);
+    }
+
     
     private IEnumerator SlotSettingRoutine()
     {
-        while (true)
+        int count = 1;
+        while (count <= refeatTime)
         {
             slotMaster.SlotClear();
+            foreach(HJS_InputUI ui in inputUIs) ui.SetDirection("");
+            titleUI.UpdateUI(count, refeatTime);
+
             yield return new WaitForSeconds(1f);  // 게임 시작을 위해 1초 대기
 
             slotMaster.SlotSetting();           // slotMaster에게 슬롯의 심볼 세팅 요청
@@ -57,7 +88,11 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
             CalculateResult();                  // 결과 계산 시작
 
             yield return new WaitForSeconds(1f);  // 게임 재시작을 위해 1초 대기
+
+            count++;
         }
+
+        GameEnd();
     }
 
     /// <summary>
@@ -73,6 +108,7 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
         {
             scoreDictionary[playerResult.Item1] += rank;                    // 순위에 따른 점수 저장
             rank -= 2;                                                      // 점수는 순위가 늦어짐에 따라 계속 내려간다 , 7 -> 5 -> 3 -> 1
+            Debug.Log($"{playerResult.Item1} time : {playerResult.Item2}");
         }
 
         UpdateUI();
@@ -94,10 +130,11 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
             scoreDictionary[player] = 0;
 
             int number = player.GetPlayerNumber();
-            scoreUIs[number].SetProfile(playerColors[number]);
+            scoreUIs[number].SetProfile(player.GetPlayerColor());
             scoreUIs[number].gameObject.SetActive(true);
+            inputUIs[number].gameObject.SetActive(true);
         }
-
+        titleUI.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -115,35 +152,15 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     /// <summary>
-    /// 점수를 동기화 하는 과정
-    /// </summary>
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        // 변수 데이터를 보내는 경우
-        if (stream.IsWriting)
-        {
-            foreach( int score in scoreDictionary.Values )
-            {
-                stream.SendNext(score);
-            }
-        }
-        // 변수 데이터를 받는 경우
-        else if (stream.IsWriting)
-        {
-            foreach (Player player in scoreDictionary.Keys)
-            {
-                scoreDictionary[player] = (int)stream.ReceiveNext();
-            }
-        }
-    }
-
-    /// <summary>
     /// 플레이어가 입력한 값을 판단해서 정답이면 정답 리스트에 저장하는 함수
     /// </summary>
     /// <param name="answer">플레이어의 선택한 답</param>
     /// <param name="messageInfo">플레이어의 정보</param>
     public void AddPlayerAnswer(HJS_RandomSlot.AnswerDirection answer, PhotonMessageInfo messageInfo)
     {
+        int number = messageInfo.Sender.GetPlayerNumber();
+        inputUIs[number].SetDirection(answer.ToString());
+
         // 1. 선택한 방향이 일치하는 지 확인
         if (!isOver && slotMaster.Answer.Equals(answer))
         {
@@ -157,5 +174,6 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
 
     [PunRPC]
     public void StopInputRPC() => inputStopEvent?.Invoke();     // 입력을 중단하게 해주는 이벤트 함수 실행
+
 
 }
