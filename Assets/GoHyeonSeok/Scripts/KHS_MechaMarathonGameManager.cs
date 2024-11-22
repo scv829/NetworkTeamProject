@@ -23,6 +23,9 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
     private int _totalplayers;
     private float _finishTimer;
 
+    WaitForSeconds _delay = new WaitForSeconds(1f);
+    WaitForSeconds _delayHeyHo;
+
     // Start 함수
     private void Start()
     {
@@ -49,6 +52,18 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
 
         if (_gameTimer >= 5f) // 5초가 지나가면
         {
+            // 플레이어 컨트롤러 배열의 길이만큼 반복
+            //for (int i = 1; i < _playerController.Length; i++)
+            //{
+            //    // 현재 플레이어 컨트롤러가 배열에 할당되지 않았으면 break.
+            //    if (_playerController[i] == null)
+            //        break;
+
+            //    // 플레이어들의 총합 입력수를 입력
+            //    _totalCount[i] = _playerController[i].TotalInputCount;
+            //    Debug.Log($"Player {i} 총 입력 횟수 : {_totalCount[i]}");
+            //}
+
             // 게임 종료
             IsStarted = false;
 
@@ -60,29 +75,56 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
 
             Debug.Log("게임 종료!");
 
-            // 플레이어 컨트롤러 배열의 길이만큼 반복
-            for (int i = 1; i < _playerController.Length; i++)
+            if(PhotonNetwork.IsMasterClient)
             {
-                // 현재 플레이어 컨트롤러가 배열에 할당되지 않았으면 break.
-                if (_playerController[i] == null)
-                    break;
-
-                // 플레이어들의 총합 입력수를 입력
-                _totalCount[i] = _playerController[i].TotalInputCount;
-                Debug.Log($"Player {i} 총 입력 횟수 : {_totalCount[i]}");
+                photonView.RPC("FinishGame", RpcTarget.All);
             }
 
         }
 
     }
 
+    private int FindWinnerHeyHo()
+    {
+        int _maxCount = 0;
+        int _heyHoIndex = 0;
+
+        Debug.Log($"===============플레이어 인풋카운트 비교 시작=================");
+        for (int i = 1; i < _playerController.Length; i++)
+        {
+            if (_playerController[i] == null)
+            {
+                continue;
+            }
+            Debug.Log($"{i}번째 인덱스는 {_playerController[i].TotalInputCount}");
+            if (_playerController[i].TotalInputCount > _maxCount)
+            {
+                _maxCount = _playerController[i].TotalInputCount;
+                _heyHoIndex = i;
+            }
+        }
+        Debug.Log($"###########플레이어 인풋카운트 비교 끝###########{_heyHoIndex}, {_maxCount}");
+    
+        //for(int i = 1; i < _totalCount.Length;i++)
+        //{
+        //    if(_totalCount[i] > _maxCount)
+        //    {
+        //        _maxCount = _totalCount[i];
+        //        _heyHoIndex = i;
+        //    }
+        //}
+        return _heyHoIndex;
+    }
+
     // 방에 참가했을때 호출되는 함수
     public override void OnJoinedRoom()
     {
         
-        PlayerSpawn();  // 방에 들어왔을때 플레이어 생성
-        HeyHoSpawn();   // 방에 들어왔을때 헤이호 생성
+        GameObject player = PlayerSpawn();  // 방에 들어왔을때 플레이어 생성
+        GameObject heyho = HeyHoSpawn();   // 방에 들어왔을때 헤이호 생성
+        heyho.GetComponent<KHS_HeyHoController>()._playerController = player.GetComponent<KHS_PlayerController>();
     }
+
 
     // 네트워크에 진입 후 준비에 필요한 시간 살짝 주는 함수
     IEnumerator StartDelayRoutine()
@@ -117,18 +159,18 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
     }
 
     // 플레이어 스폰 함수
-    private void PlayerSpawn()
+    private GameObject PlayerSpawn()
     {
         Vector3 spawnPosition = SetPosition();
 
         //Color color = Random.ColorHSV();
         //object[] data = { color.r, color.g, color.b };
 
-        PhotonNetwork.Instantiate("KHS/KHS_Player", spawnPosition, Quaternion.identity/*, data : data*/);
+        return PhotonNetwork.Instantiate("KHS/KHS_Player", spawnPosition, Quaternion.identity/*, data : data*/);
     }
 
     // 헤이호 스폰 함수
-    private void HeyHoSpawn()
+    private GameObject HeyHoSpawn()
     {
         Vector3 spawnPosition = SetPosition();
         spawnPosition.z += 2f;
@@ -136,11 +178,10 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
         //Color color = Random.ColorHSV();
         //object[] data = { color.r, color.g, color.b };
 
-        PhotonNetwork.Instantiate("KHS/KHS_Hey-Ho", spawnPosition, Quaternion.identity/*, data : data*/);
+        return PhotonNetwork.Instantiate("KHS/KHS_Hey-Ho", spawnPosition, Quaternion.identity/*, data : data*/);
 
     }
 
-    WaitForSeconds _delay = new WaitForSeconds(1f);
 
     // 카운트다운 후 게임 시작 함수
     private IEnumerator DelayGameStart()
@@ -159,6 +200,32 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
         IsStarted = true; // 게임 시작 상태로 변경
     }
 
+    // 입력받은 카운트 중 가장 높은 카운트가 눌린 헤이호의 이동시간만큼 딜레이
+    private IEnumerator MovedHeyHo()
+    {
+        int find = FindWinnerHeyHo();
+        KHS_HeyHoController heyho = _heyHoController[find];
+
+        if( heyho == null )
+        {
+            Debug.Log($"@@@@@@@@@@@@@@@@{find}@@@@@@@@@@@@@@@@@");
+        }
+        // 제일 멀리 날아가는 헤이호의 이동 시간 초기화
+        _finishTimer = heyho.FinishTime;
+
+
+        // 해당 시간만큼 딜레이 초기화
+        _delayHeyHo = new WaitForSeconds(_finishTimer);
+        Debug.Log($"{_finishTimer}만큼 걸릴 예정");
+
+        // 딜레이
+        yield return _delayHeyHo;
+        ResultGame();
+    }
+
+    /// <summary>
+    /// 플레이어가 레디가 되었는지 확인하기 위한 함수
+    /// </summary>
     public void PlayerReady()
     {
         _playersLoaded++;
@@ -175,23 +242,29 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
         }
     }
 
+    private void ResultGame()
+    {
+        Debug.Log($"승자는 {FindWinnerHeyHo()} 번 플레이어 입니다!");
+    }
+
+    [PunRPC]
+    private void FinishGame()
+    {
+        StartCoroutine(MovedHeyHo());
+        Debug.Log("헤이호 날아가는 코루틴 시작 RPC");
+    }
+
     [PunRPC]
     private void StartRPC()
     {
         StartCoroutine(StartDelayRoutine());
     }
-
-    [PunRPC]
-    private void FinishRPC()
-    {
-
-    }
-
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
             stream.SendNext(_playersLoaded);    // 플레이어 로드된 인원 변수
+            stream.SendNext(_finishTimer);    // 제일 많이 날아가는 헤이호가 걸리는 시간 변수
             stream.SendNext(_totalCount[1]);    // 1번 플레이어 총 카운트 횟수
             stream.SendNext(_totalCount[2]);    // 2번 플레이어 총 카운트 횟수
             stream.SendNext(_totalCount[3]);    // 3번 플레이어 총 카운트 횟수
@@ -200,6 +273,7 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
         else if (stream.IsReading)
         {
             _playersLoaded = (int)stream.ReceiveNext(); // 플레이어 로드된 인원 변수
+            _finishTimer = (float)stream.ReceiveNext(); // 제일 많이 날아가는 헤이호가 걸리는 시간 변수
             _totalCount[1] = (int)stream.ReceiveNext(); // 1번 플레이어 총 카운트 횟수
             _totalCount[2] = (int)stream.ReceiveNext(); // 2번 플레이어 총 카운트 횟수
             _totalCount[3] = (int)stream.ReceiveNext(); // 3번 플레이어 총 카운트 횟수
