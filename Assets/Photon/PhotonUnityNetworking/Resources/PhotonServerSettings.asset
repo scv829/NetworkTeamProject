@@ -44,7 +44,10 @@ MonoBehaviour:
   - PlayerReady
   - ReadyRPC
   - ReadyHeyHoRPC
+  - CheckAnswerPun
   - SettingRPC
+  - StartInputRPC
+  - StopInputRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
