@@ -14,14 +14,12 @@ public class HJS_PlayerController : MonoBehaviourPun
 
     public void StartInput()
     {
-        Debug.Log($"{PhotonNetwork.LocalPlayer.NickName} startInput");
         answer = HJS_RandomSlot.AnswerDirection.None;
         coroutine = StartCoroutine(InputRoutine());                  // 입력하기
     }
 
     public void StopInput()
     {
-        Debug.Log($"{PhotonNetwork.LocalPlayer.NickName} stopInput");
         StopCoroutine(coroutine);
         coroutine = null;
     }
@@ -57,11 +55,8 @@ public class HJS_PlayerController : MonoBehaviourPun
             return false;
         });
 
-        // 선택한 내용 및 걸린 시간 전송
-        // PhotonNetwork.LocalPlayer.SetAnswer(answer, Mathf.Abs((float)(time - PhotonNetwork.Time)));
-
-        photonView.RPC("CheckAnswerPun", RpcTarget.MasterClient, answer);
-        Debug.Log($"{PhotonNetwork.LocalPlayer.NickName} {answer}");
+        // 방장에게 선택한 내용 및 걸린 시간 전송
+        photonView.RPC("SendAnswerRPC", RpcTarget.MasterClient, answer);
     }
 
     [PunRPC]

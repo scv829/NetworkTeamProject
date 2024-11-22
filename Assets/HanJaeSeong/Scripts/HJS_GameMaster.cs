@@ -41,17 +41,20 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
     {
         while (true)
         {
-            slotMaster.Setting();       // slotMaster에게 슬롯의 심볼 세팅 요청
-            selectResult.Clear();       // 플레이어의 걸린 시간 리스트 초기화
-            photonView.RPC("StartInputRPC", RpcTarget.All);  // 입력 시작 이벤트 함수 실행
-            isOver = false;             // 초기화
+            slotMaster.SlotClear();
+            yield return new WaitForSeconds(1f);  // 게임 시작을 위해 1초 대기
 
-            yield return delay;         // 입력 받을 수 있는 대기 시간동안 지연
+            slotMaster.SlotSetting();           // slotMaster에게 슬롯의 심볼 세팅 요청
+            selectResult.Clear();               // 플레이어의 걸린 시간 리스트 초기화
+            photonView.RPC("StartInputRPC", RpcTarget.All);  // 입력 시작
+            isOver = false;                     // 초기화
 
-            isOver = true;              // 시간이 지나면 끝났다고 설정하고
-            photonView.RPC("StopInputRPC", RpcTarget.All);   // 입력 중단 이벤트 함수 실행
+            yield return delay;                  // 입력 받을 수 있는 대기 시간동안 지연
 
-            CalculateResult();          // 결과 계산 시작
+            isOver = true;                      // 시간이 지나면 끝났다고 설정하고
+            photonView.RPC("StopInputRPC", RpcTarget.All);   // 입력 중단
+
+            CalculateResult();                  // 결과 계산 시작
 
             yield return new WaitForSeconds(1f);  // 게임 재시작을 위해 1초 대기
         }
@@ -97,6 +100,9 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
 
     }
 
+    /// <summary>
+    /// 점수 UI를 업데이트 해주는 함수
+    /// </summary>
     private void UpdateUI()
     {
         foreach (Player player in PhotonNetwork.PlayerList)
@@ -131,37 +137,25 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    /// <summary>
+    /// 플레이어가 입력한 값을 판단해서 정답이면 정답 리스트에 저장하는 함수
+    /// </summary>
+    /// <param name="answer">플레이어의 선택한 답</param>
+    /// <param name="messageInfo">플레이어의 정보</param>
     public void AddPlayerAnswer(HJS_RandomSlot.AnswerDirection answer, PhotonMessageInfo messageInfo)
     {
-        Debug.Log("send");
         // 1. 선택한 방향이 일치하는 지 확인
         if (!isOver && slotMaster.Answer.Equals(answer))
         {
             // 2. 일치하면 정답 리스트에 유저와 시간입력
-            Debug.Log("check");
             selectResult.Add((messageInfo.Sender, messageInfo.SentServerTime));
         }
     }
 
     [PunRPC]
-    public void StartInputRPC() => inputStartEvent?.Invoke();
+    public void StartInputRPC() => inputStartEvent?.Invoke();   // 입력을 시작하게 해주는 이벤트 함수 실행
 
     [PunRPC]
-    public void StopInputRPC() => inputStopEvent?.Invoke();
-
-
-    // 프로퍼티가 변경되었을 때 동작하는 콜백함수
-    // 역할: 플레이어가 입력한 값을 판단해서 정답이면 저장해주는 역할
-    // public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
-    // {
-    //     Debug.Log("joi");
-    //     // 1. 선택한 방향이 일치하는 지 확인
-    //     if(!isOver && slotMaster.Answer.Equals(targetPlayer.GetAnswer().Item1))
-    //     {
-    //         // 2. 일치하면 정답 리스트에 유저와 시간입력
-    //         selectResult.Add((targetPlayer, targetPlayer.GetAnswer().Item2));
-    //     Debug.Log("jo");
-    //     }
-    // }
+    public void StopInputRPC() => inputStopEvent?.Invoke();     // 입력을 중단하게 해주는 이벤트 함수 실행
 
 }
