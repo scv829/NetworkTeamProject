@@ -30,7 +30,6 @@ public class HJS_CircleSlot : MonoBehaviourPun
     private void SettingRPC(int index)
     {
         curSlot = (Slot)index;
-        Debug.Log($"{gameObject.name} : {curSlot}");
         slotImage.sprite = slotSprites[index];
     }
 }
