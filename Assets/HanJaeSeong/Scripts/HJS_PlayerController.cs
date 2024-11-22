@@ -16,12 +16,22 @@ public class HJS_PlayerController : MonoBehaviourPun
     {
         answer = HJS_RandomSlot.AnswerDirection.None;
         coroutine = StartCoroutine(InputRoutine());                  // 입력하기
+        if(coroutine == null)
+        {
+            answer = HJS_RandomSlot.AnswerDirection.None;
+            coroutine = StartCoroutine(InputRoutine());                  // 입력하기
+        }
     }
 
     public void StopInput()
     {
         StopCoroutine(coroutine);
         coroutine = null;
+        if(coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
     }
 
     IEnumerator InputRoutine()
