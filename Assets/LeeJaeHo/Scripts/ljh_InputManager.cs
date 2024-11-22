@@ -13,25 +13,34 @@ enum State
 };
 
 
-public class ljh_InputManager : MonoBehaviour
+public class ljh_InputManager : MonoBehaviourPun
 {
-    PhotonView photonView;
+    [SerializeField] PhotonView photonView;
+
+    [SerializeField] ljh_UIManager uiManager;
+
     [SerializeField] GameObject player;
     [SerializeField] GameObject button;
     [SerializeField] GameObject spotlight;
 
 
-    Vector3 buttonPos1;
-    Vector3 buttonPos2;
-    Vector3 buttonPos3;
-    Vector3 buttonPos4;
-    Vector3 buttonPos5;
+    [SerializeField] Vector3 Pos1;
+    [SerializeField] Vector3 Pos2;
+    [SerializeField] Vector3 Pos3;
+    [SerializeField] Vector3 Pos4;
+    [SerializeField] Vector3 Pos5;
 
-    [SerializeField] GameObject buttonObj1;
-    [SerializeField] GameObject buttonObj2;
-    [SerializeField] GameObject buttonObj3;
-    [SerializeField] GameObject buttonObj4;
-    [SerializeField] GameObject buttonObj5;
+    [SerializeField] public GameObject PosObj1;
+    [SerializeField] public GameObject PosObj2;
+    [SerializeField] public GameObject PosObj3;
+    [SerializeField] public GameObject PosObj4;
+    [SerializeField] public GameObject PosObj5;
+
+    [SerializeField] public GameObject buttonObj1;
+    [SerializeField] public GameObject buttonObj2;
+    [SerializeField] public GameObject buttonObj3;
+    [SerializeField] public GameObject buttonObj4;
+    [SerializeField] public GameObject buttonObj5;
 
     Vector3[] buttonPos;
 
@@ -40,7 +49,6 @@ public class ljh_InputManager : MonoBehaviour
 
     int defaultIndex;
     int minus;
-    bool check;
     [SerializeField] int index;
 
     private void OnEnable()
@@ -55,10 +63,12 @@ public class ljh_InputManager : MonoBehaviour
 
     private void Update()
     {
-        // Comment : 테스트용도
+        
+         //Comment : 테스트용도
         if (Input.GetKeyDown(KeyCode.R))
+        {
             curState = State.choice;
-
+        }
         if (Input.GetKeyDown(KeyCode.T))
             curState = State.idle;
 
@@ -66,16 +76,18 @@ public class ljh_InputManager : MonoBehaviour
         switch(curState)
         {
             case State.idle:
+                uiManager.ShowUiIdle();
                 FindPlayer();
                 break;
 
             case State.move:
+                uiManager.ShowUiMove();
                 break;
             
             case State.choice:
+                uiManager.ShowUiChoice();
                 _curPos = ChoiceAnswer();
-                Debug.Log($"얘는 언더바 {_curPos}");
-                SelectButton(player.transform.position);
+                SelectButton(_curPos);
                 break;
 
         }
@@ -93,37 +105,36 @@ public class ljh_InputManager : MonoBehaviour
     public Vector3 ChoiceAnswer()
     {
         index = defaultIndex - minus;
+
         if (Input.GetKeyDown(KeyCode.A) && index >= 1)
         {
             minus++;
-            player.GetComponent<ljh_Player>().MovePlayer();
         }
         else if (Input.GetKeyDown(KeyCode.D) && index <= 3)
         {
             minus--;
-            player.GetComponent<ljh_Player>().MovePlayer();
         }
-        check = false;
-        
 
-        Vector3[] buttonPos= { buttonPos1, buttonPos2, buttonPos3, buttonPos4, buttonPos5 } ;
+        Vector3[] Pos= 
+        { 
+            PosObj1.transform.position,
+            PosObj2.transform.position,
+            PosObj3.transform.position,
+            PosObj4.transform.position,
+            PosObj5.transform.position
+        } ;
         GameObject[] buttonObj = { buttonObj1, buttonObj2, buttonObj3, buttonObj4, buttonObj5 };
 
-        for (int i = 0; i < buttonPos.Length; i++)
-        {
-            buttonPos[i] = buttonObj[i].transform.position;
-        }
-
-        Vector3 curPos = buttonPos[index];
-        spotlight.transform.LookAt(buttonPos[index]);
-        Debug.Log(curPos);
-        return curPos;
+        spotlight.transform.LookAt(buttonObj[index].transform.position);
         
+        Vector3 curPos;
+        return curPos = Pos[index];
+
     }
 
     public void SelectButton(Vector3 pos)
     {
-        Vector3[] buttonPos = { buttonPos1, buttonPos2, buttonPos3, buttonPos4, buttonPos5 };
+        Vector3[] buttonPos = { Pos1, Pos2, Pos3, Pos4, Pos5 };
         GameObject[] buttonObj = { buttonObj1, buttonObj2, buttonObj3, buttonObj4, buttonObj5 };
 
         if (Input.GetKeyDown(KeyCode.Space))

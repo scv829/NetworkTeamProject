@@ -15,10 +15,6 @@ public class HYJ_GameTimer : MonoBehaviour
     [SerializeField] TMP_Text timerLeftText;
     [SerializeField] TMP_Text timerRightText;
 
-    [Header("플레이어 타이머")]
-    [SerializeField] TMP_Text playerTimerLeftText;
-    [SerializeField] TMP_Text playerTimerRightText;
-
     private float time;
     private float playerTime;
 
@@ -30,22 +26,20 @@ public class HYJ_GameTimer : MonoBehaviour
     private void Update()
     {
         TimerUpdate();
-        PlayerTimerUpdate();
     }
 
     public void TimerUpdate()
     {
         time += Time.deltaTime;
-        timerLeftText.text = $"{(int)time}";
-        timerRightText.text = $"{(int)((time % 1) * 100)}";
-
-        //TODO : 플레이어 타이머만 따로!
-    }
-
-    public void PlayerTimerUpdate()
-    {
-        time += Time.deltaTime;
-        playerTimerLeftText.text = $"{(int)time}";
-        playerTimerRightText.text = $"{(int)((time % 1) * 100)}";
+        if(time <= 10f)
+        {
+            timerLeftText.text = $"{(int)time}";
+            timerRightText.text = $"{(int)((time % 1) * 100)}";
+        }
+        else
+        {
+            timerLeftText.text = "Time";
+            timerRightText.text = "Over";
+        }
     }
 }

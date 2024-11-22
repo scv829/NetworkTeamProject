@@ -22,7 +22,7 @@ public class HJS_RandomSlot : MonoBehaviourPun
     /// <summary>
     /// 슬롯의 심볼을 설정해주는 함수
     /// </summary>
-    public void Setting()
+    public void SlotSetting()
     {
         // 초기화
         deque.Clear();
@@ -47,6 +47,17 @@ public class HJS_RandomSlot : MonoBehaviourPun
         }
 
         answer = (AnswerDirection)heartIndex;   // 마지막으로 모든 슬롯의 상태가 정해지면 하트가 있는 방향을 저장한다.
+    }
+
+    /// <summary>
+    /// 심볼을 전부 초기화 하는 함수
+    /// </summary>
+    public void SlotClear()
+    {
+        foreach (HJS_CircleSlot slot in slots)
+        {
+            slot.SetSlot(4);
+        }
     }
 
 }
