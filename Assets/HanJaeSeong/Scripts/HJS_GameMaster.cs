@@ -158,8 +158,6 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
     /// <param name="messageInfo">플레이어의 정보</param>
     public void AddPlayerAnswer(HJS_RandomSlot.AnswerDirection answer, PhotonMessageInfo messageInfo)
     {
-        int number = messageInfo.Sender.GetPlayerNumber();
-        inputUIs[number].SetDirection(answer.ToString());
 
         // 1. 선택한 방향이 일치하는 지 확인
         if (!isOver && slotMaster.Answer.Equals(answer))
