@@ -1,9 +1,16 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class HJS_PlayerController : MonoBehaviourPun
 {
+    [SerializeField] Camera playerCamera;
+    [SerializeField] RenderTexture[] playerRenderTextures;
+
+    [SerializeField] Animator animator;
+
     [SerializeField] HJS_RandomSlot.AnswerDirection answer; // 플레이어의 입력한 값
     [SerializeField] HJS_GameMaster gameMaster;
 
@@ -20,11 +27,22 @@ public class HJS_PlayerController : MonoBehaviourPun
         color.r = vectorColor.x; color.g = vectorColor.y; color.b = vectorColor.z;
         bodyRenderer.material.color = color;
 
+        // 랜터 텍스쳐 설정
+        //playerCamera.targetTexture = playerRenderTextures[PhotonNetwork.LocalPlayer.GetPlayerNumber()];
+        photonView.RPC("SetRenderTextureRPC", RpcTarget.All, PhotonNetwork.LocalPlayer.GetPlayerNumber());
+
+        // 애니메이터 설정
+        animator = GetComponent<Animator>();
 
         // GameMaster 할당
         gameMaster = GameObject.FindWithTag("GameController").GetComponent<HJS_GameMaster>();
         gameMaster.inputStartEvent.AddListener(StartInput);
         gameMaster.inputStopEvent.AddListener(StopInput);
+    }
+
+    public void SetRenderTexture(int number)
+    {
+        playerCamera.targetTexture = playerRenderTextures[PhotonNetwork.LocalPlayer.GetPlayerNumber()];
     }
 
     public void StartInput()
@@ -40,6 +58,7 @@ public class HJS_PlayerController : MonoBehaviourPun
     {
         if(coroutine != null)
         {
+            animator.SetTrigger("NoneTrigger");
             StopCoroutine(coroutine);
             coroutine = null;
         }
@@ -56,21 +75,25 @@ public class HJS_PlayerController : MonoBehaviourPun
             if (Input.GetKeyDown(KeyCode.W))
             {
                 answer = HJS_RandomSlot.AnswerDirection.Top;
+                animator.SetTrigger("UpTrigger");
                 return true;
             }
             else if (Input.GetKeyDown(KeyCode.S))
             {
                 answer = HJS_RandomSlot.AnswerDirection.Botton;
+                animator.SetTrigger("DownTrigger");
                 return true;
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
                 answer = HJS_RandomSlot.AnswerDirection.Right;
+                animator.SetTrigger("RIghtTrigger");
                 return true;
             }
             else if (Input.GetKeyDown(KeyCode.A))
             {
                 answer = HJS_RandomSlot.AnswerDirection.Left;
+                animator.SetTrigger("LeftTrigger");
                 return true;
             }
             return false;
@@ -84,6 +107,12 @@ public class HJS_PlayerController : MonoBehaviourPun
     public void SendAnswerRPC(HJS_RandomSlot.AnswerDirection answer, PhotonMessageInfo messageInfo)
     {
         gameMaster.AddPlayerAnswer(answer, messageInfo);
+    }
+
+    [PunRPC]
+    private void SetRenderTextureRPC(int number)
+    {
+        playerCamera.targetTexture = playerRenderTextures[number];
     }
 
 }

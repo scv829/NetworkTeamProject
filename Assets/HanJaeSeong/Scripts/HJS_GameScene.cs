@@ -57,7 +57,8 @@ public class HJS_GameScene : MonoBehaviourPunCallbacks
     private void PlayerSpawn()
     {
         int number = PhotonNetwork.LocalPlayer.GetPlayerNumber();
-        PhotonNetwork.Instantiate("HJS/Player", spawnPoint[number].position, Quaternion.identity);
+        GameObject instance = PhotonNetwork.Instantiate("HJS/Player", spawnPoint[number].position, Quaternion.identity);
+        instance.GetComponent<HJS_PlayerController>().SetRenderTexture(number);
     }
 
     // 2. 카메라 활성화 -> 페이드 인
