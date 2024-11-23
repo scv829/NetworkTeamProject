@@ -11,6 +11,7 @@ public class ljh_Player : MonoBehaviourPun
     //[SerializeField] ljh_InputManager inputManagerScript;
     [SerializeField] ljh_InputManager inputManagerScript;
     [SerializeField] GameObject inputManager;
+    [SerializeField] GameObject cartManager;
 
     Vector3 buttonPos1;
     Vector3 buttonPos2;
@@ -23,6 +24,8 @@ public class ljh_Player : MonoBehaviourPun
     [SerializeField] GameObject buttonObj3;
     [SerializeField] GameObject buttonObj4;
     [SerializeField] GameObject buttonObj5;
+
+    [SerializeField] GameObject cart;
 
 
     private void Update()
@@ -40,19 +43,22 @@ public class ljh_Player : MonoBehaviourPun
     }
     private void Start()
     {
-       // inputManagerScript = GameObject.FindWithTag("GameController").GetComponent<ljh_InputManager>();
        inputManager = GameObject.FindWithTag("GameController");
-       //
-       // buttonObj1 = inputManager.GetComponent<ljh_InputManager>().buttonObj1;
-       // buttonObj2 = inputManager.GetComponent<ljh_InputManager>().buttonObj2;
-       // buttonObj3 = inputManager.GetComponent<ljh_InputManager>().buttonObj3;
-       // buttonObj4 = inputManager.GetComponent<ljh_InputManager>().buttonObj4;
-       // buttonObj5 = inputManager.GetComponent<ljh_InputManager>().buttonObj5;
+       
     }
 
     public void MovePlayer(Vector3 vector)
     {
         transform.position = vector;
+    }
+
+    public void RideCart()
+    {
+        ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
+        int index = testGameScene.index;
+
+        cart = cartManager.GetComponent<ljh_CartManager>().cartArray[index];
+        transform.parent = cart.transform;
     }
 
 
