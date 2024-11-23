@@ -17,29 +17,27 @@ public class ljh_Button : MonoBehaviour
     {
         Vector3 vec = inputManager.GetComponent<ljh_InputManager>()._curPos;
 
-        float distance = vec.x - myPos.transform.position.x;
+        //float distance = vec.x - myPos.transform.position.x;
 
         if (myPos.transform.position.x != vec.x)
             return;
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-
-                PushedButton(gameObject);
                 Invoke("TurnOffButton", 1f);
                 Invoke("Boom", 1f);
         }
 
     }
 
-    public void PushedButton(GameObject button)
+    public void PushedButton(ljh_Button button)
     {
         button.transform.position = button.transform.position + new Vector3(0, 1, 0);
         //빼야함
         
     }
 
-    public void Boom()
+    public void SelectedButtonAction()
     {
         if (deadBombButton)
         {
@@ -64,6 +62,7 @@ public class ljh_Button : MonoBehaviour
             return;
         }
         //ToDo : 폭탄 터지는 내용 구현해야함
+       
     }
 
     public void TurnOffButton(GameObject button)

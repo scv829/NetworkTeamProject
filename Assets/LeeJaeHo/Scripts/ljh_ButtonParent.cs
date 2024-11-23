@@ -5,13 +5,14 @@ using UnityEngine.UI;
 
 public class ljh_ButtonParent : MonoBehaviour
 {
-    public ljh_Button[] buttonArray;
+    [SerializeField] public ljh_Button[] buttonArray;
 
     bool deadBomb;
 
     public void OnEnable()
     {
         buttonArray = GetComponentsInChildren<ljh_Button>();
+
         int deadNum = Random.Range(0, buttonArray.Length - 1);
 
 
