@@ -117,7 +117,7 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
 
         player.GetComponentInChildren<Renderer>().material.color = playerColor;
 
-        ljh_GameManager.instance.curUserNum++;
+       // ljh_GameManager.instance.curUserNum++;
 
 
     }

@@ -24,6 +24,7 @@ public class ljh_GameManager : MonoBehaviour
     public Vector3 _curPos;
 
     public int curUserNum;
+    public int deathCount = 0;
     public int defaultIndex;
     public int minus;
     [SerializeField] public int index;
@@ -53,15 +54,15 @@ public class ljh_GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        curUserNum = 0;
-
+        curUserNum = 4; // ToDo : 테스트용도로 4로 둔 상태 추후에 0으로 교체 및 테스트게임신에서 주석 해제
+ 
         if(curState != State.idle)
             curState = State.idle;
     }
 
     private void Start()
     {
-        UserNumCalculate(4); // 나중엔 curUserNum 으로 바꿔야함
+        UserNumCalculate(curUserNum - deathCount); 
         //플레이어의 갯수를 세줌 > playerNum
         //curUserNum은 포톤뷰의 숫자를 세줌?
         // 둘이 동일하면 첫번째 플레이어 상태 무브로 변경

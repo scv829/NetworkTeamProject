@@ -39,7 +39,7 @@ public class ljh_InputManager : MonoBehaviourPun
 
     public Vector3 _curPos;
 
-    GameObject boom;
+    [SerializeField] GameObject boom;
 
     public int defaultIndex;
     public int minus;
@@ -62,7 +62,7 @@ public class ljh_InputManager : MonoBehaviourPun
 
     private void Update()
     {
-
+        curUserNum = ljh_GameManager.instance.curUserNum;
     }
 
     public void FindPlayer()
@@ -77,8 +77,8 @@ public class ljh_InputManager : MonoBehaviourPun
         curUserNum = ljh_GameManager.instance.curUserNum;
 
 
-        ljh_Button[] buttonObj = MakeButtonArray(4); // curUserNum으로 바꿔야함
-        ljh_Pos[] pos = MakePosArray(4);
+        ljh_Button[] buttonObj = MakeButtonArray(curUserNum); // curUserNum으로 바꿔야함
+        ljh_Pos[] pos = MakePosArray(curUserNum);
 
 
 

@@ -13,6 +13,7 @@ public class ljh_Button : MonoBehaviour
     [SerializeField] GameObject player;
 
 
+
     public void PushedButton(ljh_Button button)
     {
         button.transform.position = button.transform.position + new Vector3(0, 1, 0);
@@ -27,7 +28,12 @@ public class ljh_Button : MonoBehaviour
         {
             // Comment : 폭탄 터짐
             Bomb.SetActive(false);
+            ljh_GameManager.instance.deathCount--;
 
+
+
+            if (ljh_GameManager.instance.curUserNum == 1)
+                ljh_GameManager.instance.curState = State.end;
             // Todo :
             //애니메이션 추가
             //소리 추가

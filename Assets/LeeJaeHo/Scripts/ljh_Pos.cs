@@ -22,6 +22,7 @@ public class ljh_Pos : MonoBehaviour
             {
                 ljh_GameManager.instance.curState = State.choice;
             }
+            return;
         }
     }
 
