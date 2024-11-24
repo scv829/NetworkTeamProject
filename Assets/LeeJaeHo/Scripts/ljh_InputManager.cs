@@ -1,3 +1,4 @@
+using Cinemachine;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,19 +7,14 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 
-enum State
-{
-    idle,
-    move,
-    choice,
-    end
-};
+
 
 public class ljh_InputManager : MonoBehaviourPun
 {
     int curUserNum;
     
     [SerializeField] ljh_UIManager uiManager;
+    [SerializeField] ljh_CartManager cartManager;
 
     [SerializeField] GameObject player;
     [SerializeField] GameObject button;
@@ -55,28 +51,26 @@ public class ljh_InputManager : MonoBehaviourPun
     [SerializeField] GameObject posParent3;
     [SerializeField] GameObject posParent2;
 
-    Vector3[] buttonPos;
-
-    [SerializeField] State curState;
     public Vector3 _curPos;
 
-    [SerializeField] GameObject boom;
-    [SerializeField] GameObject door;
-    [SerializeField] GameObject sunLight;
+    GameObject boom;
 
-    int defaultIndex;
-    int minus;
-    [SerializeField] int index;
+    public int defaultIndex;
+    public int minus;
+    [SerializeField] public int index;
+
+
+
+
 
     public Coroutine _boomCoroutine;
 
     private void OnEnable()
     {
-        curState = State.idle;
     }
     private void Start()
     {
-        defaultIndex = 2;// 4인일땐 2 3인일땐 2로 
+        defaultIndex = ljh_GameManager.instance.defaultIndex ;// 4인일땐 2 3인일땐 2로 
         minus = 0;
     }
 
@@ -86,70 +80,16 @@ public class ljh_InputManager : MonoBehaviourPun
         //Comment : 테스트용도
         if (Input.GetKeyDown(KeyCode.R))
         {
-            curState = State.choice;
+            ljh_GameManager.instance.curState = State.choice;
         }
         if (Input.GetKeyDown(KeyCode.T))
         {
-            curState = State.idle;
+            ljh_GameManager.instance.curState = State.idle;
         }
 
-        UserNumCalculate(curUserNum);
-
-        Playing();
 
 
 
-    }
-
-
-    public void UserNumCalculate(int curUserNum)
-    {
-        switch (curUserNum)
-        {
-            case 4:
-
-                defaultIndex = 2;
-                //4인플
-                break;
-
-            case 3:
-
-                defaultIndex = 2;
-                //3인플
-                break;
-
-            case 2:
-
-                defaultIndex = 1;
-                //2인플
-                break;
-        }
-    }
-
-    public void Playing()
-    {
-        switch (curState)
-        {
-            case State.idle:
-                uiManager.ShowUiIdle();
-                FindPlayer();
-                break;
-
-            case State.move:
-                uiManager.ShowUiMove();
-                break;
-
-            case State.choice:
-                uiManager.ShowUiChoice();
-                _curPos = ChoiceAnswer();
-                SelectButton(_curPos);
-                break;
-
-            case State.end:
-                GameEnd();
-                break;
-
-        }
     }
 
     public void FindPlayer()
@@ -161,10 +101,10 @@ public class ljh_InputManager : MonoBehaviourPun
 
     public Vector3 ChoiceAnswer()
     {
-        curUserNum = 2;
-
-        ljh_Button[] buttonObj = MakeButtonArray(curUserNum);
-        ljh_Pos[] pos = MakePosArray(curUserNum);
+        curUserNum = ljh_GameManager.instance.curUserNum;
+        Debug.Log(curUserNum);
+        ljh_Button[] buttonObj = MakeButtonArray(curUserNum); // curUserNum으로 바꿔야함
+        ljh_Pos[] pos = MakePosArray(4);
 
         index = defaultIndex - minus;
 
@@ -191,11 +131,12 @@ public class ljh_InputManager : MonoBehaviourPun
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-           if (curPos == pos[index].transform.position)
-              // button.GetComponent<ljh_Button>().PushedButton(buttonObj[index]);
-            buttonObj[index].GetComponent<ljh_Button>().PushedButton(buttonObj[index]);
-            if (_boomCoroutine == null)
-                _boomCoroutine = StartCoroutine(BoomCoroutine(buttonObj[index]));
+            if (curPos == pos[index].transform.position)
+            {
+                buttonObj[index].GetComponent<ljh_Button>().PushedButton(buttonObj[index]);
+                if (_boomCoroutine == null)
+                    _boomCoroutine = StartCoroutine(BoomCoroutine(buttonObj[index]));
+            }
         }
     }
 
@@ -249,9 +190,10 @@ public class ljh_InputManager : MonoBehaviourPun
             return null;
     }
 
-    void GameEnd()
-    {
-        door.transform.rotation = Quaternion.Euler(0,90,0);
-        sunLight.transform.rotation = Quaternion.Euler(130, 48, 0);
-    }
+    
+    
+
+
+
+    
 }

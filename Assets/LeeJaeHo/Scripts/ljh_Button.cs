@@ -6,34 +6,18 @@ public class ljh_Button : MonoBehaviour
 {
     public bool deadBombButton;
 
-    GameObject selectedButton;
     [SerializeField] GameObject Bomb;
     [SerializeField] GameObject inputManager;
     [SerializeField] GameObject myPos;
 
     [SerializeField] GameObject player;
 
-    private void Update()
-    {
-        Vector3 vec = inputManager.GetComponent<ljh_InputManager>()._curPos;
-
-        //float distance = vec.x - myPos.transform.position.x;
-
-        if (myPos.transform.position.x != vec.x)
-            return;
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Invoke("TurnOffButton", 1f);
-                Invoke("Boom", 1f);
-        }
-
-    }
 
     public void PushedButton(ljh_Button button)
     {
         button.transform.position = button.transform.position + new Vector3(0, 1, 0);
         //빼야함
+        //반짝반짝?
         
     }
 

@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class ljh_Pos : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    ljh_InputManager inputManager;
+    ljh_Player player;
 
-    // Update is called once per frame
-    void Update()
+
+    public void OnCollisionEnter(Collision collision)
     {
-        
+        if (ljh_GameManager.instance.curState == State.enter)
+        {
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                player.PlayerEnterdChoice();
+                ljh_GameManager.instance.curState = State.choice;
+            }
+        }
     }
 }

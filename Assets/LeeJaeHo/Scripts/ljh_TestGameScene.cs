@@ -15,7 +15,6 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
 
     [SerializeField] GameObject playerPrefab;
 
-    Coroutine spawnRoutine;
 
     [SerializeField] GameObject playerSpawner1;
     [SerializeField] GameObject playerSpawner2;
@@ -32,15 +31,24 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
     Color playerColor3;
     Color playerColor4;
 
+    [SerializeField] GameObject[] cartArray;
+    [SerializeField] GameObject cart1;
+    [SerializeField] GameObject cart2;
+    [SerializeField] GameObject cart3;
+    [SerializeField] GameObject cart4;
+
+    int curUserNum;
+
+
 
     [SerializeField] Vector3 playerPos;
     Color playerColor;
 
-    PhotonView pv;
-    int index;
+    public int index;
 
     private void Start()
     {
+        
         playerPos1 = playerSpawner1.transform.position;
         playerPos2 = playerSpawner2.transform.position;
         playerPos3 = playerSpawner3.transform.position;
@@ -82,7 +90,6 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.IsMasterClient)
             return;
 
-      //  spawnRoutine = StartCoroutine(MonsterSpawnRoutine());
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
@@ -102,12 +109,22 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
         playerPos = new Vector3(vectorPlayerSpawn[index].x, 0, vectorPlayerSpawn[index].z);
         GameObject player = PhotonNetwork.Instantiate("ljh_Player", playerPos, Quaternion.identity);
 
+        RideCart(player);
+
         Color[] vectorColor = { playerColor1, playerColor2, playerColor3, playerColor4 };
         playerColor = new Color(vectorColor[index].r, vectorColor[index].g, vectorColor[index].b, 1);
 
         player.GetComponentInChildren<Renderer>().material.color = playerColor;
 
+        ljh_GameManager.instance.curUserNum++;
 
+
+    }
+
+    private void RideCart(GameObject player)
+    {
+        player.transform.parent = cartArray[index].transform;
+        curUserNum++;
     }
 
 
