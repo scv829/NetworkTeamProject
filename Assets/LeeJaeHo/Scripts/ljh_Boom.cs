@@ -21,5 +21,6 @@ public class ljh_Boom : MonoBehaviour
     {
         //폭발 애니메이션
         //플레이어 죽음 함수 호출
+        // 씬 리로드(사람수 유지한채로)
     }
 }

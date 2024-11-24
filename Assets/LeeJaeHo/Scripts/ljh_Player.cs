@@ -52,13 +52,27 @@ public class ljh_Player : MonoBehaviourPun
         transform.position = vector;
     }
 
-    public void RideCart()
+    public void RideEnterCart()
     {
         ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
         int index = testGameScene.index;
 
-        cart = cartManager.GetComponent<ljh_CartManager>().cartArray[index];
+        cart = cartManager.GetComponent<ljh_CartManager>().cartArrayEnter[index];
         transform.parent = cart.transform;
+    }
+
+    public void RideExitCart()
+    {
+        ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
+        int index = testGameScene.index;
+
+        cart = cartManager.GetComponent<ljh_CartManager>().cartArrayExit[index];
+        transform.parent = cart.transform;
+    }
+
+    public void PlayerEnterdChoice()
+    {
+        transform.position = Vector3.zero;
     }
 
 

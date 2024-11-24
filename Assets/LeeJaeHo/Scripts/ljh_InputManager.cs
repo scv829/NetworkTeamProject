@@ -76,7 +76,6 @@ public class ljh_InputManager : MonoBehaviourPun
 
     private void Update()
     {
-        curUserNum = ljh_GameManager.instance.curUserNum;
 
         //Comment : 테스트용도
         if (Input.GetKeyDown(KeyCode.R))
@@ -102,9 +101,10 @@ public class ljh_InputManager : MonoBehaviourPun
 
     public Vector3 ChoiceAnswer()
     {
-
-        ljh_Button[] buttonObj = MakeButtonArray(curUserNum);
-        ljh_Pos[] pos = MakePosArray(curUserNum);
+        curUserNum = ljh_GameManager.instance.curUserNum;
+        Debug.Log(curUserNum);
+        ljh_Button[] buttonObj = MakeButtonArray(curUserNum); // curUserNum으로 바꿔야함
+        ljh_Pos[] pos = MakePosArray(4);
 
         index = defaultIndex - minus;
 

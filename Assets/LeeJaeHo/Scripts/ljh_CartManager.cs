@@ -5,23 +5,35 @@ using UnityEngine;
 
 public class ljh_CartManager : MonoBehaviour
 {
-    public GameObject[] cartArray;
-    public GameObject cart1;
-    public GameObject cart2;
-    public GameObject cart3;
-    public GameObject cart4;
+    public GameObject[] cartArrayEnter;
+    public GameObject cart1Enter;
+    public GameObject cart2Enter;
+    public GameObject cart3Enter;
+    public GameObject cart4Enter;
+
+    public GameObject[] cartArrayExit;
+    public GameObject cart1Exit;
+    public GameObject cart2Exit;
+    public GameObject cart3Exit;
+    public GameObject cart4Exit;
 
 
 
-    public void CartMove()
+    public void CartMoveEnter()
     {
         ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
         int index = testGameScene.index;
-        Debug.Log(cartArray.Length);
-        Debug.Log(index);
-        cartArray[index].GetComponent<CinemachineDollyCart>().enabled = true;
+
+        cartArrayEnter[index].GetComponent<CinemachineDollyCart>().enabled = true;
 
     }
 
+    public void CartMoveExit()
+    {
+        ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
+        int index = testGameScene.index;
+
+        cartArrayExit[index].GetComponent<CinemachineDollyCart>().enabled = true;
+    }
 }
 

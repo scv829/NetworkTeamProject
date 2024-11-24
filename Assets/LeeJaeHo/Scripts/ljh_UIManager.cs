@@ -5,22 +5,27 @@ using TMPro;
 
 public class ljh_UIManager : MonoBehaviour
 {
-    [SerializeField] GameObject choiceText;
+    [SerializeField] TMP_Text choiceText;
 
     
 
     public void ShowUiIdle()
     {
-        choiceText.SetActive(false);
+        choiceText.text = ljh_GameManager.instance.curState.ToString();
     }
 
-    public void ShowUiMove()
+    public void ShowUiEnterMove()
     {
-
+        choiceText.text = ljh_GameManager.instance.curState.ToString();
     }
 
     public void ShowUiChoice()
     {
-        choiceText.SetActive(true);
+        choiceText.text = ljh_GameManager.instance.curState.ToString();
+    }
+
+    public void ShowUiExitMove()
+    {
+        choiceText.text = ljh_GameManager.instance.curState.ToString();
     }
 }

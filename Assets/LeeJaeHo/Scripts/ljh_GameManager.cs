@@ -7,7 +7,8 @@ using UnityEngine;
 public enum State
 {
     idle,
-    move,
+    enter,
+    exit,
     choice,
     end
 };
@@ -54,7 +55,7 @@ public class ljh_GameManager : MonoBehaviour
 
     private void Start()
     {
-        UserNumCalculate(curUserNum);
+        UserNumCalculate(4); // 나중엔 curUserNum 으로 바꿔야함
         //플레이어의 갯수를 세줌 > playerNum
         //curUserNum은 포톤뷰의 숫자를 세줌?
         // 둘이 동일하면 첫번째 플레이어 상태 무브로 변경
@@ -93,6 +94,11 @@ public class ljh_GameManager : MonoBehaviour
                 defaultIndex = 1;
                 //2인플
                 break;
+
+            case 1:
+                defaultIndex = 2;
+                //테스트용 1인플
+                break;
         }
     }
 
@@ -107,15 +113,20 @@ public class ljh_GameManager : MonoBehaviour
                 inputManager.FindPlayer();
                 break;
 
-            case State.move:
-                uiManager.ShowUiMove();
-                cartManager.CartMove();
+            case State.enter:
+                uiManager.ShowUiEnterMove();
+                cartManager.CartMoveEnter();
                 break;
 
             case State.choice:
                 uiManager.ShowUiChoice();
                 _curPos = inputManager.ChoiceAnswer();
                 inputManager.SelectButton(_curPos);
+                break;
+
+            case State.exit:
+                uiManager.ShowUiExitMove();
+                cartManager.CartMoveExit();
                 break;
 
             case State.end:
