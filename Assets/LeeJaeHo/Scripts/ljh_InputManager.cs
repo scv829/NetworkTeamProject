@@ -76,12 +76,10 @@ public class ljh_InputManager : MonoBehaviourPun
     {
         curUserNum = ljh_GameManager.instance.curUserNum;
 
-        Debug.Log($"커 유저넘 {curUserNum}");
 
         ljh_Button[] buttonObj = MakeButtonArray(4); // curUserNum으로 바꿔야함
         ljh_Pos[] pos = MakePosArray(4);
 
-        Debug.Log($"버튼 현재 배열 숫자 {buttonObj.Length}");
 
 
 

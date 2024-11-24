@@ -42,7 +42,7 @@ public class ljh_Button : MonoBehaviour
             // Todo :
             //폭탄 안터짐
             TurnOffButton(gameObject);
-            //반대 쪽으로 내려감 (상태 무빙으로 변경)
+            ljh_GameManager.instance.curState = State.exit;
             return;
         }
         //ToDo : 폭탄 터지는 내용 구현해야함

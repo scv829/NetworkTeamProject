@@ -21,7 +21,7 @@ public class ljh_GameManager : MonoBehaviour
     [SerializeField] public ljh_CartManager cartManagerEnter;
     [SerializeField] public ljh_CartManager cartManagerExit;
 
-
+    public Vector3 _curPos;
 
     public int curUserNum;
     public int defaultIndex;
@@ -30,6 +30,10 @@ public class ljh_GameManager : MonoBehaviour
 
 
     [SerializeField] public State curState;
+
+    [SerializeField] public GameObject Player4;
+    [SerializeField] public GameObject Player3;
+    [SerializeField] public GameObject Player2;
 
     [Header("기타 오브젝트")]
     [SerializeField] public GameObject boom;
@@ -82,18 +86,27 @@ public class ljh_GameManager : MonoBehaviour
             case 4:
 
                 defaultIndex = 2;
+                Player4.SetActive(true);
+                Player3.SetActive(false);
+                Player2.SetActive(false);
                 //4인플
                 break;
 
             case 3:
 
                 defaultIndex = 2;
+                Player4.SetActive(false);
+                Player3.SetActive(true);
+                Player2.SetActive(false);
                 //3인플
                 break;
 
             case 2:
 
                 defaultIndex = 1;
+                Player4.SetActive(false);
+                Player3.SetActive(false);
+                Player2.SetActive(true);
                 //2인플
                 break;
 
@@ -106,7 +119,6 @@ public class ljh_GameManager : MonoBehaviour
 
     public void Playing()
     {
-        Vector3 _curPos = inputManager._curPos;
 
         switch (ljh_GameManager.instance.curState)
         {

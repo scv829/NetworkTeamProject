@@ -14,11 +14,18 @@ public class ljh_Player : MonoBehaviourPun
     [SerializeField] GameObject inputManager;
     [SerializeField] GameObject cartManager;
 
-
-    
+    GameObject[] buttonPos;
+    Vector3 myPos; // 테스트용
 
     [SerializeField] GameObject cart;
 
+    private void Start()
+    {
+        inputManager = GameObject.FindWithTag("GameController");
+        //buttonPos = inputManagerScript. 나중에 유저 4 > 3번 포즈 3명 > 3번포즈 2명 2번 포즈
+        myPos = new Vector3(-2, 0, 0.7f);
+        
+    }
 
 
     private void Update()
@@ -26,19 +33,14 @@ public class ljh_Player : MonoBehaviourPun
         if(!photonView.IsMine)
             return;
 
-        Vector3 vec = inputManager.GetComponent<ljh_InputManager>()._curPos;
-
+        Vector3 vec = ljh_GameManager.instance._curPos;
         if (vec != Vector3.zero)
         {
             MovePlayer(vec);
         }
         else return;
     }
-    private void Start()
-    {
-       inputManager = GameObject.FindWithTag("GameController");
-    }
-
+    
     public void MovePlayer(Vector3 vector)
     {
         transform.position = vector;
@@ -75,11 +77,12 @@ public class ljh_Player : MonoBehaviourPun
         GameObject player = testGameScene.player;
 
         player.transform.parent = null;
+        player.transform.position = myPos;
     }
 
     public void PlayerEnterdChoice()
     {
-        //transform.position = buttonObj3.transform.position;
+        //transform.position = button[ljh_GameManager.instance.defaultIndex].transform.position;
     }
 
 
