@@ -11,6 +11,7 @@ using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 using TMPro;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// 게임 플레이를 담당하는 클래스
@@ -25,10 +26,14 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
     [SerializeField] public UnityEvent inputStopEvent;     // 입력 시간을 초과했을 때 실행할 이벤트 함수
     [SerializeField] public UnityEvent changeShaderEvent;  // 메테리얼의 셰이더를 변경할 이벤트 함수
     [SerializeField] int refeatTime;               // 게임의 반복횟수
+    [SerializeField] bool isExplain;
     [Header("UI")]
+    [SerializeField] GameObject explainUI;
     [SerializeField] HJS_scoreUI[] scoreUIs;
     [SerializeField] GameObject[] inputUIs;
     [SerializeField] HJS_TitleUI titleUI;
+    [Header("GameScene")]
+    [SerializeField] HJS_GameScene gameScene;   // 게임의 연출을 담당하는 매니저
 
     private Dictionary<Player, int> scoreDictionary = new Dictionary<Player, int>();     // 플레이어와 점수
     private List<(Player, double)> selectResult = new List<(Player, double)>();   // 플레이어의 걸린시간
@@ -42,6 +47,7 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
     public void GameStart()
     {
         Init();
+        isExplain = true;
 
         if (PhotonNetwork.IsMasterClient == false) return;
 
@@ -58,14 +64,21 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
         slotMaster.SlotClear();     // 슬롯을 초기화 하고
 
         // TODO: 같은 점수에 대해서 예외처리
-        Player winnder= scoreDictionary.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
+        Player winner = scoreDictionary.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
 
-        titleUI.UpdateUI(winnder.NickName);
+        titleUI.UpdateUI(winner.NickName);
     }
 
-    
     private IEnumerator SlotSettingRoutine()
     {
+        if (isExplain)
+        {
+            photonView.RPC("ShowExplainRPC", RpcTarget.All);
+            yield return new WaitForSeconds(2f);
+            photonView.RPC("ShowExplainRPC", RpcTarget.All);
+            isExplain = false;
+        }
+
         int count = 1;
         while (count <= refeatTime)
         {
@@ -103,7 +116,7 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
         // 7 5 3 1
         int rank = 7;
         // 걸린 시간 순으로 정렬
-        foreach( (Player, double) playerResult in selectResult.OrderBy(s => s.Item2))
+        foreach ((Player, double) playerResult in selectResult.OrderBy(s => s.Item2))
         {
             scoreDictionary[playerResult.Item1] += rank;                    // 순위에 따른 점수 저장
             rank -= 2;                                                      // 점수는 순위가 늦어짐에 따라 계속 내려간다 , 7 -> 5 -> 3 -> 1
@@ -119,14 +132,14 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
     private void Init()
     {
         scoreDictionary.Clear(); // 초기화
-        
+
         delay = new WaitForSeconds(delayTime);
         isOver = false;
 
         photonView.RPC("ChangeShaderRPC", RpcTarget.All);   // 셰이더 변경
 
         // 플레이어의 인원 수 만큼 플레이어 사전에 추가
-        foreach(Player player in PhotonNetwork.PlayerList)
+        foreach (Player player in PhotonNetwork.PlayerList)
         {
             scoreDictionary[player] = 0;
 
@@ -167,6 +180,7 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
             // 2. 일치하면 정답 리스트에 유저와 시간입력
             selectResult.Add((messageInfo.Sender, messageInfo.SentServerTime));
         }
+        // TODO: 3. 틀린사람 화면에 카메라 배경을 검은색으로
     }
 
     [PunRPC]
@@ -177,5 +191,8 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
 
     [PunRPC]
     public void ChangeShaderRPC() => changeShaderEvent?.Invoke();     // 셰이더를 변경해주는 이벤트 함수 실행
+
+    [PunRPC]
+    public void ShowExplainRPC() => explainUI.SetActive(!explainUI.activeSelf);
 
 }
