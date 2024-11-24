@@ -4725,7 +4725,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 759296072}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.218529, y: -3.0119085, z: 5.0079894}
+  m_LocalPosition: {x: -3.0242212, y: -0.41471648, z: 3.1996317}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4737,8 +4737,8 @@ Transform:
   - {fileID: 156585905}
   - {fileID: 923226664}
   - {fileID: 284648086}
-  m_Father: {fileID: 1294189264}
-  m_RootOrder: 2
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &764346677
 PrefabInstance:
@@ -5552,7 +5552,7 @@ RectTransform:
   m_Children:
   - {fileID: 1140744319}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -8144,12 +8144,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1243861021}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 627.9191, y: 239.06824, z: 3.59467}
+  m_LocalPosition: {x: 623.6764, y: 241.66544, z: 1.7863123}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1294189264}
-  m_RootOrder: 1
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1260795915
 GameObject:
@@ -8254,7 +8254,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1264861814}
-  m_LocalRotation: {x: 0.022876179, y: -0.008363274, z: 0.0001913765, w: 0.99970335}
+  m_LocalRotation: {x: 0.023359634, y: -0.008531889, z: 0.0001993635, w: 0.9996907}
   m_LocalPosition: {x: -5.165778, y: 0.46171635, z: -7.9396315}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8578,6 +8578,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1294189264}
+  - component: {fileID: 1294189265}
   m_Layer: 0
   m_Name: ======Manager=====
   m_TagString: Untagged
@@ -8596,14 +8597,36 @@ Transform:
   m_LocalPosition: {x: -4.24275, y: 2.597192, z: -1.8083577}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1788366965}
-  - {fileID: 1243861023}
-  - {fileID: 759296074}
-  - {fileID: 1623997052}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1294189265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294189263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16cbb718565cea348b8c274a309b8303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiManager: {fileID: 1243861022}
+  inputManager: {fileID: 2133425116530062048}
+  player: {fileID: 6512782074757413719, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
+  scene: {fileID: 1788366964}
+  cartManagerEnter: {fileID: 759296073}
+  cartManagerExit: {fileID: 1623997051}
+  curUserNum: 0
+  defaultIndex: 0
+  minus: 0
+  index: 0
+  curState: 0
+  boom: {fileID: 1294685917}
+  door: {fileID: 146132077}
+  sunLight: {fileID: 1911679157}
 --- !u!1 &1294685917
 GameObject:
   m_ObjectHideFlags: 0
@@ -10779,16 +10802,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08df2e5824c7a9e4b8f66048a9024187, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cartArrayEnter: []
-  cart1Enter: {fileID: 0}
-  cart2Enter: {fileID: 0}
-  cart3Enter: {fileID: 0}
-  cart4Enter: {fileID: 0}
-  cartArrayExit: []
-  cart1Exit: {fileID: 0}
-  cart2Exit: {fileID: 0}
-  cart3Exit: {fileID: 0}
-  cart4Exit: {fileID: 0}
+  cartArrayEnter:
+  - {fileID: 1264861814}
+  - {fileID: 530734142}
+  - {fileID: 156585903}
+  - {fileID: 284648084}
+  cart1Enter: {fileID: 1264861814}
+  cart2Enter: {fileID: 530734142}
+  cart3Enter: {fileID: 156585903}
+  cart4Enter: {fileID: 284648084}
+  cartArrayExit:
+  - {fileID: 1427674160}
+  - {fileID: 1472030309}
+  - {fileID: 1284130122}
+  - {fileID: 2145168889}
+  cart1Exit: {fileID: 1427674160}
+  cart2Exit: {fileID: 1472030309}
+  cart3Exit: {fileID: 1284130122}
+  cart4Exit: {fileID: 2145168889}
 --- !u!4 &1623997052
 Transform:
   m_ObjectHideFlags: 0
@@ -10797,7 +10828,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1623997050}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.218529, y: -3.0119085, z: 5.0079894}
+  m_LocalPosition: {x: -3.0242212, y: -0.41471648, z: 3.1996317}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10809,8 +10840,8 @@ Transform:
   - {fileID: 1284130123}
   - {fileID: 1410925516}
   - {fileID: 2145168890}
-  m_Father: {fileID: 1294189264}
-  m_RootOrder: 3
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1629651324
 PrefabInstance:
@@ -12067,7 +12098,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1788366963
 GameObject:
@@ -12080,7 +12111,6 @@ GameObject:
   - component: {fileID: 1788366965}
   - component: {fileID: 1788366964}
   - component: {fileID: 2133425116530062048}
-  - component: {fileID: 2335010750769586636}
   m_Layer: 0
   m_Name: BoomGameManager
   m_TagString: GameController
@@ -12107,13 +12137,14 @@ MonoBehaviour:
   playerSpawner4: {fileID: 68691200}
   cartArray:
   - {fileID: 1264861814}
-  - {fileID: 1264861814}
-  - {fileID: 1264861814}
-  - {fileID: 1264861814}
+  - {fileID: 530734142}
+  - {fileID: 156585903}
+  - {fileID: 284648084}
   cart1: {fileID: 1264861814}
-  cart2: {fileID: 1264861814}
-  cart3: {fileID: 1264861814}
-  cart4: {fileID: 1264861814}
+  cart2: {fileID: 530734142}
+  cart3: {fileID: 156585903}
+  cart4: {fileID: 284648084}
+  player: {fileID: 0}
   playerPos: {x: 0, y: 0, z: 0}
   index: 0
 --- !u!4 &1788366965
@@ -12124,12 +12155,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1788366963}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.7508569, y: -5.0053263, z: 12.228495}
+  m_LocalPosition: {x: -4.993607, y: -2.4081342, z: 10.420137}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1294189264}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1794000091
 PrefabInstance:
@@ -14811,16 +14842,6 @@ MonoBehaviour:
   Pos3: {x: 0, y: 0, z: 0}
   Pos4: {x: 0, y: 0, z: 0}
   Pos5: {x: 0, y: 0, z: 0}
-  PosObj1: {fileID: 0}
-  PosObj2: {fileID: 0}
-  PosObj3: {fileID: 0}
-  PosObj4: {fileID: 0}
-  PosObj5: {fileID: 0}
-  buttonObj1: {fileID: 0}
-  buttonObj2: {fileID: 0}
-  buttonObj3: {fileID: 0}
-  buttonObj4: {fileID: 0}
-  buttonObj5: {fileID: 0}
   buttonParent4: {fileID: 1344158848}
   buttonParent3: {fileID: 51571894}
   buttonParent2: {fileID: 1420839556}
@@ -14831,31 +14852,6 @@ MonoBehaviour:
   defaultIndex: 0
   minus: 0
   index: 0
---- !u!114 &2335010750769586636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1788366963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16cbb718565cea348b8c274a309b8303, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiManager: {fileID: 1243861022}
-  inputManager: {fileID: 2133425116530062048}
-  player: {fileID: 6512782074757413719, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
-  scene: {fileID: 1788366964}
-  cartManager: {fileID: 759296073}
-  curUserNum: 0
-  defaultIndex: 0
-  minus: 0
-  index: 0
-  curState: 0
-  boom: {fileID: 1294685917}
-  door: {fileID: 146132077}
-  sunLight: {fileID: 1911679157}
 --- !u!1001 &4733016584487727181
 PrefabInstance:
   m_ObjectHideFlags: 0

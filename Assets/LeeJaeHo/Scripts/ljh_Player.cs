@@ -10,22 +10,15 @@ public class ljh_Player : MonoBehaviourPun
 {
     //[SerializeField] ljh_InputManager inputManagerScript;
     [SerializeField] ljh_InputManager inputManagerScript;
+    [SerializeField] GameObject testGameScene;
     [SerializeField] GameObject inputManager;
     [SerializeField] GameObject cartManager;
 
-    Vector3 buttonPos1;
-    Vector3 buttonPos2;
-    Vector3 buttonPos3;
-    Vector3 buttonPos4;
-    Vector3 buttonPos5;
 
-    [SerializeField] GameObject buttonObj1;
-    [SerializeField] GameObject buttonObj2;
-    [SerializeField] GameObject buttonObj3;
-    [SerializeField] GameObject buttonObj4;
-    [SerializeField] GameObject buttonObj5;
+    
 
     [SerializeField] GameObject cart;
+
 
 
     private void Update()
@@ -44,7 +37,6 @@ public class ljh_Player : MonoBehaviourPun
     private void Start()
     {
        inputManager = GameObject.FindWithTag("GameController");
-       
     }
 
     public void MovePlayer(Vector3 vector)
@@ -54,6 +46,8 @@ public class ljh_Player : MonoBehaviourPun
 
     public void RideEnterCart()
     {
+        cartManager = ljh_GameManager.instance.cartManagerEnter.gameObject;
+
         ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
         int index = testGameScene.index;
 
@@ -63,16 +57,29 @@ public class ljh_Player : MonoBehaviourPun
 
     public void RideExitCart()
     {
+        cartManager = ljh_GameManager.instance.cartManagerExit.gameObject;
+
         ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
         int index = testGameScene.index;
 
         cart = cartManager.GetComponent<ljh_CartManager>().cartArrayExit[index];
-        transform.parent = cart.transform;
+        
+        GameObject player = testGameScene.player;
+
+        player.transform.parent = cart.transform;
+    }
+
+    public void UnRideCart()
+    {
+        ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
+        GameObject player = testGameScene.player;
+
+        player.transform.parent = null;
     }
 
     public void PlayerEnterdChoice()
     {
-        transform.position = Vector3.zero;
+        //transform.position = buttonObj3.transform.position;
     }
 
 

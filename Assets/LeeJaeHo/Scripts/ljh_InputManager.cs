@@ -27,20 +27,6 @@ public class ljh_InputManager : MonoBehaviourPun
     [SerializeField] Vector3 Pos4;
     [SerializeField] Vector3 Pos5;
 
-    [Header("유저가 서는 자리 오브젝트")]
-    [SerializeField] public GameObject PosObj1;
-    [SerializeField] public GameObject PosObj2;
-    [SerializeField] public GameObject PosObj3;
-    [SerializeField] public GameObject PosObj4;
-    [SerializeField] public GameObject PosObj5;
-
-    [Header("버튼 오브젝트")]
-    [SerializeField] public GameObject buttonObj1;
-    [SerializeField] public GameObject buttonObj2;
-    [SerializeField] public GameObject buttonObj3;
-    [SerializeField] public GameObject buttonObj4;
-    [SerializeField] public GameObject buttonObj5;
-
     [Header("n명 남은 상황의 버튼 부모 오브젝트")]
     [SerializeField] GameObject buttonParent4;
     [SerializeField] GameObject buttonParent3;
@@ -77,19 +63,6 @@ public class ljh_InputManager : MonoBehaviourPun
     private void Update()
     {
 
-        //Comment : 테스트용도
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            ljh_GameManager.instance.curState = State.choice;
-        }
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            ljh_GameManager.instance.curState = State.idle;
-        }
-
-
-
-
     }
 
     public void FindPlayer()
@@ -102,9 +75,15 @@ public class ljh_InputManager : MonoBehaviourPun
     public Vector3 ChoiceAnswer()
     {
         curUserNum = ljh_GameManager.instance.curUserNum;
-        Debug.Log(curUserNum);
-        ljh_Button[] buttonObj = MakeButtonArray(curUserNum); // curUserNum으로 바꿔야함
+
+        Debug.Log($"커 유저넘 {curUserNum}");
+
+        ljh_Button[] buttonObj = MakeButtonArray(4); // curUserNum으로 바꿔야함
         ljh_Pos[] pos = MakePosArray(4);
+
+        Debug.Log($"버튼 현재 배열 숫자 {buttonObj.Length}");
+
+
 
         index = defaultIndex - minus;
 

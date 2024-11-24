@@ -18,7 +18,9 @@ public class ljh_GameManager : MonoBehaviour
     [SerializeField] public ljh_InputManager inputManager;
     [SerializeField] public ljh_Player player;
     [SerializeField] public ljh_TestGameScene scene;
-    [SerializeField] public ljh_CartManager cartManager;
+    [SerializeField] public ljh_CartManager cartManagerEnter;
+    [SerializeField] public ljh_CartManager cartManagerExit;
+
 
 
     public int curUserNum;
@@ -115,18 +117,20 @@ public class ljh_GameManager : MonoBehaviour
 
             case State.enter:
                 uiManager.ShowUiEnterMove();
-                cartManager.CartMoveEnter();
+                cartManagerEnter.CartMoveEnter();
                 break;
 
             case State.choice:
                 uiManager.ShowUiChoice();
+                player.UnRideCart();
                 _curPos = inputManager.ChoiceAnswer();
                 inputManager.SelectButton(_curPos);
                 break;
 
             case State.exit:
                 uiManager.ShowUiExitMove();
-                cartManager.CartMoveExit();
+                player.RideExitCart();
+                cartManagerEnter.CartMoveExit();
                 break;
 
             case State.end:
@@ -142,6 +146,11 @@ public class ljh_GameManager : MonoBehaviour
     {
         door.transform.rotation = Quaternion.Euler(0, 90, 0);
         sunLight.transform.rotation = Quaternion.Euler(130, 48, 0);
+    }
+
+    public void ButtonOn4P()
+    {
+
     }
 
 

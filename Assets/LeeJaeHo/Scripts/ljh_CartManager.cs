@@ -30,6 +30,7 @@ public class ljh_CartManager : MonoBehaviour
 
     public void CartMoveExit()
     {
+
         ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
         int index = testGameScene.index;
 

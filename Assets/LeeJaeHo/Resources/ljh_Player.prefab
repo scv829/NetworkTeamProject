@@ -143,11 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputManagerScript: {fileID: 0}
+  testGameScene: {fileID: 0}
   inputManager: {fileID: 0}
   cartManager: {fileID: 0}
-  buttonObj1: {fileID: 0}
-  buttonObj2: {fileID: 0}
-  buttonObj3: {fileID: 0}
-  buttonObj4: {fileID: 0}
-  buttonObj5: {fileID: 0}
   cart: {fileID: 0}
