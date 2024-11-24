@@ -23,10 +23,11 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
     [SerializeField] bool isOver;                   // 입력받을 수 있는 시간을 초과했는지 여부
     [SerializeField] public UnityEvent inputStartEvent;    // 입력을 시작할 때 실행할 이벤트 함수
     [SerializeField] public UnityEvent inputStopEvent;     // 입력 시간을 초과했을 때 실행할 이벤트 함수
+    [SerializeField] public UnityEvent changeShaderEvent;  // 메테리얼의 셰이더를 변경할 이벤트 함수
     [SerializeField] int refeatTime;               // 게임의 반복횟수
     [Header("UI")]
     [SerializeField] HJS_scoreUI[] scoreUIs;
-    [SerializeField] HJS_InputUI[] inputUIs;
+    [SerializeField] GameObject[] inputUIs;
     [SerializeField] HJS_TitleUI titleUI;
 
     private Dictionary<Player, int> scoreDictionary = new Dictionary<Player, int>();     // 플레이어와 점수
@@ -52,10 +53,9 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
     /// </summary>
     public void GameEnd()
     {
+        photonView.RPC("ChangeShaderRPC", RpcTarget.All);
 
         slotMaster.SlotClear();     // 슬롯을 초기화 하고
-
-        for(int index = 0; index < PhotonNetwork.PlayerList.Length; index++) inputUIs[index].SetDirection("");
 
         // TODO: 같은 점수에 대해서 예외처리
         Player winnder= scoreDictionary.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
@@ -70,7 +70,6 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
         while (count <= refeatTime)
         {
             slotMaster.SlotClear();
-            foreach(HJS_InputUI ui in inputUIs) ui.SetDirection("");
             titleUI.UpdateUI(count, refeatTime);
 
             yield return new WaitForSeconds(1f);  // 게임 시작을 위해 1초 대기
@@ -124,6 +123,8 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
         delay = new WaitForSeconds(delayTime);
         isOver = false;
 
+        photonView.RPC("ChangeShaderRPC", RpcTarget.All);   // 셰이더 변경
+
         // 플레이어의 인원 수 만큼 플레이어 사전에 추가
         foreach(Player player in PhotonNetwork.PlayerList)
         {
@@ -132,8 +133,9 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
             int number = player.GetPlayerNumber();
             scoreUIs[number].SetProfile(player.GetPlayerColor());
             scoreUIs[number].gameObject.SetActive(true);
-            inputUIs[number].gameObject.SetActive(true);
+            inputUIs[number].SetActive(true);
         }
+
         titleUI.gameObject.SetActive(true);
     }
 
@@ -173,5 +175,7 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
     [PunRPC]
     public void StopInputRPC() => inputStopEvent?.Invoke();     // 입력을 중단하게 해주는 이벤트 함수 실행
 
+    [PunRPC]
+    public void ChangeShaderRPC() => changeShaderEvent?.Invoke();     // 셰이더를 변경해주는 이벤트 함수 실행
 
 }

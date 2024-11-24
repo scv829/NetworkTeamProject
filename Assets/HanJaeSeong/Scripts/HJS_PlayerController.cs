@@ -2,6 +2,7 @@ using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HJS_PlayerController : MonoBehaviourPun
@@ -17,6 +18,9 @@ public class HJS_PlayerController : MonoBehaviourPun
     /* 색상 */
     [SerializeField] Renderer bodyRenderer;
     [SerializeField] Color color;
+    [SerializeField] bool isStart;
+
+    public bool IsStart { get { return isStart; } set { isStart = value; ChangeShader(); } }
 
     private Coroutine coroutine;
 
@@ -38,6 +42,8 @@ public class HJS_PlayerController : MonoBehaviourPun
         gameMaster = GameObject.FindWithTag("GameController").GetComponent<HJS_GameMaster>();
         gameMaster.inputStartEvent.AddListener(StartInput);
         gameMaster.inputStopEvent.AddListener(StopInput);
+        gameMaster.changeShaderEvent.AddListener(ChangeShader);
+        
     }
 
     public void SetRenderTexture(int number)
@@ -58,7 +64,7 @@ public class HJS_PlayerController : MonoBehaviourPun
     {
         if(coroutine != null)
         {
-            animator.SetTrigger("NoneTrigger");
+            photonView.RPC("SetAnimationRPC", RpcTarget.All, "NoneTrigger");
             StopCoroutine(coroutine);
             coroutine = null;
         }
@@ -75,25 +81,25 @@ public class HJS_PlayerController : MonoBehaviourPun
             if (Input.GetKeyDown(KeyCode.W))
             {
                 answer = HJS_RandomSlot.AnswerDirection.Top;
-                animator.SetTrigger("UpTrigger");
+                photonView.RPC("SetAnimationRPC", RpcTarget.All, "UpTrigger");
                 return true;
             }
             else if (Input.GetKeyDown(KeyCode.S))
             {
                 answer = HJS_RandomSlot.AnswerDirection.Botton;
-                animator.SetTrigger("DownTrigger");
+                photonView.RPC("SetAnimationRPC", RpcTarget.All, "DownTrigger");
                 return true;
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
                 answer = HJS_RandomSlot.AnswerDirection.Right;
-                animator.SetTrigger("RIghtTrigger");
+                photonView.RPC("SetAnimationRPC", RpcTarget.All, "RightTrigger");
                 return true;
             }
             else if (Input.GetKeyDown(KeyCode.A))
             {
                 answer = HJS_RandomSlot.AnswerDirection.Left;
-                animator.SetTrigger("LeftTrigger");
+                photonView.RPC("SetAnimationRPC", RpcTarget.All, "LeftTrigger");
                 return true;
             }
             return false;
@@ -101,6 +107,12 @@ public class HJS_PlayerController : MonoBehaviourPun
 
         // 방장에게 선택한 내용 및 걸린 시간 전송
         photonView.RPC("SendAnswerRPC", RpcTarget.MasterClient, answer);
+    }
+
+    public void ChangeShader()
+    {
+        bodyRenderer.material.shader = Shader.Find( (isStart) ? "Unlit/Color" : "Standard");
+        isStart = !isStart;
     }
 
     [PunRPC]
@@ -113,6 +125,12 @@ public class HJS_PlayerController : MonoBehaviourPun
     private void SetRenderTextureRPC(int number)
     {
         playerCamera.targetTexture = playerRenderTextures[number];
+    }
+
+    [PunRPC]
+    private void SetAnimationRPC(string dir, PhotonMessageInfo messageInfo)
+    {
+        animator.SetTrigger(dir);
     }
 
 }
