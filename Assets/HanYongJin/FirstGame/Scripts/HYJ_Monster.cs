@@ -1,9 +1,10 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Purchasing;
 using UnityEngine;
 
-public class HYJ_Monster : MonoBehaviour
+public class HYJ_Monster : MonoBehaviourPunCallbacks
 {
     [SerializeField] int Hp;
     [SerializeField] bodyType monsterBodyType;

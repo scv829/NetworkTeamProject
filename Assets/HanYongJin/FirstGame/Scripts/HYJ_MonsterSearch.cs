@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HYJ_MonsterSearch : MonoBehaviour
+public class HYJ_MonsterSearch : MonoBehaviourPun
 {
     [SerializeField] GameObject monster;
     [SerializeField] public int monsterCount;
