@@ -57,6 +57,7 @@ MonoBehaviour:
   - SetAnimationRPC
   - SetRenderTextureRPC
   - ShowExplainRPC
+  - FinishedHeyHo
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

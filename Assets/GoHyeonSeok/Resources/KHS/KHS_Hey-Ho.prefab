@@ -138,15 +138,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mechaMarathonGameManager: {fileID: 0}
   _playerController: {fileID: 0}
-  _moveSpeed: 3
+  _moveSpeed: 2.5
   _isMoved: 0
   _isTargeted: 0
   targetPos: {x: 0, y: 0, z: 0}
-  _finishTime: 0
-  _onlineFinishTime: 0
   _startTiming:
     m_PersistentCalls:
       m_Calls: []
+  _finishTime: 0
 --- !u!114 &3609343980634844308
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,20 +1,20 @@
 using Photon.Pun;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class KHS_HeyHoController : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] private KHS_MechaMarathonGameManager _mechaMarathonGameManager;
-    public KHS_PlayerController _playerController;  // 테스트를 위한 변수 선언
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private bool _isMoved;
-    [SerializeField] private bool _isTargeted;
-    [SerializeField] private Vector3 targetPos;
+    public KHS_PlayerController _playerController;  // 테스트를 위한 변수 
+    [SerializeField] private float _moveSpeed;  // 헤이호의 이동속도 변수
+    [SerializeField] private bool _isMoved;     // 헤이호가 움직였는가 변수
+    [SerializeField] private bool _isTargeted;  // 헤이호가 목적지를 설정했는가 변수
+    [SerializeField] private Vector3 targetPos; // 헤이호가 이동해야할 목적지 변수
 
-    [SerializeField] private float _finishTime;
-    [SerializeField] private float _onlineFinishTime;
-    [SerializeField] private UnityEvent _startTiming;
+    [SerializeField] private UnityEvent _startTiming;   // 헤이호가 움직이기 시작했다는 이벤트
 
+    [SerializeField] private float _finishTime; // 헤이호가 목적지까지 걸리는 시간 변수
     public float FinishTime { get { return _finishTime; } set { _finishTime = value; } }
 
 
@@ -52,31 +52,36 @@ public class KHS_HeyHoController : MonoBehaviourPun, IPunObservable
     {
         if (_isTargeted == false)   // 타겟이 정해지지 않았을때
         {
-            targetPos = new Vector3(transform.position.x, transform.position.y, transform.position.z + count);
+            // 매개변수로 받은 총 입력횟수만큼 position.z 값을 늘려주기
+            targetPos = new Vector3(transform.position.x, transform.position.y, transform.position.z + count / 2 ); // TODO : 거리조절 필요?
             Debug.Log($"현재 타겟 위치 {targetPos}");
 
-            // 헤이호와 타겟 위치 사이의 거리
-            float _distance = Vector3.Distance(transform.position, targetPos);
 
-            // 목표위치까지 걸리는 시간
-            FinishTime = _distance / _moveSpeed;
-            Debug.Log($"헤이호 컨트롤러에서 걸리는 시간 계산 완료됨 {FinishTime}");
+            float _distance = Vector3.Distance(transform.position, targetPos);  // 헤이호와 타겟 위치 사이의 거리
+
+            FinishTime = _distance / _moveSpeed;    // 목적지까지 걸리는 시간 구하기
+            Debug.Log($"헤이호 컨트롤러에서 걸리는 시간 계산 완료됨 {FinishTime}");    // 목표위치까지 걸리는 시간
 
             _isTargeted = true; // 타겟 설정 완료
-            _mechaMarathonGameManager._heyHoFinished++;
-            _startTiming?.Invoke(); 
+
+            photonView.RPC("FinishedHeyHo", RpcTarget.MasterClient);    // 헤이호가 출발했다는 변수의 값을 늘려주기 위한 RPC 호출
+
+            StartCoroutine(StartTimingCoroutine()); // 헤이호가 출발했다는 타이밍 선언
+
 
         }
 
+        // 설정해준 목적지로 설정한 속도로 헤이호가 날아감
         transform.position = Vector3.MoveTowards(transform.position, targetPos, _moveSpeed * Time.deltaTime);
 
-        if (transform.position.z >= targetPos.z && _isMoved == false)
+        if (transform.position.z >= targetPos.z && _isMoved == false)   // 타겟위치보다 현재위치가 더 높아지면 && 아직 도착을 하지 않았을때
         {
             _isMoved = true; // 목표 위치에 도달했음을 표시
+  
         }
     }
 
-    private void ReadyHeyHo()
+    private void ReadyHeyHo()   // 스크립트 참조를 위한 RPC 함수
     {
         photonView.RPC("ReadyHeyHoRPC", RpcTarget.AllBuffered);
     }
@@ -87,6 +92,18 @@ public class KHS_HeyHoController : MonoBehaviourPun, IPunObservable
     {
         _mechaMarathonGameManager.HeyHoController[photonView.Owner.ActorNumber] = this;
         Debug.Log($"{photonView.Owner.ActorNumber}번째 헤이호 스크립트 참조 성공");
+    }
+
+    [PunRPC]
+    private void FinishedHeyHo()
+    {
+        _mechaMarathonGameManager._heyHoFinished++;
+    }
+
+    private IEnumerator StartTimingCoroutine()  // 헤이호가 움직이기 시작하는 타이밍 함수
+    {
+        yield return new WaitForSeconds(1f);    // (임시) _heyHoFinished변수가 제대로 반영이 될때까지 조금의 틈 주기
+        _startTiming?.Invoke(); // 이벤트로 추가해놓은 함수 실행
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
