@@ -11,32 +11,31 @@ public class KHS_PlayerController : MonoBehaviourPun, IPunObservable
 
     private void Awake()
     {
-        // (임시) 해당 오브젝트가 생성되었을때 게임매니저를 찾는 경우
         _mechaMarathonGameManager = FindAnyObjectByType<KHS_MechaMarathonGameManager>();
-
     }
 
     private void Start()
     {
-        // 플레이어 오브젝트가 생성되면 준비완료했다고 신호를 보내준다.
-        Ready();
-        _mechaMarathonGameManager.PlayerReady();
+        Ready(); // 플레이어 오브젝트가 생성되면 스크립트를 참조한다.
+        _mechaMarathonGameManager.PlayerReady();    // 게임 매니저에 선언되어있는 PlayerReady함수를 호출하여 준비가 되었다고 알린다.
         Debug.Log($"레디한 플레이어 : {photonView.Owner.ActorNumber}");
 
     }
 
     private void Update()
     {
-        // 시작하지 않은 상태면 return
-        if (_mechaMarathonGameManager.IsStarted == false)
+        if (_mechaMarathonGameManager.IsStarted == false)   // 시작하지 않은 상태면 return
             return;
 
-        if (photonView.IsMine)
+        if (photonView.IsMine)  // 이 오브젝트가 내 소유권이라면
         {
-            if (Input.GetKeyDown(KeyCode.J))
+            if (Input.GetKeyDown(KeyCode.J))    // J를 눌렀을 때
             {
-                TotalInputCount++;
-                Debug.Log("J키 눌러짐");
+                if(TotalInputCount <= 60)   // (임시) 매크로 방지를 위한 입력횟수 제한
+                {
+                    TotalInputCount++;
+                    Debug.Log("J키 눌러짐");
+                }
             }
         }
         else return;
@@ -59,12 +58,12 @@ public class KHS_PlayerController : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(_totalInputCount);
+            stream.SendNext(_totalInputCount);  // 플레이어에서 입력한 총 입력횟수 동기화
 
         }
         else if (stream.IsReading)
         {
-            _totalInputCount = (int)stream.ReceiveNext();
+            _totalInputCount = (int)stream.ReceiveNext();   // 플레이어에서 입력한 총 입력횟수 동기화
         }
     }
 }
