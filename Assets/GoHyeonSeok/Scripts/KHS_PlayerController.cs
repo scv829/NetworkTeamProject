@@ -7,7 +7,6 @@ public class KHS_PlayerController : MonoBehaviourPun, IPunObservable
     public int TotalInputCount { get { return _totalInputCount; } set { _totalInputCount = value; } }
 
     [SerializeField] private KHS_MechaMarathonGameManager _mechaMarathonGameManager;
-    [SerializeField] private KHS_HeyHoController _heyHoController;
 
 
     private void Awake()
@@ -15,8 +14,6 @@ public class KHS_PlayerController : MonoBehaviourPun, IPunObservable
         // (임시) 해당 오브젝트가 생성되었을때 게임매니저를 찾는 경우
         _mechaMarathonGameManager = FindAnyObjectByType<KHS_MechaMarathonGameManager>();
 
-        // (임시) 해당 오브젝트가 생성되었을때 헤이호를 찾는 경우
-        //_heyHoController = FindAnyObjectByType<KHS_HeyHoController>();
     }
 
     private void Start()
@@ -48,7 +45,6 @@ public class KHS_PlayerController : MonoBehaviourPun, IPunObservable
     private void Ready()
     {
         photonView.RPC("ReadyRPC", RpcTarget.AllBuffered);
-
     }
 
 
@@ -56,7 +52,7 @@ public class KHS_PlayerController : MonoBehaviourPun, IPunObservable
     private void ReadyRPC()
     {
         _mechaMarathonGameManager.PlayerController[photonView.Owner.ActorNumber] = this;
-        Debug.Log($"{PhotonNetwork.LocalPlayer.ActorNumber}번째 플레이어 스크립트 참조 됨");
+        Debug.Log($"{photonView.Owner.ActorNumber}번째 플레이어 스크립트 참조 됨");
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -64,7 +60,7 @@ public class KHS_PlayerController : MonoBehaviourPun, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(_totalInputCount);
-            
+
         }
         else if (stream.IsReading)
         {

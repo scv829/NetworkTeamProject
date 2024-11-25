@@ -144,6 +144,9 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0, z: 0}
   _finishTime: 0
   _onlineFinishTime: 0
+  _startTiming:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3609343980634844308
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -137,4 +137,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _totalInputCount: 0
   _mechaMarathonGameManager: {fileID: 0}
-  _heyHoController: {fileID: 0}
