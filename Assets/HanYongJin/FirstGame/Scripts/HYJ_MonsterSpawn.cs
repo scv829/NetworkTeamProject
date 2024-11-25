@@ -12,7 +12,7 @@ public class HYJ_MonsterSpawn : MonoBehaviourPun
 
     public void MonsterSpawn()
     {
-        photonView.RPC("MonsterSpawnRPc", RpcTarget.All);
+        photonView.RPC("MonsterSpawnRPC", RpcTarget.All);
     }
     [PunRPC]
     public void MonsterSpawnRPC()
