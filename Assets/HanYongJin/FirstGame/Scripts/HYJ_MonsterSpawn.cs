@@ -14,7 +14,7 @@ public class HYJ_MonsterSpawn : MonoBehaviourPun
     {
         photonView.RPC("MonsterSpawnRPc", RpcTarget.All);
     }
-
+    [PunRPC]
     public void MonsterSpawnRPC()
     {
         //몬스터 바디 프리팹 생성, 자식 오브젝트로 생성

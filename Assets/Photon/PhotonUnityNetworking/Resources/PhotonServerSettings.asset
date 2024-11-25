@@ -59,6 +59,7 @@ MonoBehaviour:
   - ShowExplainRPC
   - FinishedHeyHo
   - PlayerSpawnRPC
+  - MonsterSpawnRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
