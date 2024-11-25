@@ -12,6 +12,13 @@ public enum State
     choice,
     end
 };
+public enum MyTurn
+{
+    player1,
+    player2,
+    player3,
+    player4
+};
 public class ljh_GameManager : MonoBehaviour
 {
     [SerializeField] public ljh_UIManager uiManager;
@@ -20,8 +27,6 @@ public class ljh_GameManager : MonoBehaviour
     [SerializeField] public ljh_TestGameScene scene;
     [SerializeField] public ljh_CartManager cartManagerEnter;
     [SerializeField] public ljh_CartManager cartManagerExit;
-
-    public Vector3 _curPos;
 
     public int curUserNum;
     public int deathCount = 0;
@@ -41,6 +46,11 @@ public class ljh_GameManager : MonoBehaviour
     [SerializeField] public GameObject door;
     [SerializeField] public GameObject sunLight;
 
+    public Coroutine moveCo;
+
+    public PlayerNumber playerNumber;
+
+    public MyTurn myTurn;
 
     public static ljh_GameManager instance = null;
 
@@ -48,21 +58,35 @@ public class ljh_GameManager : MonoBehaviour
     {
         if (instance == null)
             instance = this;
-    
+
         else if (instance != this)
             Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
 
-        curUserNum = 4; // ToDo : 테스트용도로 4로 둔 상태 추후에 0으로 교체 및 테스트게임신에서 주석 해제
- 
-        if(curState != State.idle)
+        curUserNum = 2; // ToDo : 테스트용도로 4로 둔 상태 추후에 0으로 교체 및 테스트게임신에서 주석 해제
+
+        if (curState != State.idle)
             curState = State.idle;
+
+        myTurn = 0;
+
     }
 
     private void Start()
     {
-        UserNumCalculate(curUserNum - deathCount); 
+        UserNumCalculate(curUserNum - deathCount);
+
+
+        if (player != null)
+        {
+            for (int i = 0; i < scene.playerArray.Length - 1; i++)
+            {
+                scene.playerArray[i].GetComponent<ljh_Player>().playerNumber = (PlayerNumber)i;
+                
+                // 인트인 리스트에 
+            }
+        }
         //플레이어의 갯수를 세줌 > playerNum
         //curUserNum은 포톤뷰의 숫자를 세줌?
         // 둘이 동일하면 첫번째 플레이어 상태 무브로 변경
@@ -76,8 +100,9 @@ public class ljh_GameManager : MonoBehaviour
 
     private void Update()
     {
-
         Playing();
+
+        
 
     }
     public void UserNumCalculate(int curUserNum)
@@ -121,29 +146,32 @@ public class ljh_GameManager : MonoBehaviour
     public void Playing()
     {
 
-        switch (ljh_GameManager.instance.curState)
+        switch (curState)
         {
             case State.idle:
                 uiManager.ShowUiIdle();
                 inputManager.FindPlayer();
+                MoveStart();
                 break;
 
             case State.enter:
                 uiManager.ShowUiEnterMove();
-                cartManagerEnter.CartMoveEnter();
+                //cartManagerEnter.CartMoveEnter();
                 break;
 
             case State.choice:
                 uiManager.ShowUiChoice();
-                player.UnRideCart();
-                _curPos = inputManager.ChoiceAnswer();
-                inputManager.SelectButton(_curPos);
+                //player.UnRideCart();
+                //_curPos = inputManager.ChoiceAnswer();
+                //inputManager.SelectButton(_curPos);
+
                 break;
 
             case State.exit:
                 uiManager.ShowUiExitMove();
-                player.RideExitCart();
-                cartManagerEnter.CartMoveExit();
+                //player.RideExitCart();
+                //cartManagerEnter.CartMoveExit();
+                //player.NextTurn(player.i);
                 break;
 
             case State.end:
@@ -153,9 +181,26 @@ public class ljh_GameManager : MonoBehaviour
         }
     }
 
+    public void MoveStart()
+    {
+        if (moveCo == null)
+            moveCo = StartCoroutine(ComoveStart());
+    }
+
+    IEnumerator ComoveStart()
+    {
+        yield return new WaitForSeconds(5f);
+        curState = State.enter;
+        StopCoroutine(moveCo);
+    }
+
+    public void PlayerExit()
+    {
+        curState = State.exit;
+    }
 
 
-    void GameEnd()
+    public void GameEnd()
     {
         door.transform.rotation = Quaternion.Euler(0, 90, 0);
         sunLight.transform.rotation = Quaternion.Euler(130, 48, 0);

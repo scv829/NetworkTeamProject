@@ -1187,7 +1187,6 @@ GameObject:
   m_Component:
   - component: {fileID: 156585905}
   - component: {fileID: 156585904}
-  - component: {fileID: 156585906}
   m_Layer: 0
   m_Name: Cart3
   m_TagString: Untagged
@@ -1209,8 +1208,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Path: {fileID: 879389670}
   m_UpdateMethod: 0
-  m_PositionUnits: 1
-  m_Speed: 0
+  m_PositionUnits: 2
+  m_Speed: 1.1
   m_Position: 0
 --- !u!4 &156585905
 Transform:
@@ -1227,19 +1226,6 @@ Transform:
   m_Father: {fileID: 759296074}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &156585906
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 156585903}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &163104052
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1408,7 +1394,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3605200f2d250f24db80071282092000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cart: {fileID: 1264861814}
+  cart: {fileID: 0}
+  cartArray:
+  - {fileID: 1264861814}
+  - {fileID: 530734142}
+  - {fileID: 156585903}
+  - {fileID: 284648084}
 --- !u!1001 &235487938
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1791,7 +1782,6 @@ GameObject:
   m_Component:
   - component: {fileID: 284648086}
   - component: {fileID: 284648085}
-  - component: {fileID: 284648087}
   m_Layer: 0
   m_Name: Cart4
   m_TagString: Untagged
@@ -1813,8 +1803,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Path: {fileID: 923226663}
   m_UpdateMethod: 0
-  m_PositionUnits: 1
-  m_Speed: 0
+  m_PositionUnits: 2
+  m_Speed: 1.1
   m_Position: 0
 --- !u!4 &284648086
 Transform:
@@ -1831,19 +1821,6 @@ Transform:
   m_Father: {fileID: 759296074}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &284648087
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 284648084}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &301349795
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3103,7 +3080,6 @@ GameObject:
   m_Component:
   - component: {fileID: 530734144}
   - component: {fileID: 530734143}
-  - component: {fileID: 530734145}
   m_Layer: 0
   m_Name: Cart2
   m_TagString: Untagged
@@ -3125,8 +3101,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Path: {fileID: 305773455}
   m_UpdateMethod: 0
-  m_PositionUnits: 1
-  m_Speed: 0
+  m_PositionUnits: 2
+  m_Speed: 1.1
   m_Position: 0
 --- !u!4 &530734144
 Transform:
@@ -3143,19 +3119,6 @@ Transform:
   m_Father: {fileID: 759296074}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &530734145
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 530734142}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &543636440
 GameObject:
   m_ObjectHideFlags: 0
@@ -3672,7 +3635,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3605200f2d250f24db80071282092000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cart: {fileID: 1264861814}
+  cart: {fileID: 0}
+  cartArray:
+  - {fileID: 1264861814}
+  - {fileID: 530734142}
+  - {fileID: 156585903}
+  - {fileID: 284648084}
 --- !u!1001 &627876349
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6534,7 +6502,7 @@ MonoBehaviour:
     width: 0.2
   m_Looped: 0
   m_Waypoints:
-  - position: {x: 4.2048054, y: 2.6004307, z: 3.2194111}
+  - position: {x: 4.1553874, y: 2.8738308, z: 3.2194111}
     roll: 0
   - position: {x: 8.549193, y: 2.4083154, z: 3.535947}
     roll: 0
@@ -7632,7 +7600,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3605200f2d250f24db80071282092000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cart: {fileID: 1264861814}
+  cart: {fileID: 0}
+  cartArray:
+  - {fileID: 1264861814}
+  - {fileID: 530734142}
+  - {fileID: 156585903}
+  - {fileID: 284648084}
 --- !u!1001 &1177016326
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7921,7 +7894,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1264861816}
   - component: {fileID: 1264861815}
-  - component: {fileID: 1264861817}
   m_Layer: 0
   m_Name: Cart1
   m_TagString: Untagged
@@ -7944,7 +7916,7 @@ MonoBehaviour:
   m_Path: {fileID: 1908039691}
   m_UpdateMethod: 0
   m_PositionUnits: 2
-  m_Speed: 1.2
+  m_Speed: 1.1
   m_Position: 0
 --- !u!4 &1264861816
 Transform:
@@ -7961,19 +7933,6 @@ Transform:
   m_Father: {fileID: 759296074}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1264861817
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1264861814}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1270741095
 GameObject:
   m_ObjectHideFlags: 0
@@ -8215,7 +8174,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1284130123}
   - component: {fileID: 1284130125}
-  - component: {fileID: 1284130124}
   m_Layer: 0
   m_Name: Cart3
   m_TagString: Untagged
@@ -8238,19 +8196,6 @@ Transform:
   m_Father: {fileID: 1623997052}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1284130124
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1284130122}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1284130125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8265,8 +8210,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Path: {fileID: 1301588300}
   m_UpdateMethod: 0
-  m_PositionUnits: 1
-  m_Speed: 0
+  m_PositionUnits: 2
+  m_Speed: 1.1
   m_Position: 0
 --- !u!1 &1294189263
 GameObject:
@@ -8331,6 +8276,7 @@ MonoBehaviour:
   boom: {fileID: 1294685917}
   door: {fileID: 841836663}
   sunLight: {fileID: 1911679157}
+  playerNum: 0
 --- !u!1 &1294685917
 GameObject:
   m_ObjectHideFlags: 0
@@ -8970,7 +8916,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3605200f2d250f24db80071282092000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cart: {fileID: 1264861814}
+  cart: {fileID: 0}
+  cartArray:
+  - {fileID: 1264861814}
+  - {fileID: 530734142}
+  - {fileID: 156585903}
+  - {fileID: 284648084}
 --- !u!1 &1409027790
 GameObject:
   m_ObjectHideFlags: 0
@@ -9269,7 +9220,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1427674161}
   - component: {fileID: 1427674163}
-  - component: {fileID: 1427674162}
   m_Layer: 0
   m_Name: Cart1
   m_TagString: Untagged
@@ -9284,27 +9234,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1427674160}
-  m_LocalRotation: {x: 0.028472492, y: 0.63066, z: -0.023163924, w: 0.77519083}
-  m_LocalPosition: {x: -0.9609728, y: 3.0621471, z: 0.27977943}
+  m_LocalRotation: {x: 0.04997777, y: 0.63058233, z: -0.04074671, w: 0.77343905}
+  m_LocalPosition: {x: -1.0103905, y: 3.3355472, z: 0.27977943}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1623997052}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1427674162
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1427674160}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1427674163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9318,9 +9255,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Path: {fileID: 1034858794}
-  m_UpdateMethod: 0
-  m_PositionUnits: 1
-  m_Speed: 1
+  m_UpdateMethod: 2
+  m_PositionUnits: 2
+  m_Speed: 1.1
   m_Position: 0
 --- !u!1 &1428185658
 GameObject:
@@ -9368,6 +9305,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cart: {fileID: 0}
+  cartArray:
+  - {fileID: 1264861814}
+  - {fileID: 530734142}
+  - {fileID: 156585903}
+  - {fileID: 284648084}
 --- !u!1001 &1447575223
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9443,6 +9385,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cart: {fileID: 0}
+  cartArray:
+  - {fileID: 1264861814}
+  - {fileID: 530734142}
+  - {fileID: 156585903}
+  - {fileID: 284648084}
 --- !u!1 &1472030309
 GameObject:
   m_ObjectHideFlags: 0
@@ -9453,7 +9400,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1472030310}
   - component: {fileID: 1472030312}
-  - component: {fileID: 1472030311}
   m_Layer: 0
   m_Name: Cart2
   m_TagString: Untagged
@@ -9476,19 +9422,6 @@ Transform:
   m_Father: {fileID: 1623997052}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1472030311
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1472030309}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1472030312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9503,8 +9436,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Path: {fileID: 1260795916}
   m_UpdateMethod: 0
-  m_PositionUnits: 1
-  m_Speed: 0
+  m_PositionUnits: 2
+  m_Speed: 1.1
   m_Position: 0
 --- !u!1001 &1476634182
 PrefabInstance:
@@ -9647,6 +9580,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cart: {fileID: 0}
+  cartArray:
+  - {fileID: 1264861814}
+  - {fileID: 530734142}
+  - {fileID: 156585903}
+  - {fileID: 284648084}
 --- !u!1001 &1497044880
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10843,6 +10781,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cart: {fileID: 0}
+  cartArray:
+  - {fileID: 1264861814}
+  - {fileID: 530734142}
+  - {fileID: 156585903}
+  - {fileID: 284648084}
 --- !u!1001 &1712316903
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11650,6 +11593,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cart: {fileID: 0}
+  cartArray:
+  - {fileID: 1264861814}
+  - {fileID: 530734142}
+  - {fileID: 156585903}
+  - {fileID: 284648084}
 --- !u!1001 &1800615853
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11883,6 +11831,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cart: {fileID: 0}
+  cartArray:
+  - {fileID: 1264861814}
+  - {fileID: 530734142}
+  - {fileID: 156585903}
+  - {fileID: 284648084}
 --- !u!1001 &1822914579
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12629,6 +12582,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cart: {fileID: 0}
+  cartArray:
+  - {fileID: 1264861814}
+  - {fileID: 530734142}
+  - {fileID: 156585903}
+  - {fileID: 284648084}
 --- !u!1001 &1947249931
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12976,7 +12934,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3605200f2d250f24db80071282092000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cart: {fileID: 1264861814}
+  cart: {fileID: 0}
+  cartArray:
+  - {fileID: 1264861814}
+  - {fileID: 530734142}
+  - {fileID: 156585903}
+  - {fileID: 284648084}
 --- !u!1001 &2021484604
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14045,7 +14008,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2145168890}
   - component: {fileID: 2145168892}
-  - component: {fileID: 2145168891}
   m_Layer: 0
   m_Name: Cart4
   m_TagString: Untagged
@@ -14068,19 +14030,6 @@ Transform:
   m_Father: {fileID: 1623997052}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &2145168891
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2145168889}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2145168892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14095,8 +14044,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Path: {fileID: 1410925515}
   m_UpdateMethod: 0
-  m_PositionUnits: 1
-  m_Speed: 0
+  m_PositionUnits: 2
+  m_Speed: 1.1
   m_Position: 0
 --- !u!114 &2133425116530062048
 MonoBehaviour:
@@ -14131,6 +14080,8 @@ MonoBehaviour:
   defaultIndex: 0
   minus: 0
   index: 0
+  buttonObj: []
+  pos: []
 --- !u!114 &4733016583352301864
 MonoBehaviour:
   m_ObjectHideFlags: 0

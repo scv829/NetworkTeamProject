@@ -37,9 +37,11 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
     [SerializeField] GameObject cart3;
     [SerializeField] GameObject cart4;
 
-    int curUserNum;
+    public int curUserNum;
     public GameObject player;
 
+    public GameObject[] playerArray;
+    public int playerCount;
 
 
     [SerializeField] Vector3 playerPos;
@@ -49,7 +51,8 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        
+        playerArray = new GameObject[4];
+
         playerPos1 = playerSpawner1.transform.position;
         playerPos2 = playerSpawner2.transform.position;
         playerPos3 = playerSpawner3.transform.position;
@@ -60,8 +63,9 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
         playerColor3 = new (0, 1, 0);
         playerColor4 = new (0, 0, 0);
 
-        PhotonNetwork.LocalPlayer.NickName = $"Player{Random.Range(0000,9999)}";
-        PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.LocalPlayer.NickName = $"Player{Random.Range(0000,9999)}"; // 이거 지우고
+        PhotonNetwork.ConnectUsingSettings(); // 이거 지우고
+        
 
     }
 
@@ -88,6 +92,9 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
     { 
         PlayerSpawn();
 
+        //Comment 플레이어 리스트의 Count 로 현재 인원 파악
+        //ljh_GameManager.instance.curUserNum = playerList.Count - 1; 테스트 끝나면 주석 해제
+
         if (!PhotonNetwork.IsMasterClient)
             return;
 
@@ -104,11 +111,18 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
     private void PlayerSpawn()
     {
         index = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-
         Vector3[] vectorPlayerSpawn = { playerPos1, playerPos2, playerPos3, playerPos4};
 
         playerPos = new Vector3(vectorPlayerSpawn[index].x, 0, vectorPlayerSpawn[index].z);
         player = PhotonNetwork.Instantiate("ljh_Player", playerPos, Quaternion.identity);
+        player.GetComponent<ljh_Player>().playerNumber = (PlayerNumber)index;
+        //playerArray[index] = player.gameObject;
+
+        //playerList[0] = 1번 플레이어다
+        //playerList[1] = 2번 플레이어다
+        //playerList[2] = 3번 플레이어다
+        //playerList[3] = 4번 플레이어다
+
 
         RideCart(player);
 
@@ -117,8 +131,8 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
 
         player.GetComponentInChildren<Renderer>().material.color = playerColor;
 
-       // ljh_GameManager.instance.curUserNum++;
 
+        
 
     }
 
@@ -126,6 +140,9 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
     {
         player.transform.parent = cartArray[index].transform;
     }
+
+
+    
 
 
 

@@ -32,8 +32,8 @@ public class ljh_Button : MonoBehaviour
 
 
 
-            if (ljh_GameManager.instance.curUserNum == 1)
-                ljh_GameManager.instance.curState = State.end;
+           // if (ljh_GameManager.instance.curUserNum == 1)
+           //     ljh_GameManager.instance.curState = State.end;
             // Todo :
             //애니메이션 추가
             //소리 추가
@@ -48,7 +48,9 @@ public class ljh_Button : MonoBehaviour
             // Todo :
             //폭탄 안터짐
             TurnOffButton(gameObject);
-            ljh_GameManager.instance.curState = State.exit;
+            ljh_GameManager.instance.PlayerExit();
+
+
             return;
         }
         //ToDo : 폭탄 터지는 내용 구현해야함
