@@ -15,8 +15,11 @@ public class TestNetworkScript : MonoBehaviourPunCallbacks
     [Header("Room")]
     public const string RoomName = "TestRoom";      // 포톤 방의 이름
     [SerializeField] Button startButton;            // 게임 시작 버튼
-    [Header("NextScene")]
-    [SerializeField] string sceneName;              // 다음으로 넘어갈 씬 이름
+    [Header("Scene")]
+    [SerializeField] string[] sceneNames;              // 다음으로 넘어갈 씬 이름
+    [SerializeField] GameObject sceneSelectCanvas;  
+    [SerializeField] RectTransform selectContent;
+    [SerializeField] TestSceneEntry sceneEntryPrefab;
 
     [Header("PlayerEntry")]
     [SerializeField] TestPlayerEntry[] playerEntries;   // 플레이어 엔트리의 수
@@ -39,6 +42,12 @@ public class TestNetworkScript : MonoBehaviourPunCallbacks
 
         // 마스터 클라이언트와 항상 똑같은 씬으로 로딩여부
         PhotonNetwork.AutomaticallySyncScene = true;
+
+        foreach(string name in sceneNames)
+        {
+            TestSceneEntry sceneEntry = Instantiate(sceneEntryPrefab, selectContent);
+            sceneEntry.SetInfo(name);
+        }
     }
 
     public void UpdatePlayers()
@@ -66,8 +75,15 @@ public class TestNetworkScript : MonoBehaviourPunCallbacks
         }
     }
 
-    public void StartGame()             
+    public void SelectGame()             
     {
-        PhotonNetwork.LoadLevel(sceneName);     // 게임 씬 전환
+        sceneSelectCanvas.SetActive(true);
+        startButton.gameObject.SetActive(false);
+    }
+
+    public void CancelSelectGame()
+    {
+        sceneSelectCanvas.SetActive(false);
+        startButton.gameObject.SetActive(true);
     }
 }
