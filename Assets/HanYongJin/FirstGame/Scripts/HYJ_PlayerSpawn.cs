@@ -18,7 +18,13 @@ public class HYJ_PlayerSpawn : MonoBehaviourPun
 
     public void PlayerSpawn()
     {
-        if(PhotonNetwork.LocalPlayer.ActorNumber ==1)
+        photonView.RPC("PlayerSpawnRPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void PlayerSpawnRPC()
+    {
+        if(PhotonNetwork.LocalPlayer.ActorNumber == 1)
         {
             GameObject player = PhotonNetwork.Instantiate("HYJ_GameObject/HYJ_Player", playerPoint1.transform.position, Quaternion.identity);
             player.transform.parent = playerPoint1.transform;
@@ -27,16 +33,19 @@ public class HYJ_PlayerSpawn : MonoBehaviourPun
         else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
         {
             GameObject player = PhotonNetwork.Instantiate("HYJ_GameObject/HYJ_Player", playerPoint2.transform.position, Quaternion.identity);
+            player.transform.parent = playerPoint2.transform;
             monsterPoint2.GetComponent<HYJ_MonsterSpawn>().MonsterSpawn();
         }
         else if (PhotonNetwork.LocalPlayer.ActorNumber == 3)
         {
             GameObject player = PhotonNetwork.Instantiate("HYJ_GameObject/HYJ_Player", playerPoint3.transform.position, Quaternion.identity);
+            player.transform.parent = playerPoint3.transform;
             monsterPoint3.GetComponent<HYJ_MonsterSpawn>().MonsterSpawn();
         }
         else if (PhotonNetwork.LocalPlayer.ActorNumber == 4)
         {
             GameObject player = PhotonNetwork.Instantiate("HYJ_GameObject/HYJ_Player", playerPoint4.transform.position, Quaternion.identity);
+            player.transform.parent = playerPoint4.transform;
             monsterPoint4.GetComponent<HYJ_MonsterSpawn>().MonsterSpawn();
         }
     }

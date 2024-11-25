@@ -14,7 +14,6 @@ public class HYJ_PlayerController : MonoBehaviourPun
     private float time;
     private void Start()
     {
-
         monster = transform.GetComponentInParent<HYJ_MonsterSearch>();
         time = 0;
     }
