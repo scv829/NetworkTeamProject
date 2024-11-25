@@ -1408,6 +1408,11 @@ MonoBehaviour:
   playerSpawnPoint: {fileID: 1725885692}
   timer: {fileID: 166544726}
   gameStartCountText: {fileID: 1637511979}
+  playerColors:
+  - {r: 1, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0.22047567, b: 1, a: 0}
+  - {r: 0.976465, g: 1, b: 0, a: 0}
+  - {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 0}
 --- !u!1 &1389016695
 GameObject:
   m_ObjectHideFlags: 0
