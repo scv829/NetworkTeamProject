@@ -1,9 +1,10 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class HYJ_PlayerController : MonoBehaviour
+public class HYJ_PlayerController : MonoBehaviourPun
 {
     [SerializeField] Canvas timerCanvas;
     [SerializeField] TMP_Text playerLeftTimerText;
@@ -19,20 +20,26 @@ public class HYJ_PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (monster.monsterCount > 0)
+        if (photonView.IsMine == false)
         {
-            time += Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-
-                StartCoroutine(Attack());
-            }
+            return;
         }
-        if (monster.monsterCount <= 0 && time > 0)
-        {
-            timerCanvas.gameObject.SetActive(true);
-            PlayerTimeRecord();
-        }
+        if (Input.GetKeyDown(KeyCode.Space))
+            StartCoroutine(Attack());
+        
+        //if (monster.monsterCount > 0)
+        //{
+        //    time += Time.deltaTime;
+        //    if (Input.GetKeyDown(KeyCode.Space))
+        //    {
+        //        StartCoroutine(Attack());
+        //    }
+        //}
+        //if (monster.monsterCount <= 0 && time > 0)
+        //{
+        //    timerCanvas.gameObject.SetActive(true);
+        //    PlayerTimeRecord();
+        //}
     }
     IEnumerator Attack()
     {

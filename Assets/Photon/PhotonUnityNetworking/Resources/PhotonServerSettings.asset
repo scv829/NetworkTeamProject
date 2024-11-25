@@ -51,6 +51,8 @@ MonoBehaviour:
   - StartRPC
   - FinishRPC
   - FinishGame
+  - SendAnswerRPC
+  - SlotSettingRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

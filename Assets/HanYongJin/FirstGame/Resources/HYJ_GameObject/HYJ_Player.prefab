@@ -336,7 +336,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2480995239135553841}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.55, y: -0.184, z: 0.403}
+  m_LocalPosition: {x: -0.55, y: -0.184, z: -0.403}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -434,7 +434,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2594529064887082002}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0.765}
+  m_LocalPosition: {x: 0, y: 0, z: -0.765}
   m_LocalScale: {x: 4, y: 0.080000006, z: 0.64000005}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -749,6 +749,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3153527135976727303}
   - component: {fileID: 4620369837987245582}
+  - component: {fileID: 8982965109545220644}
+  - component: {fileID: -2585991745572573444}
   m_Layer: 0
   m_Name: HYJ_Player
   m_TagString: Player
@@ -786,8 +788,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerCanvas: {fileID: 132595203998745454}
-  playerLeftTimerText: {fileID: 3287807187729588133}
-  playerRightTimerText: {fileID: 36941760889273638}
+  playerLeftTimerText: {fileID: 36941760889273638}
+  playerRightTimerText: {fileID: 3287807187729588133}
+--- !u!114 &8982965109545220644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3153527135976727296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: -2585991745572573444}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &-2585991745572573444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3153527135976727296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 0
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &7334572066189152964
 GameObject:
   m_ObjectHideFlags: 0

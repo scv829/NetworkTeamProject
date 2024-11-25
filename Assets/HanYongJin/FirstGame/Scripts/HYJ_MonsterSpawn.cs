@@ -1,9 +1,10 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
-public class HYJ_MonsterSpawn : MonoBehaviour
+public class HYJ_MonsterSpawn : MonoBehaviourPun
 {
     [SerializeField] GameObject playerPoint;
     [SerializeField] GameObject bodyPrefab;
