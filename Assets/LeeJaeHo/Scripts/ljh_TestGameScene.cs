@@ -38,6 +38,7 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
     [SerializeField] GameObject cart4;
 
     int curUserNum;
+    public GameObject player;
 
 
 
@@ -107,7 +108,7 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
         Vector3[] vectorPlayerSpawn = { playerPos1, playerPos2, playerPos3, playerPos4};
 
         playerPos = new Vector3(vectorPlayerSpawn[index].x, 0, vectorPlayerSpawn[index].z);
-        GameObject player = PhotonNetwork.Instantiate("ljh_Player", playerPos, Quaternion.identity);
+        player = PhotonNetwork.Instantiate("ljh_Player", playerPos, Quaternion.identity);
 
         RideCart(player);
 
@@ -116,7 +117,7 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
 
         player.GetComponentInChildren<Renderer>().material.color = playerColor;
 
-        ljh_GameManager.instance.curUserNum++;
+       // ljh_GameManager.instance.curUserNum++;
 
 
     }
@@ -124,7 +125,6 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
     private void RideCart(GameObject player)
     {
         player.transform.parent = cartArray[index].transform;
-        curUserNum++;
     }
 
 

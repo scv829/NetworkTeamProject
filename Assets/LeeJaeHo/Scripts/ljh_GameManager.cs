@@ -18,16 +18,23 @@ public class ljh_GameManager : MonoBehaviour
     [SerializeField] public ljh_InputManager inputManager;
     [SerializeField] public ljh_Player player;
     [SerializeField] public ljh_TestGameScene scene;
-    [SerializeField] public ljh_CartManager cartManager;
+    [SerializeField] public ljh_CartManager cartManagerEnter;
+    [SerializeField] public ljh_CartManager cartManagerExit;
 
+    public Vector3 _curPos;
 
     public int curUserNum;
+    public int deathCount = 0;
     public int defaultIndex;
     public int minus;
     [SerializeField] public int index;
 
 
     [SerializeField] public State curState;
+
+    [SerializeField] public GameObject Player4;
+    [SerializeField] public GameObject Player3;
+    [SerializeField] public GameObject Player2;
 
     [Header("기타 오브젝트")]
     [SerializeField] public GameObject boom;
@@ -47,15 +54,15 @@ public class ljh_GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        curUserNum = 0;
-
+        curUserNum = 4; // ToDo : 테스트용도로 4로 둔 상태 추후에 0으로 교체 및 테스트게임신에서 주석 해제
+ 
         if(curState != State.idle)
             curState = State.idle;
     }
 
     private void Start()
     {
-        UserNumCalculate(4); // 나중엔 curUserNum 으로 바꿔야함
+        UserNumCalculate(curUserNum - deathCount); 
         //플레이어의 갯수를 세줌 > playerNum
         //curUserNum은 포톤뷰의 숫자를 세줌?
         // 둘이 동일하면 첫번째 플레이어 상태 무브로 변경
@@ -80,18 +87,27 @@ public class ljh_GameManager : MonoBehaviour
             case 4:
 
                 defaultIndex = 2;
+                Player4.SetActive(true);
+                Player3.SetActive(false);
+                Player2.SetActive(false);
                 //4인플
                 break;
 
             case 3:
 
                 defaultIndex = 2;
+                Player4.SetActive(false);
+                Player3.SetActive(true);
+                Player2.SetActive(false);
                 //3인플
                 break;
 
             case 2:
 
                 defaultIndex = 1;
+                Player4.SetActive(false);
+                Player3.SetActive(false);
+                Player2.SetActive(true);
                 //2인플
                 break;
 
@@ -104,7 +120,6 @@ public class ljh_GameManager : MonoBehaviour
 
     public void Playing()
     {
-        Vector3 _curPos = inputManager._curPos;
 
         switch (ljh_GameManager.instance.curState)
         {
@@ -115,18 +130,20 @@ public class ljh_GameManager : MonoBehaviour
 
             case State.enter:
                 uiManager.ShowUiEnterMove();
-                cartManager.CartMoveEnter();
+                cartManagerEnter.CartMoveEnter();
                 break;
 
             case State.choice:
                 uiManager.ShowUiChoice();
+                player.UnRideCart();
                 _curPos = inputManager.ChoiceAnswer();
                 inputManager.SelectButton(_curPos);
                 break;
 
             case State.exit:
                 uiManager.ShowUiExitMove();
-                cartManager.CartMoveExit();
+                player.RideExitCart();
+                cartManagerEnter.CartMoveExit();
                 break;
 
             case State.end:
@@ -142,6 +159,11 @@ public class ljh_GameManager : MonoBehaviour
     {
         door.transform.rotation = Quaternion.Euler(0, 90, 0);
         sunLight.transform.rotation = Quaternion.Euler(130, 48, 0);
+    }
+
+    public void ButtonOn4P()
+    {
+
     }
 
 

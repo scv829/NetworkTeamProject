@@ -10,22 +10,22 @@ public class ljh_Player : MonoBehaviourPun
 {
     //[SerializeField] ljh_InputManager inputManagerScript;
     [SerializeField] ljh_InputManager inputManagerScript;
+    [SerializeField] GameObject testGameScene;
     [SerializeField] GameObject inputManager;
     [SerializeField] GameObject cartManager;
 
-    Vector3 buttonPos1;
-    Vector3 buttonPos2;
-    Vector3 buttonPos3;
-    Vector3 buttonPos4;
-    Vector3 buttonPos5;
-
-    [SerializeField] GameObject buttonObj1;
-    [SerializeField] GameObject buttonObj2;
-    [SerializeField] GameObject buttonObj3;
-    [SerializeField] GameObject buttonObj4;
-    [SerializeField] GameObject buttonObj5;
+    GameObject[] buttonPos;
+    Vector3 myPos; // 테스트용
 
     [SerializeField] GameObject cart;
+
+    private void Start()
+    {
+        inputManager = GameObject.FindWithTag("GameController");
+        //buttonPos = inputManagerScript. 나중에 유저 4 > 3번 포즈 3명 > 3번포즈 2명 2번 포즈
+        myPos = new Vector3(-2, 0, 0.7f);
+        
+    }
 
 
     private void Update()
@@ -33,20 +33,14 @@ public class ljh_Player : MonoBehaviourPun
         if(!photonView.IsMine)
             return;
 
-        Vector3 vec = inputManager.GetComponent<ljh_InputManager>()._curPos;
-
+        Vector3 vec = ljh_GameManager.instance._curPos;
         if (vec != Vector3.zero)
         {
             MovePlayer(vec);
         }
         else return;
     }
-    private void Start()
-    {
-       inputManager = GameObject.FindWithTag("GameController");
-       
-    }
-
+    
     public void MovePlayer(Vector3 vector)
     {
         transform.position = vector;
@@ -54,6 +48,8 @@ public class ljh_Player : MonoBehaviourPun
 
     public void RideEnterCart()
     {
+        cartManager = ljh_GameManager.instance.cartManagerEnter.gameObject;
+
         ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
         int index = testGameScene.index;
 
@@ -63,16 +59,30 @@ public class ljh_Player : MonoBehaviourPun
 
     public void RideExitCart()
     {
+        cartManager = ljh_GameManager.instance.cartManagerExit.gameObject;
+
         ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
         int index = testGameScene.index;
 
         cart = cartManager.GetComponent<ljh_CartManager>().cartArrayExit[index];
-        transform.parent = cart.transform;
+        
+        GameObject player = testGameScene.player;
+
+        player.transform.parent = cart.transform;
+    }
+
+    public void UnRideCart()
+    {
+        ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
+        GameObject player = testGameScene.player;
+
+        player.transform.parent = null;
+        player.transform.position = myPos;
     }
 
     public void PlayerEnterdChoice()
     {
-        transform.position = Vector3.zero;
+        //transform.position = button[ljh_GameManager.instance.defaultIndex].transform.position;
     }
 
 

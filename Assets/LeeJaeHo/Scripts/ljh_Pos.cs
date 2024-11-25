@@ -1,22 +1,29 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ljh_Pos : MonoBehaviour
 {
-    ljh_InputManager inputManager;
-    ljh_Player player;
+    [SerializeField] GameObject cart;
 
-
-    public void OnCollisionEnter(Collision collision)
+    public void Update()
     {
-        if (ljh_GameManager.instance.curState == State.enter)
+        EndPoint();
+    }
+
+    public void EndPoint()
+    {
+
+        if (cart.GetComponent<CinemachineDollyCart>().m_Position == 1)
         {
-            if (collision.gameObject.CompareTag("Player"))
+            if (ljh_GameManager.instance.curState != State.choice)
             {
-                player.PlayerEnterdChoice();
                 ljh_GameManager.instance.curState = State.choice;
             }
+            return;
         }
     }
+
 }
