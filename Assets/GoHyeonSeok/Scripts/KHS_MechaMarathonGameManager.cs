@@ -4,22 +4,26 @@ using UnityEngine;
 
 public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObservable
 {
-    [SerializeField] private KHS_PlayerController[] _playerController;  // TODO : 배열 초기화 해야함. 매치메이킹 이후에 이루어지는 작업진행
+    [SerializeField] private KHS_PlayerController[] _playerController;  
     public KHS_PlayerController[] PlayerController { get { return _playerController; } set { _playerController = value; } }
 
-    [SerializeField] private KHS_HeyHoController[] _heyHoController;    // TODO : 배열 초기화 해야함. 매치메이킹 이후에 이루어지는 작업진행
+    [SerializeField] private KHS_HeyHoController[] _heyHoController;    
     public KHS_HeyHoController[] HeyHoController { get { return _heyHoController; } set { _heyHoController = value; } }
+
+    [SerializeField] private KHS_UIManager _uiManager;
+    public KHS_UIManager UIManager { get { return _uiManager; } set { _uiManager = value; } }
 
     [SerializeField] private bool _isStarted;
     public bool IsStarted { get { return _isStarted; } set { _isStarted = value; } }
 
-    [SerializeField] private bool _isFinished;
-    public bool IsFinished { get { return _isFinished; ; } set { _isFinished = value; } }
+    [SerializeField] private bool _isInputFinished;
+    public bool IsInputFinished { get { return _isInputFinished; ; } set { _isInputFinished = value; } }
 
     private float _gameTimer;
     public int[] _totalCount;   // TODO : 배열 초기화 해야함. 매치메이킹 이후에 이루어지는 작업진행
 
     public int _playersLoaded = 0;
+    public int _heyHoFinished = 0;
     private int _totalplayers;
     private float _finishTimer;
 
@@ -52,37 +56,35 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
 
         if (_gameTimer >= 5f) // 5초가 지나가면
         {
-            // 플레이어 컨트롤러 배열의 길이만큼 반복
-            //for (int i = 1; i < _playerController.Length; i++)
-            //{
-            //    // 현재 플레이어 컨트롤러가 배열에 할당되지 않았으면 break.
-            //    if (_playerController[i] == null)
-            //        break;
-
-            //    // 플레이어들의 총합 입력수를 입력
-            //    _totalCount[i] = _playerController[i].TotalInputCount;
-            //    Debug.Log($"Player {i} 총 입력 횟수 : {_totalCount[i]}");
-            //}
-
             // 게임 종료
             IsStarted = false;
 
             // 헤이호 출발을 위한 true
-            IsFinished = true;
-
-            // 타이머는 0으로
-            //_gameTimer = 0;
-
+            IsInputFinished = true;
             Debug.Log("게임 종료!");
 
-            if(PhotonNetwork.IsMasterClient)
-            {
-                photonView.RPC("FinishGame", RpcTarget.All);
-            }
 
         }
 
     }
+
+    public void MovingHeyHo()
+    {
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("mmmmmmm마스터 클라이언트로 확인.mmmmmmm");
+            photonView.RPC("FinishGame", RpcTarget.AllBuffered);
+            //FinishGame();
+        }
+        else
+        {
+            Debug.Log("mmmmm일반 클라이언트롤 확인.mmmmm");
+            photonView.RPC("FinishGame", RpcTarget.AllBuffered);
+            //FinishGame();
+        }
+    }
+
 
     private int FindWinnerHeyHo()
     {
@@ -105,14 +107,6 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
         }
         Debug.Log($"###########플레이어 인풋카운트 비교 끝###########{_heyHoIndex}, {_maxCount}");
     
-        //for(int i = 1; i < _totalCount.Length;i++)
-        //{
-        //    if(_totalCount[i] > _maxCount)
-        //    {
-        //        _maxCount = _totalCount[i];
-        //        _heyHoIndex = i;
-        //    }
-        //}
         return _heyHoIndex;
     }
 
@@ -163,9 +157,6 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
     {
         Vector3 spawnPosition = SetPosition();
 
-        //Color color = Random.ColorHSV();
-        //object[] data = { color.r, color.g, color.b };
-
         return PhotonNetwork.Instantiate("KHS/KHS_Player", spawnPosition, Quaternion.identity/*, data : data*/);
     }
 
@@ -175,9 +166,6 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
         Vector3 spawnPosition = SetPosition();
         spawnPosition.z += 2f;
 
-        //Color color = Random.ColorHSV();
-        //object[] data = { color.r, color.g, color.b };
-
         return PhotonNetwork.Instantiate("KHS/KHS_Hey-Ho", spawnPosition, Quaternion.identity/*, data : data*/);
 
     }
@@ -186,6 +174,7 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
     // 카운트다운 후 게임 시작 함수
     private IEnumerator DelayGameStart()
     {
+        _uiManager.CountDownGame();
 
         Debug.Log("3!");
         yield return _delay;
@@ -245,13 +234,24 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
     private void ResultGame()
     {
         Debug.Log($"승자는 {FindWinnerHeyHo()} 번 플레이어 입니다!");
+        _uiManager.OnWinner(FindWinnerHeyHo());
     }
 
     [PunRPC]
     private void FinishGame()
     {
-        StartCoroutine(MovedHeyHo());
-        Debug.Log("헤이호 날아가는 코루틴 시작 RPC");
+       
+        Debug.Log("_heyHoFinished 값 올림");
+        if (_heyHoFinished >= 1)
+        {
+            Debug.Log("헤이호 날아가는 코루틴 시작 RPC");
+            StartCoroutine(MovedHeyHo());
+        }
+        else
+        {
+            Debug.Log("코루틴 아직 시작안함");
+        }
+
     }
 
     [PunRPC]
@@ -269,6 +269,7 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
             stream.SendNext(_totalCount[2]);    // 2번 플레이어 총 카운트 횟수
             stream.SendNext(_totalCount[3]);    // 3번 플레이어 총 카운트 횟수
             stream.SendNext(_totalCount[4]);    // 4번 플레이어 총 카운트 횟수
+            stream.SendNext(_heyHoFinished);
         }
         else if (stream.IsReading)
         {
@@ -278,6 +279,7 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
             _totalCount[2] = (int)stream.ReceiveNext(); // 2번 플레이어 총 카운트 횟수
             _totalCount[3] = (int)stream.ReceiveNext(); // 3번 플레이어 총 카운트 횟수
             _totalCount[4] = (int)stream.ReceiveNext(); // 4번 플레이어 총 카운트 횟수
+            _heyHoFinished = (int)stream.ReceiveNext();
         }
     }
 }
