@@ -14,6 +14,7 @@ public class HYJ_PlayerController : MonoBehaviourPun
     private float time;
     private void Start()
     {
+
         monster = transform.GetComponentInParent<HYJ_MonsterSearch>();
         time = 0;
     }
@@ -40,6 +41,7 @@ public class HYJ_PlayerController : MonoBehaviourPun
             PlayerTimeRecord();
         }
     }
+
     IEnumerator Attack()
     {
         transform.Rotate(new Vector3(0, -90, 0));

@@ -18,7 +18,6 @@ public class HYJ_PlayerSpawn : MonoBehaviourPun
 
     public void PlayerSpawn()
     {
-        
         if(PhotonNetwork.LocalPlayer.ActorNumber ==1)
         {
             GameObject player = PhotonNetwork.Instantiate("HYJ_GameObject/HYJ_Player", playerPoint1.transform.position, Quaternion.identity);

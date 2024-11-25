@@ -4,6 +4,8 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using Photon.Pun.UtilityScripts;
+using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
 {
@@ -12,13 +14,42 @@ public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
     [SerializeField] GameObject timer;
     [SerializeField] TMP_Text gameStartCountText;
 
+    [SerializeField] Color[] playerColors;
+
     void Start()
     {
         PhotonNetwork.LocalPlayer.NickName = $"Player {Random.Range(1000, 10000)}";
-        //PhotonNetwork.ConnectUsingSettings();
-        //Debug
+        //PhotonNetwork.ConnectUsingSettings(); //게임 씬 테스트용
+
+        Vector3 vectorColor = new Vector3(playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].r, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].g, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].b);
+        PhotonNetwork.LocalPlayer.SetPlayerColor(vectorColor);
+        PhotonNetwork.LocalPlayer.SetLoad(true);
     }
 
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
+    {
+        if (changedProps.ContainsKey(HJS_CustomProperty.LOAD))
+        {
+            Debug.Log($"{targetPlayer.NickName} 이 로딩이 완료되었습니다. ");
+            bool allLoaded = CheckAllLoad();
+            Debug.Log($"모든 플레이어 로딩 완료 여부 : {allLoaded} ");
+            if (allLoaded)
+            {
+                StartCoroutine(StartDelayRoutine());
+            }
+        }
+    }
+
+    private bool CheckAllLoad()
+    {
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            if (player.GetLoad() == false)
+                return false;
+        }
+        return true;
+    }
+    /*
     public override void OnConnectedToMaster()
     {
         RoomOptions options = new RoomOptions();
@@ -27,12 +58,7 @@ public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
 
         PhotonNetwork.JoinOrCreateRoom(RoomName,options,TypedLobby.Default);
     }
-
-    public override void OnJoinedRoom()
-    {
-        StartCoroutine(StartDelayRoutine());
-    }
-
+    */
     IEnumerator StartDelayRoutine()
     {
         yield return new WaitForSeconds(2f); // 로딩기다리기
