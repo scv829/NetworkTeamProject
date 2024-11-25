@@ -16,6 +16,7 @@ public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LocalPlayer.NickName = $"Player {Random.Range(1000, 10000)}";
         //PhotonNetwork.ConnectUsingSettings();
+        //Debug
     }
 
     public override void OnConnectedToMaster()
