@@ -24,23 +24,23 @@ public class HYJ_PlayerController : MonoBehaviourPun
         {
             return;
         }
-        if (Input.GetKeyDown(KeyCode.Space))
-            StartCoroutine(Attack());
         
-        //if (monster.monsterCount > 0)
-        //{
-        //    time += Time.deltaTime;
-        //    if (Input.GetKeyDown(KeyCode.Space))
-        //    {
-        //        StartCoroutine(Attack());
-        //    }
-        //}
-        //if (monster.monsterCount <= 0 && time > 0)
-        //{
-        //    timerCanvas.gameObject.SetActive(true);
-        //    PlayerTimeRecord();
-        //}
+        
+        if (monster.monsterCount > 0)
+        {
+            time += Time.deltaTime;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                StartCoroutine(Attack());
+            }
+        }
+        if (monster.monsterCount <= 0 && time > 0)
+        {
+            timerCanvas.gameObject.SetActive(true);
+            PlayerTimeRecord();
+        }
     }
+
     IEnumerator Attack()
     {
         transform.Rotate(new Vector3(0, -90, 0));

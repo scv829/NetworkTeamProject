@@ -17,15 +17,20 @@ public class HYJ_GameTimer : MonoBehaviour
 
     private float time;
     private float playerTime;
+    private bool timerStart;
 
     private void Start()
     {
         time = 0f;
+        timerStart = false;
     }
 
     private void Update()
     {
-        TimerUpdate();
+        if (timerStart)
+        {
+            TimerUpdate();
+        }
     }
 
     public void TimerUpdate()
@@ -41,5 +46,10 @@ public class HYJ_GameTimer : MonoBehaviour
             timerLeftText.text = "Time";
             timerRightText.text = "Over";
         }
+    }
+
+    public void TimerStart()
+    {
+        timerStart = true;
     }
 }
