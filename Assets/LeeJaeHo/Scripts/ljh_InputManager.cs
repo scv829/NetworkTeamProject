@@ -1,5 +1,6 @@
 using Cinemachine;
 using Photon.Pun;
+using Photon.Pun.Demo.PunBasics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Build;
@@ -12,11 +13,13 @@ using UnityEngine.UIElements;
 public class ljh_InputManager : MonoBehaviourPun
 {
     int curUserNum;
-    
+
+    [SerializeField] ljh_SpotLight _spotlight;
     [SerializeField] ljh_UIManager uiManager;
     [SerializeField] ljh_CartManager cartManager;
 
     [SerializeField] GameObject player;
+    [SerializeField] List<GameObject> players;
     [SerializeField] GameObject button;
     [SerializeField] GameObject spotlight;
 
@@ -65,11 +68,17 @@ public class ljh_InputManager : MonoBehaviourPun
         curUserNum = ljh_GameManager.instance.curUserNum;
     }
 
-    public void FindPlayer()
+    public GameObject FindPlayer(GameObject _player)
     {
         if (player == null)
-            player = GameObject.FindWithTag("Player");
-
+        {
+            if ((int)ljh_GameManager.instance.myTurn == (int)_player.GetComponent<ljh_Player>().playerNumber)
+            {
+                return _player;
+            }
+            return null;
+        }
+        return null;
     }
 
     public Vector3 ChoiceAnswer()
@@ -77,8 +86,8 @@ public class ljh_InputManager : MonoBehaviourPun
         curUserNum = ljh_GameManager.instance.curUserNum;
 
 
-        ljh_Button[] buttonObj = MakeButtonArray(curUserNum); // curUserNum으로 바꿔야함
-        ljh_Pos[] pos = MakePosArray(curUserNum);
+        buttonObj = MakeButtonArray(curUserNum);
+        pos = MakePosArray(curUserNum);
 
 
 
@@ -94,12 +103,16 @@ public class ljh_InputManager : MonoBehaviourPun
             minus--;
         }
 
-
-        spotlight.transform.LookAt(buttonObj[index].transform.position);
+        //spotlight.transform.LookAt(buttonObj[index].transform.position);
+        _spotlight.MovingSpotlight(buttonObj, index);
 
         return pos[index].transform.position;
 
     }
+
+    
+
+    
 
     public void SelectButton(Vector3 curPos)
     {

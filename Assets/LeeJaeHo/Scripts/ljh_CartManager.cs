@@ -28,11 +28,23 @@ public class ljh_CartManager : MonoBehaviour
 
     }
 
+    public void CartReset()
+    {
+        ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
+        int index = testGameScene.index;
+
+        cartArrayEnter[index].GetComponent<CinemachineDollyCart>().m_Position = 0;
+        cartArrayEnter[index].GetComponent<CinemachineDollyCart>().gameObject.SetActive(false);
+        cartArrayEnter[index].GetComponent<CinemachineDollyCart>().gameObject.SetActive(true);
+    }
+
     public void CartMoveExit()
     {
 
         ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
         int index = testGameScene.index;
+
+        ljh_GameManager.instance.scene.player.transform.parent = cartArrayExit[index].transform;
 
         cartArrayExit[index].GetComponent<CinemachineDollyCart>().enabled = true;
     }

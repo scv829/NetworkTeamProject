@@ -6,7 +6,8 @@ public class ljh_Button : MonoBehaviour
 {
     public bool deadBombButton;
 
-    [SerializeField] GameObject Bomb;
+    
+    [SerializeField] ljh_Boom Bomb;
     [SerializeField] GameObject inputManager;
     [SerializeField] GameObject myPos;
 
@@ -27,7 +28,8 @@ public class ljh_Button : MonoBehaviour
         if (deadBombButton)
         {
             // Comment : 폭탄 터짐
-            Bomb.SetActive(false);
+            Bomb.Boom();
+
             ljh_GameManager.instance.deathCount--;
 
 

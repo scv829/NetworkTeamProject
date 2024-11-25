@@ -14,7 +14,7 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
     public const string RoomName = "Testroom";
 
     [SerializeField] GameObject playerPrefab;
-
+    [SerializeField] ljh_InputManager inputManager;
 
     [SerializeField] GameObject playerSpawner1;
     [SerializeField] GameObject playerSpawner2;
@@ -116,12 +116,8 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
         playerPos = new Vector3(vectorPlayerSpawn[index].x, 0, vectorPlayerSpawn[index].z);
         player = PhotonNetwork.Instantiate("ljh_Player", playerPos, Quaternion.identity);
         player.GetComponent<ljh_Player>().playerNumber = (PlayerNumber)index;
-        //playerArray[index] = player.gameObject;
 
-        //playerList[0] = 1번 플레이어다
-        //playerList[1] = 2번 플레이어다
-        //playerList[2] = 3번 플레이어다
-        //playerList[3] = 4번 플레이어다
+        
 
 
         RideCart(player);

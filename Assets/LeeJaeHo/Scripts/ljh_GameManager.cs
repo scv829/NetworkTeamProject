@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -19,14 +20,16 @@ public enum MyTurn
     player3,
     player4
 };
-public class ljh_GameManager : MonoBehaviour
+public class ljh_GameManager : MonoBehaviourPun, IPunObservable
 {
+    [SerializeField] public ljh_Boom bomb;
     [SerializeField] public ljh_UIManager uiManager;
     [SerializeField] public ljh_InputManager inputManager;
     [SerializeField] public ljh_Player player;
     [SerializeField] public ljh_TestGameScene scene;
     [SerializeField] public ljh_CartManager cartManagerEnter;
     [SerializeField] public ljh_CartManager cartManagerExit;
+    [SerializeField] public ljh_Pos posManager;
 
     public int curUserNum;
     public int deathCount = 0;
@@ -64,7 +67,7 @@ public class ljh_GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        curUserNum = 2; // ToDo : 테스트용도로 4로 둔 상태 추후에 0으로 교체 및 테스트게임신에서 주석 해제
+        curUserNum = 4; // ToDo : 테스트용도로 4로 둔 상태 추후에 0으로 교체 및 테스트게임신에서 주석 해제
 
         if (curState != State.idle)
             curState = State.idle;
@@ -137,7 +140,7 @@ public class ljh_GameManager : MonoBehaviour
                 break;
 
             case 1:
-                defaultIndex = 2;
+                defaultIndex = 4;
                 //테스트용 1인플
                 break;
         }
@@ -145,22 +148,24 @@ public class ljh_GameManager : MonoBehaviour
 
     public void Playing()
     {
-
+        Debug.Log(myTurn);
         switch (curState)
         {
             case State.idle:
                 uiManager.ShowUiIdle();
-                inputManager.FindPlayer();
-                MoveStart();
+                inputManager.FindPlayer(player.gameObject);
                 break;
 
             case State.enter:
                 uiManager.ShowUiEnterMove();
                 //cartManagerEnter.CartMoveEnter();
+                posManager.EndPoint();
                 break;
 
             case State.choice:
+                posManager.EndPoint();
                 uiManager.ShowUiChoice();
+                cartManagerEnter.CartReset();
                 //player.UnRideCart();
                 //_curPos = inputManager.ChoiceAnswer();
                 //inputManager.SelectButton(_curPos);
@@ -171,7 +176,7 @@ public class ljh_GameManager : MonoBehaviour
                 uiManager.ShowUiExitMove();
                 //player.RideExitCart();
                 //cartManagerEnter.CartMoveExit();
-                //player.NextTurn(player.i);
+                Invoke("NextTurn", 1f);
                 break;
 
             case State.end:
@@ -206,10 +211,44 @@ public class ljh_GameManager : MonoBehaviour
         sunLight.transform.rotation = Quaternion.Euler(130, 48, 0);
     }
 
-    public void ButtonOn4P()
+    public void NextTurn()
     {
+        switch (myTurn)
+        {
+            case MyTurn.player1:
+                myTurn = MyTurn.player2;
+                curState = State.idle;
+                break;
+
+            case MyTurn.player2:
+                myTurn = MyTurn.player3;
+                curState = State.idle;
+                break;
+
+            case MyTurn.player3:
+                myTurn = MyTurn.player4;
+                curState = State.idle;
+                break;
+
+            case MyTurn.player4:
+                myTurn = MyTurn.player1;
+                curState = State.idle;
+                break;
+        }
 
     }
 
-
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(curState);
+            stream.SendNext(myTurn);
+        }
+        else
+        {
+            curState = (State)stream.ReceiveNext();
+            myTurn = (MyTurn)stream.ReceiveNext();
+        }
+    }
 }

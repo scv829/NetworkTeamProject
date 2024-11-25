@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadBombButton: 0
-  Bomb: {fileID: 1294685917}
+  Bomb: {fileID: 1294685919}
   inputManager: {fileID: 1788366963}
   myPos: {fileID: 2008400134}
   player: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
@@ -534,7 +534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadBombButton: 0
-  Bomb: {fileID: 1294685917}
+  Bomb: {fileID: 1294685919}
   inputManager: {fileID: 1788366963}
   myPos: {fileID: 1395606590}
   player: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
@@ -3128,6 +3128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 543636441}
+  - component: {fileID: 543636442}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -3153,6 +3154,24 @@ Transform:
   m_Father: {fileID: 385081969}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &543636442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543636440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3605200f2d250f24db80071282092000, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cart: {fileID: 0}
+  cartArray:
+  - {fileID: 1264861814}
+  - {fileID: 530734142}
+  - {fileID: 156585903}
+  - {fileID: 284648084}
 --- !u!1001 &547226909
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7916,7 +7935,7 @@ MonoBehaviour:
   m_Path: {fileID: 1908039691}
   m_UpdateMethod: 0
   m_PositionUnits: 2
-  m_Speed: 1.1
+  m_Speed: 1
   m_Position: 0
 --- !u!4 &1264861816
 Transform:
@@ -8223,6 +8242,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1294189264}
   - component: {fileID: 1294189265}
+  - component: {fileID: 1294189266}
   m_Layer: 0
   m_Name: ======Manager=====
   m_TagString: Untagged
@@ -8257,13 +8277,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16cbb718565cea348b8c274a309b8303, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bomb: {fileID: 0}
   uiManager: {fileID: 1243861022}
   inputManager: {fileID: 2133425116530062048}
   player: {fileID: 6512782074757413719, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
   scene: {fileID: 1788366964}
   cartManagerEnter: {fileID: 759296073}
   cartManagerExit: {fileID: 1623997051}
-  _curPos: {x: 0, y: 0, z: 0}
+  posManager: {fileID: 543636442}
   curUserNum: 0
   deathCount: 0
   defaultIndex: 0
@@ -8276,7 +8297,31 @@ MonoBehaviour:
   boom: {fileID: 1294685917}
   door: {fileID: 841836663}
   sunLight: {fileID: 1911679157}
-  playerNum: 0
+  playerNumber: 0
+  myTurn: 0
+--- !u!114 &1294189266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294189263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 1294189265}
+  sceneViewId: 4
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1294685917
 GameObject:
   m_ObjectHideFlags: 0
@@ -8287,6 +8332,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1294685918}
   - component: {fileID: 1294685919}
+  - component: {fileID: 1294685920}
   m_Layer: 0
   m_Name: Bomb
   m_TagString: Untagged
@@ -8323,7 +8369,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d01693bf36438ec4588ce4931963116e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scene: {fileID: 0}
   bomb: {fileID: 1294685917}
+  player: {fileID: 8160237723087219084, guid: c630c3590617841479af7e0e9276d29c, type: 3}
+--- !u!114 &1294685920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294685917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1301588299
 GameObject:
   m_ObjectHideFlags: 0
@@ -8868,7 +8938,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadBombButton: 0
-  Bomb: {fileID: 1294685917}
+  Bomb: {fileID: 1294685919}
   inputManager: {fileID: 1788366963}
   myPos: {fileID: 625720557}
   player: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
@@ -11304,6 +11374,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1771053365}
   - component: {fileID: 1771053364}
+  - component: {fileID: 1771053366}
+  - component: {fileID: 1771053367}
   m_Layer: 0
   m_Name: Spot Light
   m_TagString: Untagged
@@ -11388,6 +11460,42 @@ Transform:
   m_Father: {fileID: 385081969}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 90.5, y: 90, z: 0}
+--- !u!114 &1771053366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1771053363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 1771053367}
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &1771053367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1771053363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08f5e0a948e947240961cabd04b40c87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputManager: {fileID: 2133425116530062048}
 --- !u!1 &1776276748
 GameObject:
   m_ObjectHideFlags: 0
@@ -11487,6 +11595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 1622042245990138239, guid: c630c3590617841479af7e0e9276d29c, type: 3}
+  inputManager: {fileID: 0}
   playerSpawner1: {fileID: 795693243}
   playerSpawner2: {fileID: 951244318}
   playerSpawner3: {fileID: 711090599}
@@ -11500,7 +11609,10 @@ MonoBehaviour:
   cart2: {fileID: 530734142}
   cart3: {fileID: 156585903}
   cart4: {fileID: 284648084}
+  curUserNum: 0
   player: {fileID: 0}
+  playerArray: []
+  playerCount: 0
   playerPos: {x: 0, y: 0, z: 0}
   index: 0
 --- !u!4 &1788366965
@@ -13237,7 +13349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadBombButton: 0
-  Bomb: {fileID: 1294685917}
+  Bomb: {fileID: 1294685919}
   inputManager: {fileID: 1788366963}
   myPos: {fileID: 1176091350}
   player: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
@@ -13760,7 +13872,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadBombButton: 0
-  Bomb: {fileID: 1294685917}
+  Bomb: {fileID: 1294685919}
   inputManager: {fileID: 1788366963}
   myPos: {fileID: 172688044}
   player: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
@@ -14059,9 +14171,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b51d33b33d27a024785dbe572ff63756, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spotlight: {fileID: 1771053367}
   uiManager: {fileID: 1243861022}
   cartManager: {fileID: 759296073}
   player: {fileID: 1622042245990138239, guid: c630c3590617841479af7e0e9276d29c, type: 3}
+  players: []
   button: {fileID: 543636440}
   spotlight: {fileID: 1771053363}
   Pos1: {x: 0, y: 0, z: 0}
@@ -14095,7 +14209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadBombButton: 0
-  Bomb: {fileID: 1294685917}
+  Bomb: {fileID: 1294685919}
   inputManager: {fileID: 1788366963}
   myPos: {fileID: 5621788913710155959}
   player: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
@@ -14293,7 +14407,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadBombButton: 0
-  Bomb: {fileID: 1294685917}
+  Bomb: {fileID: 1294685919}
   inputManager: {fileID: 1788366963}
   myPos: {fileID: 5621788913026384315}
   player: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
@@ -14325,7 +14439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadBombButton: 0
-  Bomb: {fileID: 1294685917}
+  Bomb: {fileID: 1294685919}
   inputManager: {fileID: 1788366963}
   myPos: {fileID: 5621788912948923285}
   player: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
@@ -14455,7 +14569,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadBombButton: 0
-  Bomb: {fileID: 1294685917}
+  Bomb: {fileID: 1294685919}
   inputManager: {fileID: 1788366963}
   myPos: {fileID: 5621788913407177145}
   player: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
@@ -14638,7 +14752,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadBombButton: 0
-  Bomb: {fileID: 1294685917}
+  Bomb: {fileID: 1294685919}
   inputManager: {fileID: 1788366963}
   myPos: {fileID: 5621788913370126037}
   player: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
@@ -14753,7 +14867,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadBombButton: 0
-  Bomb: {fileID: 1294685917}
+  Bomb: {fileID: 1294685919}
   inputManager: {fileID: 1788366963}
   myPos: {fileID: 5621788914193839839}
   player: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
@@ -14868,7 +14982,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadBombButton: 0
-  Bomb: {fileID: 1294685917}
+  Bomb: {fileID: 1294685919}
   inputManager: {fileID: 1788366963}
   myPos: {fileID: 5621788914102447901}
   player: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}

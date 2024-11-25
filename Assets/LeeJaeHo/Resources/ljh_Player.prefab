@@ -12,6 +12,10 @@ PrefabInstance:
       value: ljh_Player
       objectReference: {fileID: 0}
     - target: {fileID: 413801501614924322, guid: 7a131f7863b98374d8ab4294a1ff5125, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 413801501614924322, guid: 7a131f7863b98374d8ab4294a1ff5125, type: 3}
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
@@ -92,7 +96,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObservedComponentsFoldoutOpen: 1
   Group: 0
-  prefixField: -1
+  prefixField: 0
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
@@ -133,6 +137,8 @@ MonoBehaviour:
   testGameScene: {fileID: 0}
   inputManager: {fileID: 0}
   cartManager: {fileID: 0}
+  playerNumber: 0
   cart: {fileID: 0}
-  myTurn: 0
+  _curPos: {x: 0, y: 0, z: 0}
   myNum: 1
+  i: 1
