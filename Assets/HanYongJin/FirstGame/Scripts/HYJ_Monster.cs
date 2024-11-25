@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Purchasing;
 using UnityEngine;
 
-public class HYJ_Monster : MonoBehaviourPunCallbacks
+public class HYJ_Monster : MonoBehaviourPun
 {
     [SerializeField] int Hp;
     [SerializeField] bodyType monsterBodyType;

@@ -10,15 +10,7 @@ public class HYJ_MonsterSpawn : MonoBehaviourPun
     [SerializeField] GameObject bodyPrefab;
     [SerializeField] GameObject headPrefab;
 
-    private void Start()
-    {
-        if(playerPoint.transform.childCount > 0)    // 플레이어가 위치했을때만 몬스터를 생성
-        {
-            MonsterSpawn(bodyPrefab, headPrefab);
-        }
-    }
-
-    private void MonsterSpawn(GameObject bodyPrefab, GameObject headPrefab)
+    public void MonsterSpawn()
     {
         //몬스터 바디 프리팹 생성, 자식 오브젝트로 생성
         for(int i = 0; i < 9; i++)
