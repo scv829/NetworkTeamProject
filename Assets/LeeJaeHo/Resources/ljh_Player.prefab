@@ -134,3 +134,5 @@ MonoBehaviour:
   inputManager: {fileID: 0}
   cartManager: {fileID: 0}
   cart: {fileID: 0}
+  myTurn: 0
+  myNum: 1

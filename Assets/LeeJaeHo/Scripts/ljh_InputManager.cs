@@ -46,8 +46,8 @@ public class ljh_InputManager : MonoBehaviourPun
     [SerializeField] public int index;
 
 
-
-
+    public ljh_Button[] buttonObj;
+    public ljh_Pos[] pos;
 
     public Coroutine _boomCoroutine;
 
@@ -103,8 +103,8 @@ public class ljh_InputManager : MonoBehaviourPun
 
     public void SelectButton(Vector3 curPos)
     {
-        ljh_Button[] buttonObj = MakeButtonArray(curUserNum);
-        ljh_Pos[] pos = MakePosArray(curUserNum);
+        buttonObj = MakeButtonArray(curUserNum);
+        pos = MakePosArray(curUserNum);
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -166,11 +166,6 @@ public class ljh_InputManager : MonoBehaviourPun
         else
             return null;
     }
-
-    
-    
-
-
 
     
 }
