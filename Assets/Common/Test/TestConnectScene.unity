@@ -982,7 +982,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 697747201}
         m_TargetAssemblyTypeName: TestNetworkScript, Assembly-CSharp
-        m_MethodName: ChangeNickName
+        m_MethodName: ChangeNickname
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1279,6 +1279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b753ce9a42a44824883e8397179346dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RoomName: TestRoom
   startButton: {fileID: 1325996720}
   sceneNames:
   - Mecha Marathon
@@ -1288,6 +1289,7 @@ MonoBehaviour:
   sceneSelectCanvas: {fileID: 708314450}
   selectContent: {fileID: 1733709591}
   sceneEntryPrefab: {fileID: 3251164917335118900, guid: a1db4210204cf35448523771ddb319bd, type: 3}
+  inputNicknameField: {fileID: 855950919}
   playerEntries:
   - {fileID: 1873508633}
   - {fileID: 1016762008}
