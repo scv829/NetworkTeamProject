@@ -1,6 +1,9 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using UnityEngine;
+using Photon.Pun.UtilityScripts;
+using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -34,7 +37,7 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
     private void Start()
     {
         IsStarted = false;  // 게임씬에 진입했을시에는 false
-
+        PhotonNetwork.LocalPlayer.SetLoad(true);
 
         if (PhotonNetwork.IsMasterClient)   // 마스터 클라이언트만 진행
         {
@@ -63,12 +66,39 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
 
     }
 
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
+    {
+        if (changedProps.ContainsKey(HJS_CustomProperty.LOAD))
+        {
+            Debug.Log($"{targetPlayer.NickName} 이 로딩이 완료되었습니다. ");
+            bool allLoaded = CheckAllLoad();
+            Debug.Log($"모든 플레이어 로딩 완료 여부 : {allLoaded} ");
+            if (allLoaded)
+            {
+                GameObject player = PlayerSpawn();  // 방에 들어왔을때 플레이어 생성
+                GameObject heyho = HeyHoSpawn();   // 방에 들어왔을때 헤이호 생성
+                                                   // 생성한 heyho에 플레이어 컨트롤러 변수에 생성한 플레이어의 스크립트 참조시켜주기
+                heyho.GetComponent<KHS_HeyHoController>()._playerController = player.GetComponent<KHS_PlayerController>();
+            }
+        }
+    }
+
+    private bool CheckAllLoad()
+    {
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            if (player.GetLoad() == false)
+                return false;
+        }
+        return true;
+    }
+
     // 헤이호 컨트롤러에서 움직이는 상황이라고 판단할때 이벤트를 호출하게 되는데,
     // 그때 사용되는 함수
     public void MovingHeyHo()
     {
 
-        if (_heyHoFinished >= 2)    // 현재 움직이기 시작한 헤이호가 접속된 플레이어만큼 확인 되었을시
+        if (_heyHoFinished >= 3)    // 현재 움직이기 시작한 헤이호가 접속된 플레이어만큼 확인 되었을시
                                     // TODO : 네트워크로 합칠때 인원 수에 관한 조정이 필요한 상태
         {
             if (PhotonNetwork.IsMasterClient)   // 마스터 클라이언트만 진행
@@ -111,14 +141,14 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
     }
 
     // 방에 참가했을때 호출되는 함수
-    public override void OnJoinedRoom()
-    {
+    //public override void OnJoinedRoom()
+    //{
 
-        GameObject player = PlayerSpawn();  // 방에 들어왔을때 플레이어 생성
-        GameObject heyho = HeyHoSpawn();   // 방에 들어왔을때 헤이호 생성
-        // 생성한 heyho에 플레이어 컨트롤러 변수에 생성한 플레이어의 스크립트 참조시켜주기
-        heyho.GetComponent<KHS_HeyHoController>()._playerController = player.GetComponent<KHS_PlayerController>();
-    }
+    //    GameObject player = PlayerSpawn();  // 방에 들어왔을때 플레이어 생성
+    //    GameObject heyho = HeyHoSpawn();   // 방에 들어왔을때 헤이호 생성
+    //    // 생성한 heyho에 플레이어 컨트롤러 변수에 생성한 플레이어의 스크립트 참조시켜주기
+    //    heyho.GetComponent<KHS_HeyHoController>()._playerController = player.GetComponent<KHS_PlayerController>();
+    //}
 
 
     // 네트워크에 진입 후 준비에 필요한 시간 살짝 주는 함수
@@ -219,7 +249,7 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
 
         Debug.Log($"현재 로딩된 플레이어 : {_playersLoaded}");
 
-        if (_playersLoaded == 2)    // TODO : 네트워크로 합칠때 인원 수에 관한 조정이 필요한 상태
+        if (_playersLoaded == 3)    // TODO : 네트워크로 합칠때 인원 수에 관한 조정이 필요한 상태
         {
             if (PhotonNetwork.IsMasterClient)   // 마스터 클라이언트라면
             {
@@ -238,7 +268,7 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
     [PunRPC]
     private void FinishGame()
     {
-        if (_heyHoFinished >= 2)    // TODO : 네트워크로 합칠때 인원 수에 관한 조정이 필요한 상태
+        if (_heyHoFinished >= 3)    // TODO : 네트워크로 합칠때 인원 수에 관한 조정이 필요한 상태
         {
             Debug.Log($"헤이호 날아가는 코루틴 시작 RPC {_heyHoFinished}");
             StartCoroutine(MovedHeyHo());   // 1등 헤이호가 걸리는 시간, 결과를 출력하기 위한 코루틴선언
