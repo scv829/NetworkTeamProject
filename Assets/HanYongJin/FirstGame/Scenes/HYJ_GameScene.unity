@@ -314,6 +314,7 @@ GameObject:
   - component: {fileID: 164827690}
   - component: {fileID: 164827691}
   - component: {fileID: 164827692}
+  - component: {fileID: 164827693}
   m_Layer: 0
   m_Name: 1P_Point
   m_TagString: Untagged
@@ -365,6 +366,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monster: {fileID: 164827689}
   monsterCount: 0
+--- !u!114 &164827693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164827689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &166544726
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,7 +404,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &166544727
 Transform:
   m_ObjectHideFlags: 0
@@ -668,6 +691,7 @@ GameObject:
   - component: {fileID: 408560003}
   - component: {fileID: 408560004}
   - component: {fileID: 408560005}
+  - component: {fileID: 408560006}
   m_Layer: 0
   m_Name: 3P_Point
   m_TagString: Untagged
@@ -719,6 +743,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monster: {fileID: 408560002}
   monsterCount: 0
+--- !u!114 &408560006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408560002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 5
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &442647901
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,6 +776,7 @@ GameObject:
   - component: {fileID: 442647902}
   - component: {fileID: 442647903}
   - component: {fileID: 442647904}
+  - component: {fileID: 442647905}
   m_Layer: 0
   m_Name: 2P_Point
   m_TagString: Untagged
@@ -781,6 +828,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monster: {fileID: 442647901}
   monsterCount: 0
+--- !u!114 &442647905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 442647901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 3
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &485604485
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,6 +861,7 @@ GameObject:
   - component: {fileID: 485604486}
   - component: {fileID: 485604487}
   - component: {fileID: 485604488}
+  - component: {fileID: 485604489}
   m_Layer: 0
   m_Name: 4P_Point
   m_TagString: Untagged
@@ -843,6 +913,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monster: {fileID: 485604485}
   monsterCount: 0
+--- !u!114 &485604489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 485604485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 4
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &551628692
 GameObject:
   m_ObjectHideFlags: 0
@@ -1790,6 +1882,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1725885691}
   - component: {fileID: 1725885692}
+  - component: {fileID: 1725885693}
   m_Layer: 0
   m_Name: PlayerSpawnPoints
   m_TagString: Untagged
@@ -1837,6 +1930,28 @@ MonoBehaviour:
   playerPoint4: {fileID: 632943508}
   monsterPoint4: {fileID: 485604485}
   playerPrefab: {fileID: 3153527135976727296, guid: aaa74d531b1c1c44aa3e67e46cfc3890, type: 3}
+--- !u!114 &1725885693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1725885690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1726467752
 GameObject:
   m_ObjectHideFlags: 0
