@@ -18,19 +18,13 @@ public class HYJ_PlayerSpawn : MonoBehaviourPun
 
     public void PlayerSpawn()
     {
-        photonView.RPC("PlayerSpawnRPC", RpcTarget.All);
-    }
-
-    [PunRPC]
-    public void PlayerSpawnRPC()
-    {
         Vector3 playerSpawnPoint = SetPosition();
         GameObject player = PhotonNetwork.Instantiate("HYJ_GameObject/HYJ_Player", playerSpawnPoint, Quaternion.identity);
+        photonView.RPC("PlayerParentSetRPC",RpcTarget.All,player.GetComponent<PhotonView>().ViewID);
     }
 
     private Vector3 SetPosition()
     {
-        // 현재 자신의 ActorNumber 대로 위치 설정
         switch (PhotonNetwork.LocalPlayer.ActorNumber)
         {
             case 1:
@@ -43,5 +37,29 @@ public class HYJ_PlayerSpawn : MonoBehaviourPun
                 return playerPoint4.transform.position;
         }
         return Vector3.zero;
+    }
+
+    [PunRPC]
+    private void PlayerParentSetRPC(int playerID)
+    {
+        PhotonView playerView = PhotonView.Find(playerID);
+        GameObject playerParent = null;
+        switch (playerView.Owner.ActorNumber)
+        {
+            case 1:
+                playerParent = playerPoint1;
+                break;
+            case 2:
+                playerParent = playerPoint2;
+                break;
+            case 3:
+                playerParent = playerPoint3;
+                break;
+            case 4:
+                playerParent = playerPoint4;
+                break;
+        }
+        playerView.transform.parent = playerParent.transform;
+        playerView.transform.localPosition = Vector3.zero;
     }
 }

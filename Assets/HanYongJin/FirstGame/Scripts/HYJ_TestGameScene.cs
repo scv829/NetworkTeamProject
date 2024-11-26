@@ -11,6 +11,7 @@ public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
 {
     public const string RoomName = "TestRoom";
     [SerializeField] HYJ_PlayerSpawn playerSpawnPoint;
+    [SerializeField] HYJ_MonsterSpawn monsterSpawnPoint;
     [SerializeField] GameObject timer;
     [SerializeField] TMP_Text gameStartCountText;
 
@@ -82,5 +83,6 @@ public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
         timer.gameObject.SetActive(true);
         timer.gameObject.GetComponent<HYJ_GameTimer>().TimerStart();
         playerSpawnPoint.GetComponent<HYJ_PlayerSpawn>().PlayerSpawn();
+        monsterSpawnPoint.GetComponent <HYJ_MonsterSpawn>().MonsterSpawn();
     }
 }
