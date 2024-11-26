@@ -8,6 +8,8 @@ using System.Data;
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
+using Photon.Pun.UtilityScripts;
+using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 public class ljh_TestGameScene : MonoBehaviourPunCallbacks
 {
@@ -70,33 +72,54 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
         playerColor4 = new (0, 0, 0);
 
         PhotonNetwork.LocalPlayer.NickName = $"Player{Random.Range(0000,9999)}"; // 이거 지우고
-        PhotonNetwork.ConnectUsingSettings(); // 이거 지우고
-        
+        //PhotonNetwork.ConnectUsingSettings(); // 이거 지우고
 
+        PhotonNetwork.LocalPlayer.SetLoad(true);
     }
 
-    private void Update()
-    {
-    }
 
-    public override void OnConnectedToMaster()
-    {
-        RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 4;
-        options.IsVisible = false;
-
-        PhotonNetwork.JoinOrCreateRoom(RoomName, options, TypedLobby.Default);
-    }
+   // public override void OnConnectedToMaster()
+   // {
+   //     RoomOptions options = new RoomOptions();
+   //     options.MaxPlayers = 4;
+   //     options.IsVisible = false;
+   //
+   //     PhotonNetwork.JoinOrCreateRoom(RoomName, options, TypedLobby.Default);
+   // }
 
     public override void OnJoinedRoom()
     {
-        StartCoroutine(StartDelayRoutine());
+        //StartCoroutine(StartDelayRoutine());
     }
 
     IEnumerator StartDelayRoutine()
     {
         yield return new WaitForSeconds(1f);
         TestGameStart();
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
+    {
+        if (changedProps.ContainsKey(HJS_CustomProperty.LOAD))
+        {
+            Debug.Log($"{targetPlayer.NickName} 이 로딩이 완료되었습니다. ");
+            bool allLoaded = CheckAllLoad();
+            Debug.Log($"모든 플레이어 로딩 완료 여부 : {allLoaded} ");
+            if (allLoaded)
+            {
+                StartCoroutine(StartDelayRoutine());
+            }
+        }
+    }
+
+    private bool CheckAllLoad()
+    {
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            if (player.GetLoad() == false)
+                return false;
+        }
+        return true;
     }
     public void TestGameStart()
     { 
