@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Purchasing;
 using UnityEngine;
 
-public class HYJ_Monster : MonoBehaviourPunCallbacks
+public class HYJ_Monster : MonoBehaviourPun
 {
     [SerializeField] int Hp;
     [SerializeField] bodyType monsterBodyType;
@@ -46,5 +46,21 @@ public class HYJ_Monster : MonoBehaviourPunCallbacks
     public void Hit()
     {
         Hp--;
+        photonView.RPC("MonsterUpdateRPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void MonsterUpdateRPC()
+    {
+        if (Hp <= 0)
+        {
+            PhotonNetwork.Destroy(gameObject);
+            transform.GetComponentInParent<HYJ_MonsterController>().MonsterBodyDown();
+            if (monsterBodyType == bodyType.Head)
+            {
+                // TODO : 머리를 0으로 만들면 해당 플레이어는 게임 종료!
+                transform.GetComponentInParent<HYJ_MonsterController>().MonsterDie();
+            }
+        }
     }
 }

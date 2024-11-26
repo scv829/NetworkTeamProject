@@ -24,6 +24,5 @@ public class HYJ_MonsterController : MonoBehaviour
     public void MonsterDie()
     {
         Debug.Log("죽음!");
-        
     }
 }

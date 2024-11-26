@@ -71,6 +71,7 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
 
     private IEnumerator SlotSettingRoutine()
     {
+        // 한번만 설명을 보여주는 로직
         if (isExplain)
         {
             photonView.RPC("ShowExplainRPC", RpcTarget.All);
@@ -193,6 +194,6 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
     public void ChangeShaderRPC() => changeShaderEvent?.Invoke();     // 셰이더를 변경해주는 이벤트 함수 실행
 
     [PunRPC]
-    public void ShowExplainRPC() => explainUI.SetActive(!explainUI.activeSelf);
+    public void ShowExplainRPC() => explainUI.SetActive(!explainUI.activeSelf); // 설명을 보여주는 이벤트 함수 실행
 
 }

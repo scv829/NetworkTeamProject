@@ -20,8 +20,6 @@ public class HJS_PlayerController : MonoBehaviourPun
     [SerializeField] Color color;
     [SerializeField] bool isStart;
 
-    public bool IsStart { get { return isStart; } set { isStart = value; ChangeShader(); } }
-
     private Coroutine coroutine;
 
     private void Start()
@@ -32,8 +30,8 @@ public class HJS_PlayerController : MonoBehaviourPun
         bodyRenderer.material.color = color;
 
         // 랜터 텍스쳐 설정
-        //playerCamera.targetTexture = playerRenderTextures[PhotonNetwork.LocalPlayer.GetPlayerNumber()];
-        photonView.RPC("SetRenderTextureRPC", RpcTarget.All, PhotonNetwork.LocalPlayer.GetPlayerNumber());
+        playerCamera.targetTexture = playerRenderTextures[PhotonNetwork.LocalPlayer.GetPlayerNumber()]; // 자신의 랜더 텍스쳐 설정
+        photonView.RPC("SetRenderTextureRPC", RpcTarget.Others, photonView.Owner.GetPlayerNumber());    // 자신의 설정란 랜더 텍스쳐를 다른 유저에게 알려주기
 
         // 애니메이터 설정
         animator = GetComponent<Animator>();
@@ -109,10 +107,14 @@ public class HJS_PlayerController : MonoBehaviourPun
         photonView.RPC("SendAnswerRPC", RpcTarget.MasterClient, answer);
     }
 
+    /// <summary>
+    /// 셰이더 변경 로직
+    /// 그림자를 받으면 잘 안보여서 color로 변경
+    /// </summary>
     public void ChangeShader()
     {
-        bodyRenderer.material.shader = Shader.Find( (isStart) ? "Unlit/Color" : "Standard");
         isStart = !isStart;
+        bodyRenderer.material.shader = Shader.Find( (isStart) ? "Unlit/Color" : "Standard");
     }
 
     [PunRPC]

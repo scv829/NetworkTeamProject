@@ -4,5 +4,20 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Common/Test/TestConnectScene.unity
+    guid: 6ef0db6b71c61c440a9fb5c4d20f9df5
+  - enabled: 1
+    path: Assets/GoHyeonSeok/Sceans/Mecha Marathon.unity
+    guid: 7f66d31e38a4efc42b2a6654f706bc0e
+  - enabled: 1
+    path: Assets/LeeJaeHo/Scene/Minigame_LJH.unity
+    guid: 428532df5c5600c41bbc67cca7ea122a
+  - enabled: 1
+    path: Assets/HanYongJin/FirstGame/Scenes/HYJ_GameScene.unity
+    guid: aed649efb777a494e89f0dd2d78aac37
+  - enabled: 1
+    path: Assets/HanJaeSeong/HJS_HeartScene.unity
+    guid: ae4b7e4dc6a87774bb92ba34840d019d
   m_configObjects: {}

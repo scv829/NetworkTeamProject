@@ -3,6 +3,8 @@ using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,17 +15,27 @@ using UnityEngine.UI;
 public class TestNetworkScript : MonoBehaviourPunCallbacks
 {
     [Header("Room")]
-    public const string RoomName = "TestRoom";      // 포톤 방의 이름
-    [SerializeField] Button startButton;            // 게임 시작 버튼
-    [Header("NextScene")]
-    [SerializeField] string sceneName;              // 다음으로 넘어갈 씬 이름
+    [SerializeField] string RoomName = "TestRoom";      // 포톤 방의 이름
+    [SerializeField] Button startButton;                // 게임 시작 버튼
+    [Header("Scene")]
+    [SerializeField] string[] sceneNames;               // 다음으로 넘어갈 씬 이름
+    [SerializeField] GameObject sceneSelectCanvas;      // 씬 선택 캔버스
+    [SerializeField] RectTransform selectContent;       // 플레이 가능한 씬들이 나올 위치
+    [SerializeField] TestSceneEntry sceneEntryPrefab;   // 씬 선택 프리팹
+    [Header("Nickname")]
+    [SerializeField] TMP_InputField inputNicknameField; // 닉네임 변경 입력창
 
     [Header("PlayerEntry")]
     [SerializeField] TestPlayerEntry[] playerEntries;   // 플레이어 엔트리의 수
 
+    private StringBuilder sb = new StringBuilder();
+
     private void Start()
     {
-        PhotonNetwork.LocalPlayer.NickName = $"Player {Random.Range(1000, 10000)}"; // 초기 생성시 이름 랜덤으로 지정
+        sb.Clear();
+        sb.Append($"Player {Random.Range(1000, 10000)}");
+        inputNicknameField.text  = sb.ToString();
+        PhotonNetwork.LocalPlayer.NickName = sb.ToString();                         // 초기 생성시 이름 랜덤으로 지정
         PhotonNetwork.ConnectUsingSettings();                                       // 설정한 값으로 연결 요청
             
         PlayerNumbering.OnPlayerNumberingChanged += UpdatePlayers;                  // 플레이어의 번호가 변경되었을 시 UpdatePlayers 실행
@@ -39,6 +51,21 @@ public class TestNetworkScript : MonoBehaviourPunCallbacks
 
         // 마스터 클라이언트와 항상 똑같은 씬으로 로딩여부
         PhotonNetwork.AutomaticallySyncScene = true;
+
+        // 씬 선택 프리팹 생성
+        // 이미 저장한 배열 만큼 생성한다. 배열은 씬의 이름으로 이루어져 있다.
+        foreach(string name in sceneNames)
+        {
+            TestSceneEntry sceneEntry = Instantiate(sceneEntryPrefab, selectContent);
+            sceneEntry.SetInfo(name);
+        }
+
+    }
+
+    // 닉네임이 변경되었을 때 알려주는 콜백함수
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+        UpdatePlayers();
     }
 
     public void UpdatePlayers()
@@ -66,8 +93,23 @@ public class TestNetworkScript : MonoBehaviourPunCallbacks
         }
     }
 
-    public void StartGame()             
+    // 닉네임 변경 로직
+    public void ChangeNickname()
     {
-        PhotonNetwork.LoadLevel(sceneName);     // 게임 씬 전환
+        PhotonNetwork.LocalPlayer.NickName = inputNicknameField.text;
     }
+
+    // 게임 씬 선택 로직
+    public void SelectGame()             
+    {
+        sceneSelectCanvas.SetActive(true);          // 게임 씬 선택 캔버스를 활성화
+        startButton.gameObject.SetActive(false);    // 게임 시작 버튼을 비활성화
+    }
+
+    // 게임 씬 선택 취소 로직
+    public void CancelSelectGame()
+    {
+        sceneSelectCanvas.SetActive(false);         // 게임 씬 선택 캔버스를 비활성화
+        startButton.gameObject.SetActive(true);     // 게임 시작 버튼을 활성화
+    }   
 }

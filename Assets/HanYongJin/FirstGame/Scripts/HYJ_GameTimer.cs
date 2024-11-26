@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Photon.Pun;
 
-public class HYJ_GameTimer : MonoBehaviour
+public class HYJ_GameTimer : MonoBehaviourPun
 {
     /*  TODO : 게임 타이머 만들기
      *  1. UI로 타이머를 만들기
@@ -13,19 +14,19 @@ public class HYJ_GameTimer : MonoBehaviour
      */
     [Header("전체 타이머")]
     [SerializeField] TMP_Text timerLeftText;
+    [SerializeField] TMP_Text mid;
     [SerializeField] TMP_Text timerRightText;
 
-    private float time;
-    private float playerTime;
-
-    private void Start()
-    {
-        time = 0f;
-    }
+    private float time = 0f;
+    private float playerTime = 0f;
+    private bool timerStart = false;
 
     private void Update()
     {
-        TimerUpdate();
+        if (timerStart)
+        {
+            TimerUpdate();
+        }
     }
 
     public void TimerUpdate()
@@ -38,8 +39,16 @@ public class HYJ_GameTimer : MonoBehaviour
         }
         else
         {
+            mid.gameObject.SetActive(false);
+            timerLeftText.color = new Color(0.8f, 0.0f, 0.0f);
             timerLeftText.text = "Time";
+            timerRightText.color = new Color(0.8f, 0.0f, 0.0f);
             timerRightText.text = "Over";
         }
+    }
+
+    public void TimerStart()
+    {
+        timerStart = true;
     }
 }
