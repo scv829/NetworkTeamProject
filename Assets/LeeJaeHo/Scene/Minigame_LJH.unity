@@ -8299,6 +8299,7 @@ MonoBehaviour:
   sunLight: {fileID: 1911679157}
   playerNumber: 0
   myTurn: 0
+  playingCheck: 1
 --- !u!114 &1294189266
 MonoBehaviour:
   m_ObjectHideFlags: 0

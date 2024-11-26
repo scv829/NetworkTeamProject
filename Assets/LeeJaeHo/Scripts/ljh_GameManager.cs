@@ -57,6 +57,8 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
 
     public static ljh_GameManager instance = null;
 
+    [SerializeField] public bool playingCheck;
+
     private void Awake()
     {
         if (instance == null)
@@ -103,8 +105,9 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
 
     private void Update()
     {
-        Playing();
-
+        
+            Playing();
+        
         
 
     }
@@ -148,12 +151,13 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
 
     public void Playing()
     {
-        Debug.Log(myTurn);
+        //Debug.Log(myTurn);
         switch (curState)
         {
             case State.idle:
                 uiManager.ShowUiIdle();
                 inputManager.FindPlayer(player.gameObject);
+                playingCheck = true;
                 break;
 
             case State.enter:
@@ -163,7 +167,6 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
                 break;
 
             case State.choice:
-                posManager.EndPoint();
                 uiManager.ShowUiChoice();
                 cartManagerEnter.CartReset();
                 //player.UnRideCart();
@@ -176,7 +179,13 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
                 uiManager.ShowUiExitMove();
                 //player.RideExitCart();
                 //cartManagerEnter.CartMoveExit();
-                Invoke("NextTurn", 1f);
+                Debug.Log($"전 엑시트 안에서{myTurn}");
+
+                if (playingCheck)
+                {
+                    Invoke("NextTurn", 1f);
+                    playingCheck = false;
+                }
                 break;
 
             case State.end:
@@ -184,6 +193,7 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
                 break;
 
         }
+        return;
     }
 
     public void MoveStart()
@@ -224,29 +234,31 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
                 myTurn = MyTurn.player3;
                 curState = State.idle;
                 break;
-
+           
             case MyTurn.player3:
                 myTurn = MyTurn.player4;
                 curState = State.idle;
                 break;
-
+           
             case MyTurn.player4:
                 myTurn = MyTurn.player1;
                 curState = State.idle;
                 break;
         }
-
+        Debug.Log($"후 엑시트 안에서{myTurn}");
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
+            Debug.Log(info.Sender);
             stream.SendNext(curState);
             stream.SendNext(myTurn);
         }
         else
         {
+            Debug.Log(info.Sender);
             curState = (State)stream.ReceiveNext();
             myTurn = (MyTurn)stream.ReceiveNext();
         }

@@ -69,6 +69,10 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
 
     }
 
+    private void Update()
+    {
+    }
+
     public override void OnConnectedToMaster()
     {
         RoomOptions options = new RoomOptions();
@@ -137,8 +141,8 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
         player.transform.parent = cartArray[index].transform;
     }
 
-
     
+
 
 
 

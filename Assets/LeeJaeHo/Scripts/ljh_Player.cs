@@ -114,7 +114,7 @@ public class ljh_Player : MonoBehaviourPun
                 break;
 
             case 3:
-                myPos = new Vector3(-13, 0, 0.7f);
+                myPos = new Vector3(-1.3f, 0, 0.7f);
                 break;
 
             case 2:
@@ -125,5 +125,4 @@ public class ljh_Player : MonoBehaviourPun
     }
 
     
-
 }
