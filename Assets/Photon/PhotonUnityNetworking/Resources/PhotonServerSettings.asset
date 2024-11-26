@@ -57,6 +57,17 @@ MonoBehaviour:
   - SetAnimationRPC
   - SetRenderTextureRPC
   - ShowExplainRPC
+  - RPCAddPlayerList
+  - ljh_RPCSpotlightMove
+  - SpotlightMove
+  - TurnOffButton
+  - TurnOffButtonRPC
+  - GetOnOffButton
+  - GetOnOffButtonRPC
+  - RPCTurnOffButton
+  - RPCPlayerDied
+  - BoomRPC
+  - NoBoomRPC
   - FinishedHeyHo
   - PlayerSpawnRPC
   - MonsterSpawnRPC

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class ljh_Boom : MonoBehaviour
+public class ljh_Boom : MonoBehaviourPun
 {
+    [SerializeField] ljh_TestGameScene scene;
     public GameObject bomb;
-    
+    public ljh_Player player;
+
 
     public void Vibe()
     {
@@ -19,8 +21,40 @@ public class ljh_Boom : MonoBehaviour
 
     public void Boom()
     {
-        //폭발 애니메이션
-        //플레이어 죽음 함수 호출
-        // 씬 리로드(사람수 유지한채로)
+        photonView.RPC("BoomRPC", RpcTarget.All);
     }
+
+    [PunRPC]
+    public void BoomRPC()
+    {
+        bomb.SetActive(false);
+        if ((int)player.playerNumber == (int)ljh_GameManager.instance.myTurn)
+            player.gameObject.SetActive(false);
+        // 사운드
+        // 터지는 효과
+        // 플레이어 탈락
+        Invoke("BoomReset", 1f);
+    }
+
+    public void BoomReset()
+    {
+        bomb.SetActive(true);
+    }
+
+    public void NoBoom()
+    {
+        photonView.RPC("NoBoomRPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void NoBoomRPC()
+    {
+        bomb.SetActive(false);
+        // 사운드
+        // 터지는 효과
+        // 플레이어 탈락
+        Invoke("BoomReset", 1f);
+    }
+
+    
 }

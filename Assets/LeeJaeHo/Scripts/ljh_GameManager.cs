@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -8,7 +9,7 @@ public enum State
 {
     idle,
     enter,
-    exit,
+    die,
     choice,
     end
 };
@@ -19,14 +20,15 @@ public enum MyTurn
     player3,
     player4
 };
-public class ljh_GameManager : MonoBehaviour
+public class ljh_GameManager : MonoBehaviourPun, IPunObservable
 {
+    [SerializeField] public ljh_Boom bomb;
     [SerializeField] public ljh_UIManager uiManager;
     [SerializeField] public ljh_InputManager inputManager;
     [SerializeField] public ljh_Player player;
     [SerializeField] public ljh_TestGameScene scene;
     [SerializeField] public ljh_CartManager cartManagerEnter;
-    [SerializeField] public ljh_CartManager cartManagerExit;
+    [SerializeField] public ljh_Pos posManager;
 
     public int curUserNum;
     public int deathCount = 0;
@@ -54,6 +56,8 @@ public class ljh_GameManager : MonoBehaviour
 
     public static ljh_GameManager instance = null;
 
+    [SerializeField] public bool playingCheck;
+
     private void Awake()
     {
         if (instance == null)
@@ -64,7 +68,7 @@ public class ljh_GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        curUserNum = 2; // ToDo : 테스트용도로 4로 둔 상태 추후에 0으로 교체 및 테스트게임신에서 주석 해제
+        curUserNum = 4; // ToDo : 테스트용도로 4로 둔 상태 추후에 0으로 교체 및 테스트게임신에서 주석 해제
 
         if (curState != State.idle)
             curState = State.idle;
@@ -100,8 +104,9 @@ public class ljh_GameManager : MonoBehaviour
 
     private void Update()
     {
-        Playing();
-
+        
+            Playing();
+        
         
 
     }
@@ -112,32 +117,26 @@ public class ljh_GameManager : MonoBehaviour
             case 4:
 
                 defaultIndex = 2;
-                Player4.SetActive(true);
-                Player3.SetActive(false);
-                Player2.SetActive(false);
+                // 4개 중 1개만 생존
                 //4인플
                 break;
 
             case 3:
 
                 defaultIndex = 2;
-                Player4.SetActive(false);
-                Player3.SetActive(true);
-                Player2.SetActive(false);
+                // 3개 중 1개만 생존
                 //3인플
                 break;
 
             case 2:
 
                 defaultIndex = 1;
-                Player4.SetActive(false);
-                Player3.SetActive(false);
-                Player2.SetActive(true);
+                // 2개 중 1개만 생존
                 //2인플
                 break;
 
             case 1:
-                defaultIndex = 2;
+                defaultIndex = 4;
                 //테스트용 1인플
                 break;
         }
@@ -145,33 +144,33 @@ public class ljh_GameManager : MonoBehaviour
 
     public void Playing()
     {
-
+        //Debug.Log(myTurn);
         switch (curState)
         {
             case State.idle:
-                uiManager.ShowUiIdle();
-                inputManager.FindPlayer();
-                MoveStart();
+                //uiManager.ShowUiIdle();
+                inputManager.FindPlayer(player.gameObject);
+                playingCheck = true;
                 break;
 
             case State.enter:
-                uiManager.ShowUiEnterMove();
-                //cartManagerEnter.CartMoveEnter();
+                //uiManager.ShowUiEnterMove();
+                posManager.EndPoint();
                 break;
 
             case State.choice:
-                uiManager.ShowUiChoice();
-                //player.UnRideCart();
-                //_curPos = inputManager.ChoiceAnswer();
-                //inputManager.SelectButton(_curPos);
+                //uiManager.ShowUiChoice();
+                cartManagerEnter.CartReset();
 
                 break;
 
-            case State.exit:
-                uiManager.ShowUiExitMove();
-                //player.RideExitCart();
-                //cartManagerEnter.CartMoveExit();
-                //player.NextTurn(player.i);
+            case State.die:
+                //uiManager.ShowUiExitMove();
+                if (playingCheck)
+                {
+                    Invoke("NextTurn", 1f);
+                    playingCheck = false;
+                }
                 break;
 
             case State.end:
@@ -179,6 +178,7 @@ public class ljh_GameManager : MonoBehaviour
                 break;
 
         }
+        return;
     }
 
     public void MoveStart()
@@ -194,9 +194,9 @@ public class ljh_GameManager : MonoBehaviour
         StopCoroutine(moveCo);
     }
 
-    public void PlayerExit()
+    public void PlayerDie()
     {
-        curState = State.exit;
+        curState = State.die;
     }
 
 
@@ -206,10 +206,46 @@ public class ljh_GameManager : MonoBehaviour
         sunLight.transform.rotation = Quaternion.Euler(130, 48, 0);
     }
 
-    public void ButtonOn4P()
+    public void NextTurn()
+    {
+        switch (myTurn)
+        {
+            case MyTurn.player1:
+                myTurn = MyTurn.player2;
+                curState = State.idle;
+                break;
+
+            case MyTurn.player2:
+                myTurn = MyTurn.player3;
+                curState = State.idle;
+                break;
+           
+            case MyTurn.player3:
+                myTurn = MyTurn.player4;
+                curState = State.idle;
+                break;
+           
+        }
+    }
+
+    public void ButtonReset()
     {
 
     }
 
-
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            Debug.Log(info.Sender);
+            stream.SendNext(curState);
+            stream.SendNext(myTurn);
+        }
+        else
+        {
+            Debug.Log(info.Sender);
+            curState = (State)stream.ReceiveNext();
+            myTurn = (MyTurn)stream.ReceiveNext();
+        }
+    }
 }

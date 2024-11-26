@@ -14,7 +14,7 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
     public const string RoomName = "Testroom";
 
     [SerializeField] GameObject playerPrefab;
-
+    [SerializeField] ljh_InputManager inputManager;
 
     [SerializeField] GameObject playerSpawner1;
     [SerializeField] GameObject playerSpawner2;
@@ -44,14 +44,20 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
     public int playerCount;
 
 
-    [SerializeField] Vector3 playerPos;
+    [SerializeField] public Vector3 playerPos;
     Color playerColor;
 
     public int index;
 
+    public Vector3[] vectorPlayerSpawn;
+
+
     private void Start()
     {
+        
+
         playerArray = new GameObject[4];
+        vectorPlayerSpawn = new Vector3[4];
 
         playerPos1 = playerSpawner1.transform.position;
         playerPos2 = playerSpawner2.transform.position;
@@ -67,6 +73,10 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings(); // 이거 지우고
         
 
+    }
+
+    private void Update()
+    {
     }
 
     public override void OnConnectedToMaster()
@@ -111,17 +121,13 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
     private void PlayerSpawn()
     {
         index = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-        Vector3[] vectorPlayerSpawn = { playerPos1, playerPos2, playerPos3, playerPos4};
+        vectorPlayerSpawn = new Vector3[] { playerPos1, playerPos2, playerPos3, playerPos4};
 
         playerPos = new Vector3(vectorPlayerSpawn[index].x, 0, vectorPlayerSpawn[index].z);
         player = PhotonNetwork.Instantiate("ljh_Player", playerPos, Quaternion.identity);
         player.GetComponent<ljh_Player>().playerNumber = (PlayerNumber)index;
-        //playerArray[index] = player.gameObject;
 
-        //playerList[0] = 1번 플레이어다
-        //playerList[1] = 2번 플레이어다
-        //playerList[2] = 3번 플레이어다
-        //playerList[3] = 4번 플레이어다
+        
 
 
         RideCart(player);
@@ -141,8 +147,8 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
         player.transform.parent = cartArray[index].transform;
     }
 
-
     
+
 
 
 

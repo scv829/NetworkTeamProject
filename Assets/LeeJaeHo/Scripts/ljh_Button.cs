@@ -1,67 +1,38 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ljh_Button : MonoBehaviour
+public class ljh_Button : MonoBehaviourPun
 {
-    public bool deadBombButton;
+    public bool WinButton;
 
-    [SerializeField] GameObject Bomb;
+    public ljh_ButtonParent buttonParent;
+
+    [SerializeField] ljh_Boom Bomb;
     [SerializeField] GameObject inputManager;
     [SerializeField] GameObject myPos;
 
     [SerializeField] GameObject player;
 
 
-
     public void PushedButton(ljh_Button button)
     {
         button.transform.position = button.transform.position + new Vector3(0, 1, 0);
-        //빼야함
-        //반짝반짝?
-        
     }
 
-    public void SelectedButtonAction()
+
+    
+    public void TurnOffButton()
     {
-        if (deadBombButton)
-        {
-            // Comment : 폭탄 터짐
-            Bomb.SetActive(false);
-            ljh_GameManager.instance.deathCount--;
+        photonView.RPC("RPCTurnOffButton", RpcTarget.All);
 
-
-
-           // if (ljh_GameManager.instance.curUserNum == 1)
-           //     ljh_GameManager.instance.curState = State.end;
-            // Todo :
-            //애니메이션 추가
-            //소리 추가
-            //플레이어 사망 추가
-            //상태 Idle로 바꾸고
-            //버튼 갯수 -1 해서 다시 생성
-            //혼자 남은 경우 게임 승리
-        }
-        else
-        {
-            // Comment : 폭탄 안터짐
-            // Todo :
-            //폭탄 안터짐
-            TurnOffButton(gameObject);
-            ljh_GameManager.instance.PlayerExit();
-
-
-            return;
-        }
-        //ToDo : 폭탄 터지는 내용 구현해야함
-       
     }
 
-    public void TurnOffButton(GameObject button)
+    [PunRPC]
+    public void RPCTurnOffButton()
     {
-        button.SetActive(false);
+        gameObject.SetActive(false);
     }
-
-
 
 }

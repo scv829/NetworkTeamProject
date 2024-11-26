@@ -1,5 +1,7 @@
 using Cinemachine;
 using Photon.Pun;
+using Photon.Pun.Demo.PunBasics;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Build;
@@ -12,30 +14,28 @@ using UnityEngine.UIElements;
 public class ljh_InputManager : MonoBehaviourPun
 {
     int curUserNum;
-    
+
+    [SerializeField] ljh_SpotLight _spotlight;
     [SerializeField] ljh_UIManager uiManager;
     [SerializeField] ljh_CartManager cartManager;
+    [SerializeField] ljh_ButtonParent buttonParent;
 
     [SerializeField] GameObject player;
+    [SerializeField] List<GameObject> players;
     [SerializeField] GameObject button;
     [SerializeField] GameObject spotlight;
 
     [Header("유저가 서는 자리 좌표")]
-    [SerializeField] Vector3 Pos1;
-    [SerializeField] Vector3 Pos2;
-    [SerializeField] Vector3 Pos3;
-    [SerializeField] Vector3 Pos4;
-    [SerializeField] Vector3 Pos5;
+    [SerializeField] public Vector3 Pos1;
+    [SerializeField] public Vector3 Pos2;
+    [SerializeField] public Vector3 Pos3;
+    [SerializeField] public Vector3 Pos4;
 
     [Header("n명 남은 상황의 버튼 부모 오브젝트")]
-    [SerializeField] GameObject buttonParent4;
-    [SerializeField] GameObject buttonParent3;
-    [SerializeField] GameObject buttonParent2;
+    [SerializeField] GameObject buttonParents;
 
     [Header("n명 남은 상황의 자리 부모 오브젝트")]
-    [SerializeField] GameObject posParent4;
-    [SerializeField] GameObject posParent3;
-    [SerializeField] GameObject posParent2;
+    [SerializeField] GameObject posParents;
 
     public Vector3 _curPos;
 
@@ -47,8 +47,7 @@ public class ljh_InputManager : MonoBehaviourPun
 
 
     public ljh_Button[] buttonObj;
-    public ljh_Pos[] pos;
-
+    public ljh_Pos[] _pos;
     public Coroutine _boomCoroutine;
 
     private void OnEnable()
@@ -58,30 +57,35 @@ public class ljh_InputManager : MonoBehaviourPun
     {
         defaultIndex = ljh_GameManager.instance.defaultIndex ;// 4인일땐 2 3인일땐 2로 
         minus = 0;
+
+        buttonObj = buttonParents.GetComponent<ljh_ButtonParent>().buttonArray;
+        _pos = posParents.GetComponent<ljh_PosParent>().posArray;
     }
 
     private void Update()
     {
+        buttonObj = buttonParents.GetComponent<ljh_ButtonParent>().buttonArray;
+        _pos = posParents.GetComponent<ljh_PosParent>().posArray;
+
         curUserNum = ljh_GameManager.instance.curUserNum;
     }
 
-    public void FindPlayer()
+    public GameObject FindPlayer(GameObject _player)
     {
         if (player == null)
-            player = GameObject.FindWithTag("Player");
-
+        {
+            if ((int)ljh_GameManager.instance.myTurn == (int)_player.GetComponent<ljh_Player>().playerNumber)
+            {
+                return _player;
+            }
+            return null;
+        }
+        return null;
     }
 
-    public Vector3 ChoiceAnswer()
+    public GameObject ChoiceAnswer()
     {
         curUserNum = ljh_GameManager.instance.curUserNum;
-
-
-        ljh_Button[] buttonObj = MakeButtonArray(curUserNum); // curUserNum으로 바꿔야함
-        ljh_Pos[] pos = MakePosArray(curUserNum);
-
-
-
 
         index = defaultIndex - minus;
 
@@ -94,78 +98,48 @@ public class ljh_InputManager : MonoBehaviourPun
             minus--;
         }
 
+        _spotlight.MovingSpotlight(buttonObj, index);
 
-        spotlight.transform.LookAt(buttonObj[index].transform.position);
-
-        return pos[index].transform.position;
+        return _pos[index].gameObject;
 
     }
 
+    public void DeletePos()
+    {
+        Array.Clear(buttonParents.GetComponent<ljh_ButtonParent>().buttonArray, 0, 1);
+        Array.Clear(posParents.GetComponent<ljh_PosParent>().posArray, 0, 1);
+    }
+
+    
+
+    
+
     public void SelectButton(Vector3 curPos)
     {
-        buttonObj = MakeButtonArray(curUserNum);
-        pos = MakePosArray(curUserNum);
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (curPos == pos[index].transform.position)
+            if (curPos == _pos[index].transform.position)
             {
                 buttonObj[index].GetComponent<ljh_Button>().PushedButton(buttonObj[index]);
                 if (_boomCoroutine == null)
+                    // 선택한 버튼의 붐코루틴을 발동함
                     _boomCoroutine = StartCoroutine(BoomCoroutine(buttonObj[index]));
             }
         }
     }
 
+    //선택한 버튼에서 붐코루틴 발동
+    // 버튼패런트에서 셀렉티드 버튼 액션 발동 > 선택한 버튼을 넣어서
     IEnumerator BoomCoroutine(ljh_Button _button)
     {
         boom.GetComponent<ljh_Boom>().Vibe();
-        yield return new WaitForSeconds(Random.Range(1.5f,2.5f));
-        _button.SelectedButtonAction();
+
+        yield return new WaitForSeconds(UnityEngine.Random.Range(1.5f,2.5f));
+        
+        buttonParent.SelectedButtonAction(_button);
 
     }
 
-    public ljh_Button[] MakeButtonArray(int curUser)
-    {
-        if (curUser == 4)
-        {
-            ljh_Button[] buttonParents = buttonParent4.GetComponent<ljh_ButtonParent>().buttonArray;
-            return buttonParents;
-        }
-        else if (curUser == 3)
-        {
-            ljh_Button[] buttonParents = buttonParent3.GetComponent<ljh_ButtonParent>().buttonArray;
-            return buttonParents;
-        }
-        else if (curUser == 2)
-        {
-            ljh_Button[] buttonParents = buttonParent2.GetComponent<ljh_ButtonParent>().buttonArray;
-            return buttonParents;
-        }
-        else
-            return null;
-    }
-
-    public ljh_Pos[] MakePosArray(int curUser)
-    {
-        if (curUser == 4)
-        {
-            ljh_Pos[] PosParents = posParent4.GetComponent<ljh_PosParent>().posArray;
-            return PosParents;
-        }
-        else if (curUser == 3)
-        {
-            ljh_Pos[] PosParents = posParent3.GetComponent<ljh_PosParent>().posArray;
-            return PosParents;
-        }
-        else if (curUser == 2)
-        {
-            ljh_Pos[] PosParents = posParent2.GetComponent<ljh_PosParent>().posArray;
-            return PosParents;
-        }
-        else
-            return null;
-    }
 
     
 }
