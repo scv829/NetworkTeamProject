@@ -11,13 +11,7 @@ public class ljh_CartManager : MonoBehaviour
     public GameObject cart3Enter;
     public GameObject cart4Enter;
 
-    public GameObject[] cartArrayExit;
-    public GameObject cart1Exit;
-    public GameObject cart2Exit;
-    public GameObject cart3Exit;
-    public GameObject cart4Exit;
-
-
+    [SerializeField] public GameObject exitCart;
 
     public void CartMoveEnter()
     {
@@ -38,15 +32,6 @@ public class ljh_CartManager : MonoBehaviour
         cartArrayEnter[index].GetComponent<CinemachineDollyCart>().gameObject.SetActive(true);
     }
 
-    public void CartMoveExit()
-    {
 
-        ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
-        int index = testGameScene.index;
-
-        ljh_GameManager.instance.scene.player.transform.parent = cartArrayExit[index].transform;
-
-        cartArrayExit[index].GetComponent<CinemachineDollyCart>().enabled = true;
-    }
 }
 

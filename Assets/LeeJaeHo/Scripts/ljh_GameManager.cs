@@ -9,7 +9,7 @@ public enum State
 {
     idle,
     enter,
-    exit,
+    die,
     choice,
     end
 };
@@ -28,7 +28,6 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
     [SerializeField] public ljh_Player player;
     [SerializeField] public ljh_TestGameScene scene;
     [SerializeField] public ljh_CartManager cartManagerEnter;
-    [SerializeField] public ljh_CartManager cartManagerExit;
     [SerializeField] public ljh_Pos posManager;
 
     public int curUserNum;
@@ -118,27 +117,21 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
             case 4:
 
                 defaultIndex = 2;
-                Player4.SetActive(true);
-                Player3.SetActive(false);
-                Player2.SetActive(false);
+                // 4개 중 1개만 생존
                 //4인플
                 break;
 
             case 3:
 
                 defaultIndex = 2;
-                Player4.SetActive(false);
-                Player3.SetActive(true);
-                Player2.SetActive(false);
+                // 3개 중 1개만 생존
                 //3인플
                 break;
 
             case 2:
 
                 defaultIndex = 1;
-                Player4.SetActive(false);
-                Player3.SetActive(false);
-                Player2.SetActive(true);
+                // 2개 중 1개만 생존
                 //2인플
                 break;
 
@@ -155,32 +148,24 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
         switch (curState)
         {
             case State.idle:
-                uiManager.ShowUiIdle();
+                //uiManager.ShowUiIdle();
                 inputManager.FindPlayer(player.gameObject);
                 playingCheck = true;
                 break;
 
             case State.enter:
-                uiManager.ShowUiEnterMove();
-                //cartManagerEnter.CartMoveEnter();
+                //uiManager.ShowUiEnterMove();
                 posManager.EndPoint();
                 break;
 
             case State.choice:
-                uiManager.ShowUiChoice();
+                //uiManager.ShowUiChoice();
                 cartManagerEnter.CartReset();
-                //player.UnRideCart();
-                //_curPos = inputManager.ChoiceAnswer();
-                //inputManager.SelectButton(_curPos);
 
                 break;
 
-            case State.exit:
-                uiManager.ShowUiExitMove();
-                //player.RideExitCart();
-                //cartManagerEnter.CartMoveExit();
-                Debug.Log($"전 엑시트 안에서{myTurn}");
-
+            case State.die:
+                //uiManager.ShowUiExitMove();
                 if (playingCheck)
                 {
                     Invoke("NextTurn", 1f);
@@ -209,9 +194,9 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
         StopCoroutine(moveCo);
     }
 
-    public void PlayerExit()
+    public void PlayerDie()
     {
-        curState = State.exit;
+        curState = State.die;
     }
 
 
@@ -240,12 +225,12 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
                 curState = State.idle;
                 break;
            
-            case MyTurn.player4:
-                myTurn = MyTurn.player1;
-                curState = State.idle;
-                break;
         }
-        Debug.Log($"후 엑시트 안에서{myTurn}");
+    }
+
+    public void ButtonReset()
+    {
+
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

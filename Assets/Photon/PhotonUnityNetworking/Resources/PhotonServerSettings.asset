@@ -60,6 +60,14 @@ MonoBehaviour:
   - RPCAddPlayerList
   - ljh_RPCSpotlightMove
   - SpotlightMove
+  - TurnOffButton
+  - TurnOffButtonRPC
+  - GetOnOffButton
+  - GetOnOffButtonRPC
+  - RPCTurnOffButton
+  - RPCPlayerDied
+  - BoomRPC
+  - NoBoomRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

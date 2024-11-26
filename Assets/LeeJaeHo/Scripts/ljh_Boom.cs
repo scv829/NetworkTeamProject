@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class ljh_Boom : MonoBehaviour
+public class ljh_Boom : MonoBehaviourPun
 {
     [SerializeField] ljh_TestGameScene scene;
     public GameObject bomb;
@@ -21,6 +21,12 @@ public class ljh_Boom : MonoBehaviour
 
     public void Boom()
     {
+        photonView.RPC("BoomRPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void BoomRPC()
+    {
         bomb.SetActive(false);
         if ((int)player.playerNumber == (int)ljh_GameManager.instance.myTurn)
             player.gameObject.SetActive(false);
@@ -34,4 +40,21 @@ public class ljh_Boom : MonoBehaviour
     {
         bomb.SetActive(true);
     }
+
+    public void NoBoom()
+    {
+        photonView.RPC("NoBoomRPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void NoBoomRPC()
+    {
+        bomb.SetActive(false);
+        // 사운드
+        // 터지는 효과
+        // 플레이어 탈락
+        Invoke("BoomReset", 1f);
+    }
+
+    
 }

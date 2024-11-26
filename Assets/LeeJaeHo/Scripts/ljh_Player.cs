@@ -1,3 +1,4 @@
+using Cinemachine;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
@@ -28,6 +29,8 @@ public class ljh_Player : MonoBehaviourPun
 
     [SerializeField] GameObject cart;
 
+    [SerializeField] GameObject exitCart;
+
     public Vector3 _curPos;
     public int myNum;
 
@@ -54,6 +57,11 @@ public class ljh_Player : MonoBehaviourPun
         {
                 MovePlayer(vec);
         }
+        
+        if((int)ljh_GameManager.instance.myTurn != (int)this.playerNumber )
+        {
+            transform.position = testGameScene.vectorPlayerSpawn[testGameScene.index];
+        }
 
         if ((int)playerNumber == (int)ljh_GameManager.instance.myTurn)
         {
@@ -75,16 +83,17 @@ public class ljh_Player : MonoBehaviourPun
 
             case State.choice:
                 UnRideCart();
-                _curPos = inputManager.GetComponent<ljh_InputManager>().ChoiceAnswer();
+                _curPos = inputManager.GetComponent<ljh_InputManager>().ChoiceAnswer().transform.position;
                 ljh_GameManager.instance.inputManager.SelectButton(_curPos);
 
                 break;
 
-            case State.exit:
-                ljh_GameManager.instance.cartManagerEnter.CartMoveExit();
+            case State.die:
                 break;
 
             case State.end:
+                ExitCart();
+                
                 break;
 
         }
@@ -105,6 +114,20 @@ public class ljh_Player : MonoBehaviourPun
 
     }
 
+    public void ExitCart()
+    {
+        ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
+        GameObject player = testGameScene.player;
+
+        exitCart = ljh_GameManager.instance.cartManagerEnter.exitCart;
+
+        player.transform.parent = exitCart.transform;
+
+        exitCart.GetComponent<CinemachineDollyCart>().enabled = true;
+    }
+
+    
+
     public void defaultPos()
     {
         switch(ljh_GameManager.instance.curUserNum)
@@ -122,6 +145,19 @@ public class ljh_Player : MonoBehaviourPun
                 break;
 
         }
+    }
+
+    public void PlayerDied()
+    {
+        photonView.RPC("RPCPlayerDied", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void RPCPlayerDied()
+    {
+        gameObject.SetActive(false);
+        inputManager.GetComponent<ljh_InputManager>().ChoiceAnswer().SetActive(false);
+        
     }
 
     
