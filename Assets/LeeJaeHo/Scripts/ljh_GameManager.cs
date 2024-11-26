@@ -58,6 +58,8 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
 
     [SerializeField] public bool playingCheck;
 
+    Coroutine turnCoroutine;
+
     private void Awake()
     {
         if (instance == null)
@@ -73,7 +75,7 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
         if (curState != State.idle)
             curState = State.idle;
 
-        myTurn = 0;
+        
 
     }
 
@@ -104,7 +106,7 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
 
     private void Update()
     {
-        
+        Debug.Log($"현재 마이턴 {myTurn}");
             Playing();
         
         
@@ -144,7 +146,6 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
 
     public void Playing()
     {
-        //Debug.Log(myTurn);
         switch (curState)
         {
             case State.idle:
@@ -168,7 +169,7 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
                 //uiManager.ShowUiExitMove();
                 if (playingCheck)
                 {
-                    Invoke("NextTurn", 1f);
+                    photonView.RPC("RPCNextTurn", RpcTarget.All);
                     playingCheck = false;
                 }
                 break;
@@ -180,6 +181,8 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
         }
         return;
     }
+
+    
 
     public void MoveStart()
     {
@@ -206,7 +209,8 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
         sunLight.transform.rotation = Quaternion.Euler(130, 48, 0);
     }
 
-    public void NextTurn()
+    [PunRPC]
+    public void RPCNextTurn()
     {
         switch (myTurn)
         {
@@ -218,6 +222,7 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
             case MyTurn.player2:
                 myTurn = MyTurn.player3;
                 curState = State.idle;
+                Debug.Log("2에서 3로 진행했음");
                 break;
            
             case MyTurn.player3:
@@ -237,13 +242,11 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            Debug.Log(info.Sender);
             stream.SendNext(curState);
             stream.SendNext(myTurn);
         }
         else
         {
-            Debug.Log(info.Sender);
             curState = (State)stream.ReceiveNext();
             myTurn = (MyTurn)stream.ReceiveNext();
         }
