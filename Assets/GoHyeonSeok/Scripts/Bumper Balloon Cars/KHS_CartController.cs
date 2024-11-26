@@ -1,5 +1,6 @@
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class KHS_CartController : MonoBehaviourPun, IPunObservable
 {
@@ -18,12 +19,27 @@ public class KHS_CartController : MonoBehaviourPun, IPunObservable
         if (photonView.IsMine)
         {
             BodyMove();
+
         }
     }
 
 
     private void BodyMove()
     {
+        // 리지드바디를 사용한 움직임 구현
+        //float zMove = Input.GetAxis("Vertical");
+
+        //Vector3 moveDirection = transform.forward * zMove * moveSpeed;
+        //rb.velocity = new Vector3(moveDirection.x, rb.velocity.y, moveDirection.z);
+
+        //float xRotate = Input.GetAxis("Horizontal");
+        //Quaternion deltaRotation = Quaternion.Euler(Vector3.up * xRotate * bodyRotateSpeed * Time.deltaTime);
+        //rb.MoveRotation(rb.rotation * deltaRotation);
+
+
+
+
+
         // 탱크 몸체 이동
         if (Input.GetKey(KeyCode.W))
         {
@@ -40,12 +56,23 @@ public class KHS_CartController : MonoBehaviourPun, IPunObservable
     }
 
 
-
-    private void OnCollisionStay(Collision collision)
+    private void OnCollisionStay(Collision collision) // 부딪히는중일때
     {
         Debug.Log("부딪히는 중입니다.");
-        rb.velocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+        rb.velocity = Vector3.zero; // 혹시 모를 속도 줄여주기
+        rb.angularVelocity = Vector3.zero; // 혹시 모를 속도 줄여주기
+
+        Quaternion currentRotate = transform.rotation;  
+        transform.rotation = Quaternion.Euler(0, currentRotate.eulerAngles.y, 0);   // 다른 방향으로 비틀어지지 않게 초기화
+    }
+
+    private void OnCollisionExit(Collision collision)   // 부딪히다가 떼졌을때ㅐ
+    {
+        rb.velocity = Vector3.zero; // 혹시 모를 속도 줄여주기
+        rb.angularVelocity = Vector3.zero;  // 혹시 모를 속도 줄여주기
+
+        Quaternion currentRotate = transform.rotation;
+        transform.rotation = Quaternion.Euler(0, currentRotate.eulerAngles.y, 0);   // 다른 방향으로 비틀어지지 않게 초기화
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -53,21 +80,10 @@ public class KHS_CartController : MonoBehaviourPun, IPunObservable
         if (stream.IsWriting)
         {
             //stream.SendNext(transform.rotation);  // transform 이용으로 회전 구현해보기
-            stream.SendNext(rb.position);
-            stream.SendNext(rb.rotation);
-            stream.SendNext(rb.velocity);
         }
-        else if(stream.IsReading)
+        else if (stream.IsReading)
         {
-            rb.position = (Vector3) stream.ReceiveNext();
-            rb.rotation = (Quaternion) stream.ReceiveNext();
-            rb.velocity = (Vector3) stream.ReceiveNext();
-
-            float lag = Mathf.Abs((float) (PhotonNetwork.Time - info.timestamp));
-            rb.position += rb.velocity * lag;
-
             //transform.rotation = (Quaternion)stream.ReceiveNext();    // transform 이용으로 회전 구현해보기
         }
-
     }
 }
