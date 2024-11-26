@@ -60,6 +60,11 @@ MonoBehaviour:
   - FinishedHeyHo
   - PlayerSpawnRPC
   - MonsterSpawnRPC
+  - PlayerParentSetRPC
+  - MonsterParentSetRPC
+  - PlayerTimeRecord
+  - MonsterUpdateRPC
+  - PlayerRecord
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

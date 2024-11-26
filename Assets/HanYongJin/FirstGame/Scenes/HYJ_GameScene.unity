@@ -312,7 +312,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 164827690}
-  - component: {fileID: 164827691}
   - component: {fileID: 164827692}
   - component: {fileID: 164827693}
   m_Layer: 0
@@ -337,21 +336,6 @@ Transform:
   m_Father: {fileID: 200231777}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &164827691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 164827689}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8db75bbc599205458679bdf0b2a2f7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerPoint: {fileID: 826746629}
-  bodyPrefab: {fileID: 7468632844476628749, guid: 09c09897217868e45b832e6d908fa6f5, type: 3}
-  headPrefab: {fileID: 7166719721424873072, guid: 5109ca5c42c4abd43b4d18ccb95a8736, type: 3}
 --- !u!114 &164827692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,6 +418,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerLeftText: {fileID: 1044710084}
+  mid: {fileID: 1389016697}
   timerRightText: {fileID: 97159177}
 --- !u!1 &185431398
 GameObject:
@@ -547,6 +532,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 200231777}
+  - component: {fileID: 200231779}
+  - component: {fileID: 200231778}
   m_Layer: 0
   m_Name: MonsterSpawnPoints
   m_TagString: Untagged
@@ -573,6 +560,46 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &200231778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 200231776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 7
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &200231779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 200231776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8db75bbc599205458679bdf0b2a2f7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyPrefab: {fileID: 7468632844476628749, guid: 09c09897217868e45b832e6d908fa6f5, type: 3}
+  headPrefab: {fileID: 7166719721424873072, guid: 5109ca5c42c4abd43b4d18ccb95a8736, type: 3}
+  monsterPoint1: {fileID: 164827689}
+  monsterPoint2: {fileID: 442647901}
+  monsterPoint3: {fileID: 408560002}
+  monsterPoint4: {fileID: 485604485}
 --- !u!1 &336155983
 GameObject:
   m_ObjectHideFlags: 0
@@ -689,7 +716,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 408560003}
-  - component: {fileID: 408560004}
   - component: {fileID: 408560005}
   - component: {fileID: 408560006}
   m_Layer: 0
@@ -714,21 +740,6 @@ Transform:
   m_Father: {fileID: 200231777}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &408560004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 408560002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8db75bbc599205458679bdf0b2a2f7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerPoint: {fileID: 53955425}
-  bodyPrefab: {fileID: 7468632844476628749, guid: 09c09897217868e45b832e6d908fa6f5, type: 3}
-  headPrefab: {fileID: 7166719721424873072, guid: 5109ca5c42c4abd43b4d18ccb95a8736, type: 3}
 --- !u!114 &408560005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -774,7 +785,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 442647902}
-  - component: {fileID: 442647903}
   - component: {fileID: 442647904}
   - component: {fileID: 442647905}
   m_Layer: 0
@@ -799,21 +809,6 @@ Transform:
   m_Father: {fileID: 200231777}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &442647903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 442647901}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8db75bbc599205458679bdf0b2a2f7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerPoint: {fileID: 1726467752}
-  bodyPrefab: {fileID: 7468632844476628749, guid: 09c09897217868e45b832e6d908fa6f5, type: 3}
-  headPrefab: {fileID: 7166719721424873072, guid: 5109ca5c42c4abd43b4d18ccb95a8736, type: 3}
 --- !u!114 &442647904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -859,7 +854,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 485604486}
-  - component: {fileID: 485604487}
   - component: {fileID: 485604488}
   - component: {fileID: 485604489}
   m_Layer: 0
@@ -884,21 +878,6 @@ Transform:
   m_Father: {fileID: 200231777}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &485604487
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 485604485}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8db75bbc599205458679bdf0b2a2f7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerPoint: {fileID: 632943508}
-  bodyPrefab: {fileID: 7468632844476628749, guid: 09c09897217868e45b832e6d908fa6f5, type: 3}
-  headPrefab: {fileID: 7166719721424873072, guid: 5109ca5c42c4abd43b4d18ccb95a8736, type: 3}
 --- !u!114 &485604488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1498,6 +1477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpawnPoint: {fileID: 1725885692}
+  monsterSpawnPoint: {fileID: 200231779}
   timer: {fileID: 166544726}
   gameStartCountText: {fileID: 1637511979}
   playerColors:
