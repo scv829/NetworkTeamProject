@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class KHS_Balloon : MonoBehaviourPun
 {
+    [SerializeField] private KHS_CartController _cartController;
+
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log($"{collision.collider.tag}");
@@ -24,6 +26,8 @@ public class KHS_Balloon : MonoBehaviourPun
     public void KHS_DistroyBallon()
     {
         Debug.Log("삭제 진행됨");
+        KHS_BumperBalloonCarsGameManager.Instance.GameOverPlayer();
+        _cartController.gameObject.SetActive(false);
         Destroy(gameObject);
     }
 }

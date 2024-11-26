@@ -313,6 +313,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 825907323469518391, guid: 24a141c7aad359e498c65ed4bf7a0795, type: 3}
+      propertyPath: _cartController
+      value: 
+      objectReference: {fileID: 8058240228287541820}
     - target: {fileID: 3256180888262561741, guid: 24a141c7aad359e498c65ed4bf7a0795, type: 3}
       propertyPath: m_RootOrder
       value: 2
