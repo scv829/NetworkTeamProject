@@ -149,7 +149,6 @@ public class ljh_TestGameScene : MonoBehaviourPunCallbacks
         playerPos = new Vector3(vectorPlayerSpawn[index].x, 0, vectorPlayerSpawn[index].z);
         player = PhotonNetwork.Instantiate("ljh_Player", playerPos, Quaternion.identity);
         player.GetComponent<ljh_Player>().playerNumber = (PlayerNumber)index;
-
         
 
 

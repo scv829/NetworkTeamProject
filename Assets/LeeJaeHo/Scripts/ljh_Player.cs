@@ -24,7 +24,6 @@ public class ljh_Player : MonoBehaviourPun
     [SerializeField] GameObject cartManager;
 
     GameObject[] buttonPos;
-    Vector3 myPos;
     public PlayerNumber playerNumber;
 
     [SerializeField] GameObject cart;
@@ -41,7 +40,7 @@ public class ljh_Player : MonoBehaviourPun
         testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
         inputManager = GameObject.FindWithTag("GameController");
         //buttonPos = inputManagerScript. 나중에 유저 4 > 3번 포즈 3명 > 3번포즈 2명 2번 포즈
-        defaultPos();
+      
 
 
     }
@@ -63,6 +62,9 @@ public class ljh_Player : MonoBehaviourPun
             transform.position = testGameScene.vectorPlayerSpawn[testGameScene.index];
         }
 
+
+        Debug.Log($"현재 플레이어 : { playerNumber}"); 
+        Debug.Log($"지금 턴인 플레이어 :{ljh_GameManager.instance.myTurn}"); // 이놈이 문제 마이턴 2
         if ((int)playerNumber == (int)ljh_GameManager.instance.myTurn)
         {
             PlayingPlayer();
@@ -126,26 +128,6 @@ public class ljh_Player : MonoBehaviourPun
         exitCart.GetComponent<CinemachineDollyCart>().enabled = true;
     }
 
-    
-
-    public void defaultPos()
-    {
-        switch(ljh_GameManager.instance.curUserNum)
-        {
-            case 4:
-                myPos = new Vector3(-2, 0, 0.7f);
-                break;
-
-            case 3:
-                myPos = new Vector3(-1.3f, 0, 0.7f);
-                break;
-
-            case 2:
-                myPos = new Vector3(-2, 0, 0.7f);
-                break;
-
-        }
-    }
 
     public void PlayerDied()
     {
