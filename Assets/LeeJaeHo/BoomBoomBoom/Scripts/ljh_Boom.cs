@@ -5,7 +5,7 @@ using Photon.Pun;
 
 public class ljh_Boom : MonoBehaviourPun
 {
-    [SerializeField] ljh_TestGameScene scene;
+    [SerializeField] ljh_BoomTestGameScene scene;
     public GameObject bomb;
     public ljh_Player player;
 

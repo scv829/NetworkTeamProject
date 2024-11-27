@@ -26,7 +26,7 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
     [SerializeField] public ljh_UIManager uiManager;
     [SerializeField] public ljh_InputManager inputManager;
     [SerializeField] public ljh_Player player;
-    [SerializeField] public ljh_TestGameScene scene;
+    [SerializeField] public ljh_BoomTestGameScene scene;
     [SerializeField] public ljh_CartManager cartManagerEnter;
     [SerializeField] public ljh_Pos posManager;
 

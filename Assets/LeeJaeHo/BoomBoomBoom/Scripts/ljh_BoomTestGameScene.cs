@@ -8,10 +8,9 @@ using System.Data;
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
-using Photon.Pun.UtilityScripts;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
-public class ljh_TestGameScene : MonoBehaviourPunCallbacks
+public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
 {
     public const string RoomName = "Testroom";
 
