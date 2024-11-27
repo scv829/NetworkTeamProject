@@ -8,6 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HJS_LoginPanel : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class HJS_LoginPanel : MonoBehaviour
     [SerializeField] TMP_InputField passwordField;
 
     [SerializeField] HJS_PopupPanel popupPanel;
+    [SerializeField] Button profileButton;
+
+    [Header("Test")]
+    [SerializeField, Tooltip("테스트 모드 여부")] bool isTest;   // 테스트 모드일 때는 인증 상관없이 로그인 가능
     public void Login()
     {
         string email = emailField.text;
@@ -39,7 +44,7 @@ public class HJS_LoginPanel : MonoBehaviour
                 Debug.Log($"유저 로그인 성공! {result.User.DisplayName} ({result.User.UserId})");
 
                 // 이메일 인증 여부 
-                if(result.User.IsEmailVerified.Equals(false))
+                if(!isTest && result.User.IsEmailVerified.Equals(false))
                 {
                     popupPanel.ShowPopup("Please verify your email!");
                     return;
@@ -95,6 +100,7 @@ public class HJS_LoginPanel : MonoBehaviour
                     }
                 }
 
+                profileButton.interactable = true;
             });
 
     }
