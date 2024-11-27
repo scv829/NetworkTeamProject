@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/LeeJaeHo/Scene/Minigame_LJH.unity
     guid: 428532df5c5600c41bbc67cca7ea122a
   - enabled: 1
-    path: Assets/HanYongJin/FirstGame/Scenes/HYJ_GameScene.unity
+    path: Assets/HanYongJin/Scenes/HYJ_SmashGame.unity
     guid: aed649efb777a494e89f0dd2d78aac37
   - enabled: 1
     path: Assets/HanJaeSeong/HJS_HeartScene.unity
