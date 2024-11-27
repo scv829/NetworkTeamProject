@@ -79,6 +79,8 @@ MonoBehaviour:
   - KHS_DistroyBallon
   - RPCNextTurn
   - RPCMove
+  - KHS_BumperCartGameStart
+  - KHS_CartReadyRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
