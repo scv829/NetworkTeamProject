@@ -21,7 +21,11 @@ public class ljh_PlayerController : MonoBehaviourPun
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
 
-        transform.Translate(new Vector3(x, 0, z)* moveSpeed * Time.deltaTime);
+        if (x != 0 || z !=0)
+            transform.forward = new Vector3(x, 0, z);
+
+
+        transform.Translate(new Vector3(x, 0, z).normalized * moveSpeed * Time.deltaTime, Space.World);
         //photonView.RPC("RPCMove", RpcTarget.AllViaServer);
     }
 
