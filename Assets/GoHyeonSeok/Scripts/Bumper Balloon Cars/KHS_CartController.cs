@@ -110,11 +110,11 @@ public class KHS_CartController : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(CanMove);
+            stream.SendNext(CanMove);   // 움직일 수 있는지 여부
         }
         else if (stream.IsReading)
         {
-            CanMove = (bool)stream.ReceiveNext();
+            CanMove = (bool)stream.ReceiveNext();   // 움직일 수 있는지 여부
         }
     }
 }

@@ -13,9 +13,9 @@ public class KHS_BumperUIManager : MonoBehaviour
         StartCoroutine(CountDownCoroutine());
     }
 
-    public void ResultGame()
+    public void ResultGame(int winner)
     {
-        _text.text = "Game Over!";
+        _text.text = $"winner Is {winner} Player!";
     }
 
     private IEnumerator CountDownCoroutine()
