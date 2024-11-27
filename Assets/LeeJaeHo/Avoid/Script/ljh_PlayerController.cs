@@ -5,14 +5,25 @@ using Photon.Pun;
 
 public class ljh_PlayerController : MonoBehaviourPun
 {
+    [SerializeField] ljh_AviodStone stone;
+
     float moveSpeed = 2;
-    // Update is called once per frame
+
+    private void Start()
+    {
+        stone = GameObject.FindWithTag("GameController").GetComponent<ljh_AvoidGameManager>().stone1;
+    }
     void Update()
     {
+       // if (Input.GetKey(KeyCode.Space))
+          //  stone.Smash();
+
         if (!photonView.IsMine)
             return;
 
         Move();
+
+       
     }
 
 

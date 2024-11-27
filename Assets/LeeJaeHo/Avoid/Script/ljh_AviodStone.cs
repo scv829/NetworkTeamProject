@@ -5,8 +5,13 @@ using UnityEngine;
 public class ljh_AviodStone : MonoBehaviour
 {
     ljh_AvoidGameManager gameManager;
-    
+
+    // 진짜 떨어지는 돌
     bool real;
+
+    // 돌 넘어지는 속도
+    float rotateSpeed;
+
     public void 돌에게명령()
     {
         gameManager.stoneArray[Random.Range(0, gameManager.stoneArray.Length - 1)].real = true;
@@ -17,7 +22,7 @@ public class ljh_AviodStone : MonoBehaviour
             // Todo: 코루틴으로 바꿔줘야함
             Invoke("Smash", 0.5f);
         }
-        else if(!real)
+        else if (!real)
         {
             Vibe(); // Todo : 코루틴으로 지연 시간 넣어줘야함
         }
@@ -30,7 +35,32 @@ public class ljh_AviodStone : MonoBehaviour
 
     public void Smash()
     {
+
+        rotateSpeed = 20f;
+        transform.Rotate(Vector3.forward * rotateSpeed * Time.deltaTime);
+
+
         //Todo: 돌이 넘어져서 바닥에 붙어야함
         //Todo: 플레이어가 닿으면 플레이어가 장애물로 변함 > 이건 플레이어에서? 스톤에서?
+    }
+
+    public void ReturnSmash()
+    {
+            rotateSpeed = 20f;
+            transform.Rotate(Vector3.forward * -rotateSpeed * Time.deltaTime);
+        
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            ReturnSmash();
+        }
+
+        if(collision.gameObject.CompareTag("EnterWay"))
+        {
+            ReturnSmash();
+        }
     }
 }

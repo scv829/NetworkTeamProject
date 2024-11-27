@@ -110,9 +110,10 @@ GameObject:
   - component: {fileID: 7099253556105585634}
   - component: {fileID: 4116332586689633142}
   - component: {fileID: 7575068342199396208}
+  - component: {fileID: 7996549769078944148}
   m_Layer: 0
   m_Name: ljh_AvoidPlayer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -200,6 +201,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 006ba7f0e75ef604fa3bcb7286550416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stone: {fileID: 0}
+--- !u!136 &7996549769078944148
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7532427953807426678}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.32
+  m_Height: 1.02
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.42, z: 0}
 --- !u!1 &7941928962904230731
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,7 +227,6 @@ GameObject:
   - component: {fileID: 2370690846329729032}
   - component: {fileID: 8255106118017112844}
   - component: {fileID: 8139075209661723489}
-  - component: {fileID: 2507295610250646396}
   m_Layer: 0
   m_Name: body
   m_TagString: Untagged
@@ -285,17 +300,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &2507295610250646396
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7941928962904230731}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
