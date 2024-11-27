@@ -93,7 +93,7 @@ public class KHS_HitBox : MonoBehaviourPun
 
     private IEnumerator StunCoroutine()
     {
-        KHS_BumperBalloonCarsGameManager.Instance.IsGameStarted = false;
+        _cartConntroller.CanMove = false;
         //_cartConntroller.Rb.AddForce(-_cartConntroller.transform.forward * 2f, ForceMode.Impulse);
         _cartConntroller.Animator.SetTrigger("Stun");
         yield return new WaitForSeconds(1.5f);
@@ -101,7 +101,7 @@ public class KHS_HitBox : MonoBehaviourPun
 
         _cartConntroller.Rb.velocity = Vector3.zero; // 혹시 모를 속도 줄여주기
         _cartConntroller.Rb.angularVelocity = Vector3.zero; // 혹시 모를 속도 줄여주기
-        KHS_BumperBalloonCarsGameManager.Instance.IsGameStarted = true;
+        _cartConntroller.CanMove = true;
         _stunCoroutine = null;
     }
 }

@@ -222,6 +222,7 @@ MonoBehaviour:
   _bodyRotateSpeed: 200
   _isGameOver: 0
   _animator: {fileID: 4364527245061020478}
+  _canMove: 0
 --- !u!114 &8058240230025776180
 MonoBehaviour:
   m_ObjectHideFlags: 0
