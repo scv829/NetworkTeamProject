@@ -4,15 +4,22 @@ using Firebase.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HJS_LoginPanel : MonoBehaviour
 {
     [SerializeField] TMP_InputField emailField;
     [SerializeField] TMP_InputField passwordField;
 
+    [SerializeField] HJS_PopupPanel popupPanel;
+    [SerializeField] Button profileButton;
+
+    [Header("Test")]
+    [SerializeField, Tooltip("테스트 모드 여부")] bool isTest;   // 테스트 모드일 때는 인증 상관없이 로그인 가능
     public void Login()
     {
         string email = emailField.text;
@@ -35,10 +42,16 @@ public class HJS_LoginPanel : MonoBehaviour
                 
                 AuthResult result = task.Result;
                 Debug.Log($"유저 로그인 성공! {result.User.DisplayName} ({result.User.UserId})");
-                FirebaseUser user = HJS_FirebaseManager.Auth.CurrentUser;
-                //Uri uri = user.PhotoUrl;         // 사진 URL 주소
-                //Debug.Log(uri.ToString());
-                //CheckUserInfo();
+
+                // 이메일 인증 여부 
+                if(!isTest && result.User.IsEmailVerified.Equals(false))
+                {
+                    popupPanel.ShowPopup("Please verify your email!");
+                    return;
+                }
+
+                // 인증이 됐을 때 유저 정보 확인
+                CheckUserInfo();
             });
 
     }
@@ -67,9 +80,11 @@ public class HJS_LoginPanel : MonoBehaviour
 
                 if(snapshot.Value is null)
                 {
-                    UserData userData = new UserData();
+                    HJS_UserData userData = new HJS_UserData();
                     userData.name = HJS_FirebaseManager.Auth.CurrentUser.DisplayName;
                     userData.email = HJS_FirebaseManager.Auth.CurrentUser.Email;
+
+                    userData.record.Reset();
 
                     string json = JsonUtility.ToJson(userData);
                     userDataRef.SetRawJsonValueAsync(json);
@@ -78,16 +93,16 @@ public class HJS_LoginPanel : MonoBehaviour
                 {
                     Debug.Log(snapshot.Child("name").Value);
                     Debug.Log(snapshot.Child("email").Value);
+
+                    foreach(DataSnapshot data in snapshot.Child("record").Children)
+                    {
+                        Debug.Log($"Record's {data} : {data.Value}");
+                    }
                 }
 
+                profileButton.interactable = true;
             });
 
     }
 
-    [Serializable]
-    public class UserData
-    {
-        public string name;
-        public string email;
-    }
 }

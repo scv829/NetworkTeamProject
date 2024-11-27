@@ -30,8 +30,9 @@ public class HJS_PlayerController : MonoBehaviourPun
         bodyRenderer.material.color = color;
 
         // 랜터 텍스쳐 설정
-        playerCamera.targetTexture = playerRenderTextures[PhotonNetwork.LocalPlayer.GetPlayerNumber()]; // 자신의 랜더 텍스쳐 설정
-        photonView.RPC("SetRenderTextureRPC", RpcTarget.Others, photonView.Owner.GetPlayerNumber());    // 자신의 설정란 랜더 텍스쳐를 다른 유저에게 알려주기
+        playerCamera.targetTexture = playerRenderTextures[photonView.Owner.GetPlayerNumber()]; // 소유자의 랜더 텍스쳐로 설정
+        
+        Debug.LogWarning($"{photonView.Owner.NickName} spawn time {PhotonNetwork.Time}");
 
         // 애니메이터 설정
         animator = GetComponent<Animator>();
@@ -42,11 +43,6 @@ public class HJS_PlayerController : MonoBehaviourPun
         gameMaster.inputStopEvent.AddListener(StopInput);
         gameMaster.changeShaderEvent.AddListener(ChangeShader);
         
-    }
-
-    public void SetRenderTexture(int number)
-    {
-        playerCamera.targetTexture = playerRenderTextures[PhotonNetwork.LocalPlayer.GetPlayerNumber()];
     }
 
     public void StartInput()
@@ -121,12 +117,6 @@ public class HJS_PlayerController : MonoBehaviourPun
     public void SendAnswerRPC(HJS_RandomSlot.AnswerDirection answer, PhotonMessageInfo messageInfo)
     {
         gameMaster.AddPlayerAnswer(answer, messageInfo);
-    }
-
-    [PunRPC]
-    private void SetRenderTextureRPC(int number)
-    {
-        playerCamera.targetTexture = playerRenderTextures[number];
     }
 
     [PunRPC]
