@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6984646196184484807}
   - component: {fileID: 6984646196184484806}
+  - component: {fileID: 1159694592832861010}
+  - component: {fileID: 8165285974254827578}
+  - component: {fileID: 5249417323765824565}
   m_Layer: 0
   m_Name: HitBox
   m_TagString: Player
@@ -43,8 +46,61 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5542722, y: 0.22493833, z: 0.21399856}
-  m_Center: {x: -0.011715755, y: -0.10141811, z: 0.7177969}
+  m_Size: {x: 0.5367231, y: 0.3181736, z: 0.24803448}
+  m_Center: {x: -0.002941221, y: -0.05480048, z: 0.7348149}
+--- !u!114 &1159694592832861010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6984646196184484804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ee85b2bd4b232740ac2037320991355, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cartConntroller: {fileID: 8058240228287541820}
+  _stunTime: 0.5
+  _rb: {fileID: 8165285974254827578}
+--- !u!54 &8165285974254827578
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6984646196184484804}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
+--- !u!114 &5249417323765824565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6984646196184484804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &8058240228287541818
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,8 +217,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93543f5de9d21a048b074859c9b6fa35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
-  bodyRotateSpeed: 200
+  _moveSpeed: 6
+  _bodyRotateSpeed: 200
+  _isGameOver: 0
 --- !u!114 &8058240230025776180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,7 +239,6 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 8058240228287541820}
   - {fileID: 6566994694531401108}
   sceneViewId: 0
   InstantiationId: 0

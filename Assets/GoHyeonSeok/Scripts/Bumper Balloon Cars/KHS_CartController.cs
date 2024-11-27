@@ -2,24 +2,35 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class KHS_CartController : MonoBehaviourPun, IPunObservable
+public class KHS_CartController : MonoBehaviourPun/*, IPunObservable*/
 {
-    [SerializeField] float moveSpeed;
-    [SerializeField] float bodyRotateSpeed;
+    [SerializeField] float _moveSpeed;
+    [SerializeField] float _bodyRotateSpeed;
+
+    [SerializeField] bool _isGameOver;
+    public bool IsGameOver { get { return _isGameOver; } set { _isGameOver = value; } }
 
     private Rigidbody rb;
+    public Rigidbody Rb { get { return rb; } set { rb = value; } }
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
 
+    private void Start()
+    {
+        Ready();
+        KHS_BumperBalloonCarsGameManager.Instance.PlayerReady();
+        Debug.Log($"레디한 플레이어 : {photonView.Owner.ActorNumber}");
+    }
+
     private void Update()
     {
-        if (photonView.IsMine)
+        if (photonView.IsMine && KHS_BumperBalloonCarsGameManager.Instance.IsGameStarted == true)
+            // 소유권인 나에게 있고 && 현재 게임 매니저에서 게임을 시작했다고 판단한다면
         {
-            BodyMove();
-
+            BodyMove(); // 카트를 움직일 수 있다.
         }
     }
 
@@ -40,25 +51,38 @@ public class KHS_CartController : MonoBehaviourPun, IPunObservable
 
 
 
-        // 탱크 몸체 이동
+        // 카트 몸체 이동
         if (Input.GetKey(KeyCode.W))
         {
-            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+            transform.Translate(Vector3.forward * _moveSpeed * Time.deltaTime);
         }
         if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
+            transform.Translate(Vector3.back * _moveSpeed * Time.deltaTime);
         }
 
-        // 탱크 몸체 회전
+        // 카트 몸체 회전
         float x = Input.GetAxis("Horizontal");
-        transform.Rotate(Vector3.up * x * bodyRotateSpeed * Time.deltaTime);
+        transform.Rotate(Vector3.up * x * _bodyRotateSpeed * Time.deltaTime);
+    }
+
+    private void Ready()    // 현재 카트 생성 완료되었다는 RPC 선언
+    {
+        photonView.RPC("KHS_CartReadyRPC", RpcTarget.AllBuffered);
+    }
+
+
+    [PunRPC]
+    private void KHS_CartReadyRPC()
+    {
+        KHS_BumperBalloonCarsGameManager.Instance.CartController[photonView.Owner.ActorNumber] = this;  // 게임 매니저 카트배열에 this 참조시켜주기
+        Debug.Log($"{photonView.Owner.ActorNumber}번째 카트 스크립트 참조 됨");
     }
 
 
     private void OnCollisionStay(Collision collision) // 부딪히는중일때
     {
-        Debug.Log("부딪히는 중입니다.");
+        //Debug.Log("부딪히는 중입니다.");
         rb.velocity = Vector3.zero; // 혹시 모를 속도 줄여주기
         rb.angularVelocity = Vector3.zero; // 혹시 모를 속도 줄여주기
 
@@ -75,15 +99,22 @@ public class KHS_CartController : MonoBehaviourPun, IPunObservable
         transform.rotation = Quaternion.Euler(0, currentRotate.eulerAngles.y, 0);   // 다른 방향으로 비틀어지지 않게 초기화
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            //stream.SendNext(transform.rotation);  // transform 이용으로 회전 구현해보기
-        }
-        else if (stream.IsReading)
-        {
-            //transform.rotation = (Quaternion)stream.ReceiveNext();    // transform 이용으로 회전 구현해보기
-        }
-    }
+    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    //{
+    //    if(stream.IsWriting)
+    //    {
+    //        stream.SendNext(rb.position);
+    //        stream.SendNext(rb.rotation);
+    //        stream.SendNext(rb.velocity);
+    //    }
+    //    else if (stream.IsReading)
+    //    {
+    //        rb.position = (Vector3) stream.ReceiveNext();
+    //        rb.rotation = (Quaternion) stream.ReceiveNext();
+    //        rb.velocity = (Vector3) stream.ReceiveNext();
+
+    //        float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+    //        rb.position += rb.velocity * lag;
+    //    }
+    //}
 }
