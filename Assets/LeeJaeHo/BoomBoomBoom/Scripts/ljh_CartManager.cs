@@ -15,7 +15,7 @@ public class ljh_CartManager : MonoBehaviour
 
     public void CartMoveEnter()
     {
-        ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
+        ljh_BoomTestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_BoomTestGameScene>();
         int index = testGameScene.index;
 
         cartArrayEnter[index].GetComponent<CinemachineDollyCart>().enabled = true;
@@ -24,7 +24,7 @@ public class ljh_CartManager : MonoBehaviour
 
     public void CartReset()
     {
-        ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
+        ljh_BoomTestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_BoomTestGameScene>();
         int index = testGameScene.index;
 
         cartArrayEnter[index].GetComponent<CinemachineDollyCart>().m_Position = 0;

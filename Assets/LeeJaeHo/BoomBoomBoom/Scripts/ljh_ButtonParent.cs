@@ -33,7 +33,7 @@ public class ljh_ButtonParent : MonoBehaviourPun
 
     public void SelectedButtonAction(ljh_Button _button)
     {
-        ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
+        ljh_BoomTestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_BoomTestGameScene>();
         GameObject player = testGameScene.player;
 
         if (_button.WinButton)

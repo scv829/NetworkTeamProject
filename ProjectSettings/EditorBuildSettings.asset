@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/GoHyeonSeok/Sceans/Mecha Marathon.unity
     guid: 7f66d31e38a4efc42b2a6654f706bc0e
   - enabled: 1
-    path: Assets/LeeJaeHo/Scene/Minigame_LJH.unity
+    path: Assets/LeeJaeHo/BoomBoomBoom/Scene/BoomBoomBoom.unity
     guid: 428532df5c5600c41bbc67cca7ea122a
   - enabled: 1
     path: Assets/HanYongJin/FirstGame/Scenes/HYJ_GameScene.unity

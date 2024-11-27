@@ -19,7 +19,7 @@ public class ljh_Player : MonoBehaviourPun
 {
     //[SerializeField] ljh_InputManager inputManagerScript;
     [SerializeField] ljh_InputManager inputManagerScript;
-    [SerializeField] ljh_TestGameScene testGameScene;
+    [SerializeField] ljh_BoomTestGameScene testGameScene;
     [SerializeField] GameObject inputManager;
     [SerializeField] GameObject cartManager;
 
@@ -37,7 +37,7 @@ public class ljh_Player : MonoBehaviourPun
 
     private void Start()
     {
-        testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
+        testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_BoomTestGameScene>();
         inputManager = GameObject.FindWithTag("GameController");
         //buttonPos = inputManagerScript. 나중에 유저 4 > 3번 포즈 3명 > 3번포즈 2명 2번 포즈
       
@@ -109,7 +109,7 @@ public class ljh_Player : MonoBehaviourPun
 
     public void UnRideCart()
     {
-        ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
+        ljh_BoomTestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_BoomTestGameScene>();
         GameObject player = testGameScene.player;
 
         player.transform.parent = null;
@@ -118,7 +118,7 @@ public class ljh_Player : MonoBehaviourPun
 
     public void ExitCart()
     {
-        ljh_TestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_TestGameScene>();
+        ljh_BoomTestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_BoomTestGameScene>();
         GameObject player = testGameScene.player;
 
         exitCart = ljh_GameManager.instance.cartManagerEnter.exitCart;

@@ -78,6 +78,7 @@ MonoBehaviour:
   - PlayerRecord
   - KHS_DistroyBallon
   - RPCNextTurn
+  - RPCMove
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
