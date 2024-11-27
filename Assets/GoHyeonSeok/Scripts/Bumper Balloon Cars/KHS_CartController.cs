@@ -13,6 +13,9 @@ public class KHS_CartController : MonoBehaviourPun/*, IPunObservable*/
     private Rigidbody rb;
     public Rigidbody Rb { get { return rb; } set { rb = value; } }
 
+    [SerializeField] Animator _animator;
+    public Animator Animator { get { return _animator; } set { _animator = value; } }
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
