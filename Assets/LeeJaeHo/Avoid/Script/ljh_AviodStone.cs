@@ -16,7 +16,11 @@ public class ljh_AviodStone : MonoBehaviourPun, IPunObservable
     Coroutine smashCo;
     Coroutine returnCo;
 
-    
+    public void Start()
+    {
+        rotateSpeed = 2f;
+        gameManager = GameObject.FindWithTag("GameController").GetComponent<ljh_AvoidGameManager>();
+    }
 
     public void Vibe()
     {
@@ -25,8 +29,6 @@ public class ljh_AviodStone : MonoBehaviourPun, IPunObservable
 
     public void Smash()
     {
-
-        rotateSpeed = 3f;
 
         if (smashCo == null)
             smashCo = StartCoroutine(SmashCo());
@@ -38,12 +40,11 @@ public class ljh_AviodStone : MonoBehaviourPun, IPunObservable
 
     public void ReturnSmash()
     {
-            rotateSpeed = 1f;
-        
-            if(returnCo == null)
-                returnCo = StartCoroutine(ReturnCo());
 
-        
+        if (returnCo == null)
+            returnCo = StartCoroutine(ReturnCo());
+
+
     }
 
     IEnumerator SmashCo()
@@ -75,11 +76,13 @@ public class ljh_AviodStone : MonoBehaviourPun, IPunObservable
     {
         if (smashCo != null)
         {
+            Debug.Log("쿨리젼엔터 실행");
             if (collision.gameObject.CompareTag("Player"))
             {
                 StopCoroutine(smashCo);
                 smashCo = null;
                 ReturnSmash();
+                gameManager.attackRoutine = null;
             }
 
             if (collision.gameObject.CompareTag("EnterWay"))
@@ -87,13 +90,15 @@ public class ljh_AviodStone : MonoBehaviourPun, IPunObservable
                 StopCoroutine(smashCo);
                 smashCo = null;
                 ReturnSmash();
+                gameManager.attackRoutine = null;
             }
         }
     }
 
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if(stream.IsWriting)
+        if (stream.IsWriting)
         {
             stream.SendNext(transform.rotation);
         }
@@ -103,3 +108,4 @@ public class ljh_AviodStone : MonoBehaviourPun, IPunObservable
         }
     }
 }
+
