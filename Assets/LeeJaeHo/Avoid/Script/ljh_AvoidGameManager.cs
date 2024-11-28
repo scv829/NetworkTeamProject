@@ -22,6 +22,12 @@ public class ljh_AvoidGameManager : MonoBehaviour
 
     float stoneCooldown;
 
+    private void Start()
+    {
+        stoneArray = new ljh_AviodStone[4] { stone1, stone2, stone3, stone4 };
+        
+    }
+
     private void Update()
     {
 
