@@ -58,8 +58,10 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinOrCreateRoom(RoomName,options,TypedLobby.Default);
     }
 
-    public override void OnJoinedRoom()
+    public void GameStart()
     {
-        
+        // TODO : 필드 스폰(필드가 스폰되면 필드에서 플레이어 스폰)
+        // TODO : 게임 시작
+        // 
     }
 }
