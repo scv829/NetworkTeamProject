@@ -19,6 +19,7 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
 
     [SerializeField] private bool _isGameStarted;   // 현재 게임 시작했는지 확인하는 변수
     public bool IsGameStarted { get { return _isGameStarted; } set { _isGameStarted = value; } }
+    private int _winnerIndex = 0;
 
     private void Awake()
     {
@@ -72,16 +73,30 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
     {
         CurLivePlayer--;    // 현재 살아있는 플레이어 인원
         Debug.Log($"현재 남은 플레이어 {CurLivePlayer} 명");
-        if (CurLivePlayer == 1)
+
+        StartCoroutine(DelayGameOver());
+    }
+
+    private IEnumerator DelayGameOver()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        if (CurLivePlayer == 1) // 남은 인원이 1명일때
         {
-            //for(int i = 1; i < CartController.Length; i++)
-            //{
-
-            //}
-
-            _uiManager.ResultGame(); // 결과 창 출력
-            Debug.Log($"!게임 종료!");
+            for (int i = 1; i < CartController.Length; i++)
+            {
+                if (CartController[i].IsGameOver == false)
+                // 카트 컨트롤러 안에 선언되어있는 IsGameOver가 false일때
+                {
+                    _winnerIndex = i;    // 해당 인덱스가 승자를 나타내기에 설정
+                    Debug.Log($"{i} 승자 인덱스");
+                    break;
+                }
+            }
         }
+
+        _uiManager.ResultGame(_winnerIndex); // 결과 창 출력
+        Debug.Log($"!게임 종료!");
     }
 
     public void PlayerReady()
@@ -125,11 +140,13 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
         {
             stream.SendNext(IsGameStarted); // 현재 게임 시작했는지 확인하는 변수
             stream.SendNext(CurLivePlayer); // 현재 살아있는 플레이어 인원 변수
+            stream.SendNext(_winnerIndex);
         }
         else if (stream.IsReading)
         {
             IsGameStarted = (bool)stream.ReceiveNext(); // 현재 게임 시작했는지 확인하는 변수
             CurLivePlayer = (int)stream.ReceiveNext();  // 현재 살아있는 플레이어 인원 변수
+            _winnerIndex = (int)stream.ReceiveNext();
         }
     }
 }

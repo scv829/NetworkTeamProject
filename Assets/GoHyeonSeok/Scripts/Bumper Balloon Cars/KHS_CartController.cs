@@ -2,7 +2,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class KHS_CartController : MonoBehaviourPun/*, IPunObservable*/
+public class KHS_CartController : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] float _moveSpeed;
     [SerializeField] float _bodyRotateSpeed;
@@ -13,6 +13,12 @@ public class KHS_CartController : MonoBehaviourPun/*, IPunObservable*/
     private Rigidbody rb;
     public Rigidbody Rb { get { return rb; } set { rb = value; } }
 
+    [SerializeField] Animator _animator;
+    public Animator Animator { get { return _animator; } set { _animator = value; } }
+
+    [SerializeField] private bool _canMove;
+    public bool CanMove { get { return _canMove; } set { _canMove = value; } }
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -20,6 +26,7 @@ public class KHS_CartController : MonoBehaviourPun/*, IPunObservable*/
 
     private void Start()
     {
+        CanMove = true;
         Ready();
         KHS_BumperBalloonCarsGameManager.Instance.PlayerReady();
         Debug.Log($"레디한 플레이어 : {photonView.Owner.ActorNumber}");
@@ -27,7 +34,7 @@ public class KHS_CartController : MonoBehaviourPun/*, IPunObservable*/
 
     private void Update()
     {
-        if (photonView.IsMine && KHS_BumperBalloonCarsGameManager.Instance.IsGameStarted == true)
+        if (photonView.IsMine && KHS_BumperBalloonCarsGameManager.Instance.IsGameStarted == true && CanMove == true)
             // 소유권인 나에게 있고 && 현재 게임 매니저에서 게임을 시작했다고 판단한다면
         {
             BodyMove(); // 카트를 움직일 수 있다.
@@ -99,22 +106,15 @@ public class KHS_CartController : MonoBehaviourPun/*, IPunObservable*/
         transform.rotation = Quaternion.Euler(0, currentRotate.eulerAngles.y, 0);   // 다른 방향으로 비틀어지지 않게 초기화
     }
 
-    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    //{
-    //    if(stream.IsWriting)
-    //    {
-    //        stream.SendNext(rb.position);
-    //        stream.SendNext(rb.rotation);
-    //        stream.SendNext(rb.velocity);
-    //    }
-    //    else if (stream.IsReading)
-    //    {
-    //        rb.position = (Vector3) stream.ReceiveNext();
-    //        rb.rotation = (Quaternion) stream.ReceiveNext();
-    //        rb.velocity = (Vector3) stream.ReceiveNext();
-
-    //        float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
-    //        rb.position += rb.velocity * lag;
-    //    }
-    //}
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(CanMove);   // 움직일 수 있는지 여부
+        }
+        else if (stream.IsReading)
+        {
+            CanMove = (bool)stream.ReceiveNext();   // 움직일 수 있는지 여부
+        }
+    }
 }
