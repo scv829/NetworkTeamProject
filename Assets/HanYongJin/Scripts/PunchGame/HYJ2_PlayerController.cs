@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class HYJ2_PlayerController : MonoBehaviour
+public class HYJ2_PlayerController : MonoBehaviourPun
 {
     
 }

@@ -13,11 +13,16 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
     void Start()
     {
         PhotonNetwork.LocalPlayer.NickName = $"Player {Random.Range(1000, 10000)}";
+
+
         PhotonNetwork.ConnectUsingSettings(); //게임 씬 테스트용
+
+        
 
         //Vector3 vectorColor = new Vector3(playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].r, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].g, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].b);
         //PhotonNetwork.LocalPlayer.SetPlayerColor(vectorColor);
         //PhotonNetwork.LocalPlayer.SetLoad(true);
+
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
@@ -51,5 +56,10 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
         options.IsVisible = false;
 
         PhotonNetwork.JoinOrCreateRoom(RoomName,options,TypedLobby.Default);
+    }
+
+    public override void OnJoinedRoom()
+    {
+        
     }
 }
