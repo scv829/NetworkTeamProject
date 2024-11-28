@@ -15,17 +15,32 @@ public class HJS_UserProfile : MonoBehaviour
     [SerializeField, Tooltip("유저의 승률")] TMP_Text rateText;
     [SerializeField, Tooltip("유저의 전적")] TMP_Text recordText;
 
-    DatabaseReference userDateRef;
+    private DatabaseReference userDateRef;
 
     private StringBuilder sb = new StringBuilder();
 
-    private void OnEnable()
-    { 
+    /// <summary>
+    /// 유저의 프로필을 불러오는 함수
+    /// </summary>
+    /// <param name="key">유저 식별자</param>
+    public void getUserProfile(string key = "my")
+    {
+        // 일단 자신의 유저를 가져고
         FirebaseUser my = HJS_FirebaseManager.Auth.CurrentUser;
+
+        // 만약 로그인이 안됐을 때 호출은 안되게 설정
         if (my == null)
             return;
+        
+        // 유저 식별자를 담을 변수
+        string uid;
 
-        string uid = my.UserId;
+        // 만약 유저 식별자가 my(없다)일 경우 자신의 UID 가져오기
+        if (key.Equals("my")) uid = my.UserId;
+        // 있으면 해당 UID를 사용
+        else uid = key;
+
+        // 데이터베이스에 요청
         userDateRef = HJS_FirebaseManager.Database.RootReference.Child("UserData").Child(uid);
 
         // DB에서 정보를 불러와서 할당하는 내용
@@ -70,12 +85,10 @@ public class HJS_UserProfile : MonoBehaviour
                     rate = Math.Round(winCount * 100 / totalCount, 1);
                     sb.Append($"PlayerRate\n{rate}%");
                     rateText.SetText(sb);
+
                 }
-
+                // 모든 정보가 세팅이 되면 보여주기
+                gameObject.SetActive(true);
             });
-    
     }
-
-
-
 }

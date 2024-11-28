@@ -1,3 +1,5 @@
+using Firebase.Auth;
+using Firebase.Database;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
@@ -28,21 +30,29 @@ public class TestNetworkScript : MonoBehaviourPunCallbacks
     [Header("PlayerEntry")]
     [SerializeField] TestPlayerEntry[] playerEntries;   // 플레이어 엔트리의 수
 
-    private StringBuilder sb = new StringBuilder();
+    [Header("Login")]
+    [SerializeField] HJS_Test_Login login;
 
     private void Start()
     {
-        sb.Clear();
-        sb.Append($"Player {Random.Range(1000, 10000)}");
-        inputNicknameField.text  = sb.ToString();
-        PhotonNetwork.LocalPlayer.NickName = sb.ToString();                         // 초기 생성시 이름 랜덤으로 지정
+        CreateSceneLoadList();
+
+        // 이미 연결되어있으면 연결 작업 실행 x
+        if (PhotonNetwork.IsConnected) {
+            UpdatePlayers();
+            return;  
+        }
+
         PhotonNetwork.ConnectUsingSettings();                                       // 설정한 값으로 연결 요청
-            
         PlayerNumbering.OnPlayerNumberingChanged += UpdatePlayers;                  // 플레이어의 번호가 변경되었을 시 UpdatePlayers 실행
     }
 
     public override void OnConnectedToMaster()
     {
+        login.Login();
+
+        inputNicknameField.text = PhotonNetwork.LocalPlayer.NickName;
+
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 8;
         options.IsVisible = false;
@@ -52,14 +62,17 @@ public class TestNetworkScript : MonoBehaviourPunCallbacks
         // 마스터 클라이언트와 항상 똑같은 씬으로 로딩여부
         PhotonNetwork.AutomaticallySyncScene = true;
 
+    }
+
+    private void CreateSceneLoadList()
+    {
         // 씬 선택 프리팹 생성
         // 이미 저장한 배열 만큼 생성한다. 배열은 씬의 이름으로 이루어져 있다.
-        foreach(string name in sceneNames)
+        foreach (string name in sceneNames)
         {
             TestSceneEntry sceneEntry = Instantiate(sceneEntryPrefab, selectContent);
             sceneEntry.SetInfo(name);
         }
-
     }
 
     // 닉네임이 변경되었을 때 알려주는 콜백함수
@@ -96,7 +109,19 @@ public class TestNetworkScript : MonoBehaviourPunCallbacks
     // 닉네임 변경 로직
     public void ChangeNickname()
     {
+        FirebaseUser user = HJS_FirebaseManager.Auth.CurrentUser;
+
+        if (user == null) return;
+
+        string uid = user.UserId;
+
         PhotonNetwork.LocalPlayer.NickName = inputNicknameField.text;
+
+        DatabaseReference userNameRef = HJS_FirebaseManager.Database.RootReference.Child("UserData").Child(uid);
+        Dictionary<string, object> dictionary = new Dictionary<string, object>();
+        dictionary["/name"] = inputNicknameField.text;
+
+        userNameRef.UpdateChildrenAsync(dictionary);
     }
 
     // 게임 씬 선택 로직
