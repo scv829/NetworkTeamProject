@@ -51,6 +51,8 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient == false) return;
 
+        photonView.RPC("ChangeShaderRPC", RpcTarget.All);   // 셰이더 변경
+
         coroutine = StartCoroutine(SlotSettingRoutine());
     }
 
@@ -67,6 +69,7 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
         Player winner = scoreDictionary.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
 
         titleUI.UpdateUI(winner.NickName);
+        HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
     }
 
     private IEnumerator SlotSettingRoutine()
@@ -136,8 +139,6 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
 
         delay = new WaitForSeconds(delayTime);
         isOver = false;
-
-        photonView.RPC("ChangeShaderRPC", RpcTarget.All);   // 셰이더 변경
 
         // 플레이어의 인원 수 만큼 플레이어 사전에 추가
         foreach (Player player in PhotonNetwork.PlayerList)
