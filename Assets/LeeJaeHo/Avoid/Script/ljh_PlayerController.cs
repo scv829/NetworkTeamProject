@@ -5,20 +5,46 @@ using Photon.Pun;
 
 public class ljh_PlayerController : MonoBehaviourPun
 {
+    [SerializeField] ljh_AvoidGameManager gameManager;
     [SerializeField] ljh_AviodStone[] stone;
 
     float moveSpeed = 2;
+    //Comment : 죽음 상태
+    public bool died;
+    //Comment : 점수
+    public float score;
 
-    
+    Rigidbody rigid;
+
+    private void Start()
+    {
+        died = false;
+        rigid = GetComponent<Rigidbody>();
+    }
     void Update()
     {
 
         if (!photonView.IsMine)
             return;
 
+        if(!died)
         Move();
 
        
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("ExitWay"))
+        {
+            transform.localScale = new Vector3(1, 0.35f, 1);
+            died = true;
+            transform.tag = "Untagged";
+            rigid.constraints = RigidbodyConstraints.FreezeAll;
+
+            //score = 100 - gameManager.timer;
+
+        }
     }
 
 
