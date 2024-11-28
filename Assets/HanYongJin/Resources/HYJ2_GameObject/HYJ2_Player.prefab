@@ -53,6 +53,7 @@ MonoBehaviour:
   playerCurMoveSpeed: 0
   playerAnimator: {fileID: 8821632217984054836}
   touchArea: {fileID: 5561855913762163665}
+  playerRigidBody: {fileID: 0}
 --- !u!114 &170888761100956051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,7 +121,7 @@ GameObject:
   - component: {fileID: 5561855913762163665}
   m_Layer: 0
   m_Name: TouchArea
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
