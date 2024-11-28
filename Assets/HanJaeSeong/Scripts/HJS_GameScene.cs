@@ -15,99 +15,22 @@ public class HJS_GameScene : MonoBehaviourPunCallbacks
 {
     [SerializeField] HJS_GameMaster gameMaster;
     [SerializeField] Transform[] spawnPoint;
-    [SerializeField] Color[] playerColors;  // 플레이어의 색상
 
-    [Header("FadeCanvas")]
-    [SerializeField] Image fadeImage;
-    [SerializeField] bool isFadeOver;       // 페이드 끝났는지 확인
-
-    // 0. 씬 로드 확인
-    private void Start()
-    {
-        Vector3 vectorColor = new Vector3(playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].r, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].g, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].b);
-        PhotonNetwork.LocalPlayer.SetPlayerColor(vectorColor);
-        PhotonNetwork.LocalPlayer.SetLoad(true);
-    }
-
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
-    {
-        if (changedProps.ContainsKey(HJS_CustomProperty.LOAD))
-        {
-            Debug.Log($"{targetPlayer.NickName} 이 로딩이 완료되었습니다. ");
-            bool allLoaded = CheckAllLoad();
-            Debug.Log($"모든 플레이어 로딩 완료 여부 : {allLoaded} ");
-            if (allLoaded)
-            {
-                // 플레이어 배치
-                PlayerSpawn();
-                // 카메라 활성화
-                FadeIn();
-                // 게임 시작 전 애니메이션 시작
-                PlayAnimation();
-            }
-        }
-    }
-
-    private bool CheckAllLoad()
-    {
-        foreach (Player player in PhotonNetwork.PlayerList)
-        {
-            if (player.GetLoad() == false)
-                return false;
-        }
-        return true;
-    }
-
-    // 1. 플레이어 배치
-    private void PlayerSpawn()
+    // 플레이어 배치
+    public void PlayerSpawn()
     {
         int number = PhotonNetwork.LocalPlayer.GetPlayerNumber();
         PhotonNetwork.Instantiate("HJS/Player", spawnPoint[number].position, Quaternion.identity);
     }
 
-    // 2. 카메라 활성화 -> 페이드 인
-    private void FadeIn()
-    {
-        // UI가 점점 투명해진다
-        StartCoroutine(Fade(1, 0, 1));
-    }
-
-    private IEnumerator Fade(float start, float end, float time)
-    {
-        isFadeOver = false;
-
-        yield return new WaitForSeconds(1f);
-
-        float currentTime = 0.0f;
-        float percent = 0.0f;
-
-        while (percent < 1)
-        {
-            currentTime += Time.deltaTime;
-            percent = currentTime / time;
-
-            Color color = fadeImage.color;
-            color.a = Mathf.Lerp(start, end, percent);
-            fadeImage.color = color;
-
-            yield return null;
-        }
-
-        isFadeOver = true;
-    }
-
-
-    // 3. 게임 시작 직전 애니메이션 시작
-    private void PlayAnimation()
+    // 게임 시작 직전 애니메이션 시작
+    public void PlayAnimation()
     {
         StartCoroutine(GameStartAnimationRoutine());
     }
 
     private IEnumerator GameStartAnimationRoutine()
     {
-        yield return new WaitUntil(() => {  
-            return isFadeOver.Equals(true); 
-        });
 
         int len = PhotonNetwork.PlayerList.Length;
 
@@ -163,16 +86,4 @@ public class HJS_GameScene : MonoBehaviourPunCallbacks
     // 4. 게임 시작 요청
     private void GameStart() => gameMaster.GameStart();
 
-    // 5. 게임 종료 시 애니메이션 시작
-    public void GameEnd()
-    {
-        // TODO: 게임 종료시 연출
-        StartCoroutine (GameEndAnimationRoutine());
-    }
-
-    private IEnumerator GameEndAnimationRoutine()
-    {
-        // 카메라를 일정 거리 뒤로 이동
-        yield break;
-    }
 }
