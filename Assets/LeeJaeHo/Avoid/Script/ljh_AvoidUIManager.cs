@@ -19,6 +19,7 @@ public class ljh_AvoidUIManager : MonoBehaviour
     private void Start()
     {
         scoreText.text = player.score.ToString();
+        //readyTimerText.text = 
 
 
 
