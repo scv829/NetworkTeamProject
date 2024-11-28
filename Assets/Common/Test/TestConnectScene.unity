@@ -1546,12 +1546,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b753ce9a42a44824883e8397179346dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RoomName: hjs_TestRoom
+  RoomName: TestRoom
   startButton: {fileID: 1325996720}
   sceneNames:
   - Mecha Marathon
   - Minigame_LJH
-  - HYJ_GameScene
+  - HYJ_SmashGame
   - HJS_HeartScene
   - Bumper Balloon Cars
   sceneSelectCanvas: {fileID: 708314450}
