@@ -1,21 +1,21 @@
+using Photon.Pun;
+using Photon.Pun.Demo.PunBasics;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum Phase
 {
     phase0, phase1, phase2, phase3, endPhase
 }
-public class ljh_AvoidGameManager : MonoBehaviour
+public class ljh_AvoidGameManager : MonoBehaviourPun
 {
     Phase curPhase;
 
-    [SerializeField] public ljh_AviodStone stone1; // 돌
-    [SerializeField] public ljh_AviodStone stone2;
-    [SerializeField] public ljh_AviodStone stone3;
-    [SerializeField] public ljh_AviodStone stone4;
-
     [SerializeField] public ljh_AviodStone[] stoneArray;
+
+    [SerializeField] public ljh_AviodStone stone;
 
     //타이머
     float timer;
@@ -24,13 +24,18 @@ public class ljh_AvoidGameManager : MonoBehaviour
 
     private void Start()
     {
-        stoneArray = new ljh_AviodStone[4] { stone1, stone2, stone3, stone4 };
         
     }
 
     private void Update()
     {
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            AttackStone();
+            stone.Smash();
+
+        }
         CooldownCalc();
         
         switch(curPhase)
@@ -53,6 +58,30 @@ public class ljh_AvoidGameManager : MonoBehaviour
                 페이즈3(stoneCooldown);
                 break;
         }
+    }
+
+    public void AttackStone()
+    {
+        stoneArray[Random.Range(0, stoneArray.Length)].real = true;
+
+        for (int i = 0; i < stoneArray.Length; i++)
+        {
+            if (stoneArray[i].real == true)
+            {
+                stone = stoneArray[i];
+                stone.real = false;
+            }
+        }
+      //  if (stone.real)
+      //  {
+      //      Vibe();
+      //      // Todo: 코루틴으로 바꿔줘야함
+      //      Invoke("Smash", 0.5f);
+      //  }
+      //  else if (!real)
+      //  {
+      //      Vibe(); // Todo : 코루틴으로 지연 시간 넣어줘야함
+      //  }
     }
 
 
