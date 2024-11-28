@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/HanJaeSeong/HJS_HeartScene.unity
     guid: ae4b7e4dc6a87774bb92ba34840d019d
+  - enabled: 1
+    path: Assets/GoHyeonSeok/Sceans/Bumper Balloon Cars.unity
+    guid: 0d70940fea98f4442b9ada3236df0429
   m_configObjects: {}

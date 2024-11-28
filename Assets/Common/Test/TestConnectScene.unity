@@ -1286,6 +1286,7 @@ MonoBehaviour:
   - Minigame_LJH
   - HYJ_GameScene
   - HJS_HeartScene
+  - Bumper Balloon Cars
   sceneSelectCanvas: {fileID: 708314450}
   selectContent: {fileID: 1733709591}
   sceneEntryPrefab: {fileID: 3251164917335118900, guid: a1db4210204cf35448523771ddb319bd, type: 3}
