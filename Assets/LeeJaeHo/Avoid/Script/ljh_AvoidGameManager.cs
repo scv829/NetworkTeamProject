@@ -11,14 +11,14 @@ public enum Phase
 }
 public class ljh_AvoidGameManager : MonoBehaviourPun
 {
-    Phase curPhase;
+    public Phase curPhase;
 
     [SerializeField] public ljh_AviodStone[] stoneArray;
 
     [SerializeField] public ljh_AviodStone stone;
 
     //타이머
-    float timer;
+    public float timer;
 
     float stoneCooldown;
     public Coroutine attackRoutine;
@@ -30,10 +30,11 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
 
     private void Update()
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
 
-
-        if (attackRoutine == null)
-            attackRoutine = StartCoroutine(AttackRoutine());
+      // if (attackRoutine == null)
+      //     attackRoutine = StartCoroutine(AttackRoutine());
 
         CooldownCalc();
 
@@ -58,10 +59,10 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
                 break;
         }
     }
-    IEnumerator AttackRoutine()
+    IEnumerator AttackRoutine(float cooldown)
     {
         Debug.Log("어택루틴시작");
-        yield return new WaitForSeconds(3); // 쿨다운으로 바꿔줘야함
+        yield return new WaitForSeconds(cooldown); // 쿨다운으로 바꿔줘야함
         Debug.Log("때린다!!");
         AttackStone();
     }
@@ -95,17 +96,23 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
 
     public void Phase1(float cooldown)
     {
+        if (attackRoutine == null)
+            attackRoutine = StartCoroutine(AttackRoutine(cooldown));
         //Todo: 2초마다 하나씩 떨어짐
     }
 
 
     public void Phase2(float cooldown)
     {
+        if (attackRoutine == null)
+            attackRoutine = StartCoroutine(AttackRoutine(cooldown));
         //Todo: 2초마다 하나씩 떨어짐 페이크 시작
     }
 
     public void Phase3(float cooldown)
     {
+        if (attackRoutine == null)
+            attackRoutine = StartCoroutine(AttackRoutine(cooldown));
         //Todo: 1초마다 하나씩 떨어짐 페이크 있음
     }
 
