@@ -1,6 +1,5 @@
 using Photon.Pun;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class KHS_HitBox : MonoBehaviourPun
@@ -41,7 +40,8 @@ public class KHS_HitBox : MonoBehaviourPun
         {
             Debug.Log("@@@@@@@@@@플레이어랑 부딪힘@@@@@@@@@@");
 
-                photonView.RPC("KHS_StunMove", RpcTarget.All /*targetPos, _stunTime*/ );
+  
+                photonView.RPC("KHS_StunMove", RpcTarget.All);
 
         }
     }
@@ -93,15 +93,14 @@ public class KHS_HitBox : MonoBehaviourPun
 
     private IEnumerator StunCoroutine()
     {
-        _cartConntroller.CanMove = false;
-        //_cartConntroller.Rb.AddForce(-_cartConntroller.transform.forward * 2f, ForceMode.Impulse);
-        _cartConntroller.Animator.SetTrigger("Stun");
-        yield return new WaitForSeconds(1.5f);
+        _cartConntroller.CanMove = false;   // 움직일 수 없게 만들기
+        _cartConntroller.Animator.SetTrigger("Stun");   // 애니메이터의 파라미터 트리거 활성화
+        yield return new WaitForSeconds(1.5f);  // 1.5초간 스턴
 
 
         _cartConntroller.Rb.velocity = Vector3.zero; // 혹시 모를 속도 줄여주기
         _cartConntroller.Rb.angularVelocity = Vector3.zero; // 혹시 모를 속도 줄여주기
-        _cartConntroller.CanMove = true;
-        _stunCoroutine = null;
+        _cartConntroller.CanMove = true;    // 다시 움직임 가능하게 만들기
+        _stunCoroutine = null;  // 코루틴 변수 속 null로 만들기
     }
 }

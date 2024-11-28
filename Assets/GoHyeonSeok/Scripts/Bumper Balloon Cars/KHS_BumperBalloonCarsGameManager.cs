@@ -2,6 +2,9 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun.UtilityScripts;
+using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
+using Photon.Realtime;
 
 public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -35,9 +38,35 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
 
     private void Start()
     {
-        CurLivePlayer = 2;  // 게임 시작했을때 현재 접속되어있는 인원수 만큼 설정 (임시 2명 설정)
-        // TODO : 나중에 PhotonNetwork.CurrentRoom.PlayerCount; 현재 게임에 접속된 플레이어 카운트 새야함
+        CurLivePlayer = 4;  // 게임 시작했을때 현재 접속되어있는 인원수 만큼 설정 (임시 2명 설정)
+                            // TODO : 나중에 PhotonNetwork.CurrentRoom.PlayerCount; 현재 게임에 접속된 플레이어 카운트 새야함
+        PhotonNetwork.LocalPlayer.SetLoad(true);
     }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
+    {
+        if (changedProps.ContainsKey(HJS_CustomProperty.LOAD))
+        {
+            Debug.Log($"{targetPlayer.NickName} 이 로딩이 완료되었습니다. ");
+            bool allLoaded = CheckAllLoad();
+            Debug.Log($"모든 플레이어 로딩 완료 여부 : {allLoaded} ");
+            if (allLoaded)
+            {
+                PlayerSpawn();
+            }
+        }
+    }
+
+    private bool CheckAllLoad()
+    {
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            if (player.GetLoad() == false)
+                return false;
+        }
+        return true;
+    }
+
 
     public override void OnJoinedRoom() // 방에 접속되었을 때
     {
@@ -79,7 +108,7 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
 
     private IEnumerator DelayGameOver()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.2f);  // TODO : 우선은 임시방편으로 데이터를 불러오는 시간이 조금 딜레이가 있는 것으로 확인되어서 넣은 코루틴
 
         if (CurLivePlayer == 1) // 남은 인원이 1명일때
         {
@@ -105,12 +134,9 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
 
         Debug.Log($"현재 로딩된 플레이어 : {_playersLoaded}");
 
-        if (_playersLoaded == 2)    // TODO : 네트워크로 합칠때 인원 수에 관한 조정이 필요한 상태
+        if (_playersLoaded == 4)    // TODO : 네트워크로 합칠때 인원 수에 관한 조정이 필요한 상태
         {
-            if (PhotonNetwork.IsMasterClient)   // 마스터 클라이언트라면
-            {
-                photonView.RPC("KHS_BumperCartGameStart", RpcTarget.AllViaServer, PhotonNetwork.Time);  // 모두에게 게임을 시작한다는 RPC함수를 호출하겠다고 신호를 보냄
-            }
+            photonView.RPC("KHS_BumperCartGameStart", RpcTarget.AllViaServer, PhotonNetwork.Time);  // 모두에게 게임을 시작한다는 RPC함수를 호출하겠다고 신호를 보냄
         }
     }
 

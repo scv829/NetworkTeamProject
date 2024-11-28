@@ -35,7 +35,9 @@ public class KHS_Balloon : MonoBehaviourPun
     public void KHS_DistroyBallon()
     {
         Debug.Log("삭제 진행됨");
-        KHS_BumperBalloonCarsGameManager.Instance.GameOverPlayer(); // 현재 남아있는 인원수를 위해 함수 호출
+ 
+            KHS_BumperBalloonCarsGameManager.Instance.GameOverPlayer(); // 현재 남아있는 인원수를 위해 함수 호출
+
         _cartController.IsGameOver = true;  // 해당 플레이어가 게임 오버됐음을 알리기 위한 bool변수
         _cartController.gameObject.SetActive(false);    // 해당 플레이어가 게임오버 되었으니 비활성화 진행
 

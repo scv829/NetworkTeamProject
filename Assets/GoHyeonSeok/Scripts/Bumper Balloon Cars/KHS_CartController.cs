@@ -19,9 +19,17 @@ public class KHS_CartController : MonoBehaviourPun, IPunObservable
     [SerializeField] private bool _canMove;
     public bool CanMove { get { return _canMove; } set { _canMove = value; } }
 
+    private Vector3 networkPosition;
+    private float deltaPosition;
+
+    private Quaternion networkRotation;
+    private float deltaRotation;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        PhotonNetwork.SendRate = 60;
+        PhotonNetwork.SerializationRate = 60;
     }
 
     private void Start()
@@ -39,8 +47,13 @@ public class KHS_CartController : MonoBehaviourPun, IPunObservable
         {
             BodyMove(); // 카트를 움직일 수 있다.
         }
-    }
 
+        if (photonView.IsMine == false)
+        {
+            transform.position = Vector3.Lerp(transform.position, networkPosition, deltaPosition * Time.deltaTime * PhotonNetwork.SerializationRate);
+            transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, deltaRotation * Time.deltaTime * PhotonNetwork.SerializationRate);
+        }
+    }
 
     private void BodyMove()
     {
@@ -110,11 +123,25 @@ public class KHS_CartController : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
+            stream.SendNext(transform.position);    // 위치
+            stream.SendNext(transform.rotation);    // 회전
             stream.SendNext(CanMove);   // 움직일 수 있는지 여부
+            stream.SendNext(PhotonNetwork.Time);    // 현재 네트워크 시간을 전송
         }
         else if (stream.IsReading)
         {
+            networkPosition = (Vector3)stream.ReceiveNext();     // 위치
+            networkRotation = (Quaternion)stream.ReceiveNext();  // 회전
             CanMove = (bool)stream.ReceiveNext();   // 움직일 수 있는지 여부
+            double sentTime = (double)stream.ReceiveNext(); // 현재 네트워크 시간을 전송
+
+            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+
+            //transform.position = Vector3.Lerp(transform.position, networkPosition, lag );
+            //transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, lag );
+
+            deltaPosition = Vector3.Distance(transform.position, networkPosition);
+            deltaRotation = Quaternion.Angle(transform.rotation, networkRotation);
         }
     }
 }
