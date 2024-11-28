@@ -81,6 +81,7 @@ MonoBehaviour:
   - RPCMove
   - KHS_BumperCartGameStart
   - KHS_CartReadyRPC
+  - KHS_StunMove
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
