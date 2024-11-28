@@ -4,15 +4,31 @@ using UnityEngine;
 
 public class HYJ2_PunchObject : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] GameObject light;
+
+    private bool isLighting;
+
+    public void LightOn()
     {
-        
+        Debug.Log("on");
+        isLighting = true;
+        light.gameObject.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void LightOff()
     {
-        
+        Debug.Log("off");
+        isLighting = false;
+        light.gameObject.SetActive(false);
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player") && isLighting)
+        {
+            Debug.Log("!");
+            LightOff();
+        }
     }
 }
