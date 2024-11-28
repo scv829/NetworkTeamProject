@@ -10,6 +10,7 @@ public class HYJ2_PlayerController : MonoBehaviourPun
     [SerializeField] float playerCurMoveSpeed; // 플레이어의 현재 이동속도
     [SerializeField] Animator playerAnimator;
     [SerializeField] BoxCollider touchArea;
+    [SerializeField] Rigidbody playerRigidBody;
 
 
     private Vector3 lastPosition; // 플레이어의 이전 지점 > 현재 이동속도를 구하기 위한 변수
@@ -31,7 +32,7 @@ public class HYJ2_PlayerController : MonoBehaviourPun
 
     private void FixedUpdate()
     {
-        PlayerRunningAnimator();
+        //PlayerRunningAnimator();
     }
 
     private void PlayerRunningAnimator() // 플레이어의 속도에 따라 애니메이션 실행
@@ -49,6 +50,8 @@ public class HYJ2_PlayerController : MonoBehaviourPun
 
     private void Move() // 플레이어 이동
     {
+        
+        //position 기반 이동
         Vector3 moveDir = Vector3.zero;
         moveDir.x = Input.GetAxisRaw("Horizontal");
         moveDir.z = Input.GetAxisRaw("Vertical");
@@ -56,25 +59,18 @@ public class HYJ2_PlayerController : MonoBehaviourPun
 
         if (moveDir == Vector3.zero)
         {
+            playerAnimator.SetBool("isRunning", false);
             return;
         }
+        playerAnimator.SetBool("isRunning", true);
+        transform.Translate(moveDir.normalized * moveSpeed * Time.deltaTime, Space.World);
+        transform.forward = moveDir.normalized;
         
-        if ((Mathf.Abs(transform.position.x) + Mathf.Abs(transform.position.z)) < 6.5f)
-        {
-            Debug.Log("이동");
-            transform.Translate(moveDir.normalized * moveSpeed * Time.deltaTime, Space.World);
-            transform.forward = moveDir.normalized;
-        }
-        else
-        {
-            Debug.Log("이동불가");
-        }
+
+        //RigidBody 기반 이동
+
     }
 
-    public void ClampPlayerPosition(float x, float z)
-    {
-        
-    }
 
     float GetPlayerSpeed() // 플레이어의 현재 이동 속도
     {
