@@ -35,8 +35,8 @@ public class KHS_UIManager : MonoBehaviour
         _text.text = "";
     }
 
-    public void OnWinner(int winnerNum)
+    public void OnWinner(string winner)
     {
-        _text.text = $"Winner is {winnerNum} Player!";
+        _text.text = $"Winner is {winner} Player!";
     }
 }

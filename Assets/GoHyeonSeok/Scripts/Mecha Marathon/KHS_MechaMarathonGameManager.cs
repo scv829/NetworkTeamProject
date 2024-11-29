@@ -22,6 +22,9 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
     [SerializeField] private bool _isInputFinished; // 입력하는 시간이 끝났늕지 여부 bool
     public bool IsInputFinished { get { return _isInputFinished; ; } set { _isInputFinished = value; } }
 
+    [SerializeField] private Player[] _curPhotonPlayer;
+    public Player[] CurPhotonPlayer { get { return _curPhotonPlayer; } set { _curPhotonPlayer = value; } }
+
     private float _gameTimer;   // 현재 게임이 시작하고 얼마만큼의 시간이 지났는지
     public int[] _totalCount;   // TODO : 배열 초기화 해야함. 매치메이킹 이후에 이루어지는 작업진행
 
@@ -39,10 +42,12 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
         IsStarted = false;  // 게임씬에 진입했을시에는 false
         PhotonNetwork.LocalPlayer.SetLoad(true);
 
-        if (PhotonNetwork.IsMasterClient)   // 마스터 클라이언트만 진행
-        {
-            _totalplayers = PhotonNetwork.CurrentRoom.PlayerCount;  // 총 플레이어 수 저장
-        }
+        //if (PhotonNetwork.IsMasterClient)   // 마스터 클라이언트만 진행
+        //{
+        //    _totalplayers = PhotonNetwork.CurrentRoom.PlayerCount;  // 총 플레이어 수 저장
+        //}
+
+        CurPhotonPlayer = PhotonNetwork.PlayerList;
     }
 
     // Update 함수
@@ -98,7 +103,7 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
     public void MovingHeyHo()
     {
 
-        if (_heyHoFinished >= 3)    // 현재 움직이기 시작한 헤이호가 접속된 플레이어만큼 확인 되었을시
+        if (_heyHoFinished >= PhotonNetwork.CurrentRoom.PlayerCount)    // 현재 움직이기 시작한 헤이호가 접속된 플레이어만큼 확인 되었을시
                                     // TODO : 네트워크로 합칠때 인원 수에 관한 조정이 필요한 상태
         {
             if (PhotonNetwork.IsMasterClient)   // 마스터 클라이언트만 진행
@@ -249,7 +254,7 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
 
         Debug.Log($"현재 로딩된 플레이어 : {_playersLoaded}");
 
-        if (_playersLoaded == 3)    // TODO : 네트워크로 합칠때 인원 수에 관한 조정이 필요한 상태
+        if (_playersLoaded == PhotonNetwork.CurrentRoom.PlayerCount)    // TODO : 네트워크로 합칠때 인원 수에 관한 조정이 필요한 상태
         {
             if (PhotonNetwork.IsMasterClient)   // 마스터 클라이언트라면
             {
@@ -262,13 +267,13 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
     private void ResultGame()
     {
         Debug.Log($"승자는 {FindWinnerHeyHo()} 번 플레이어 입니다!");
-        _uiManager.OnWinner(FindWinnerHeyHo()); // UI매니저 속 함수를 사용해서 화면 출력
+        _uiManager.OnWinner(CurPhotonPlayer[FindWinnerHeyHo() - 1].NickName); // UI매니저 속 함수를 사용해서 화면 출력
     }
 
     [PunRPC]
     private void FinishGame()
     {
-        if (_heyHoFinished >= 3)    // TODO : 네트워크로 합칠때 인원 수에 관한 조정이 필요한 상태
+        if (_heyHoFinished >= PhotonNetwork.CurrentRoom.PlayerCount)    // TODO : 네트워크로 합칠때 인원 수에 관한 조정이 필요한 상태
         {
             Debug.Log($"헤이호 날아가는 코루틴 시작 RPC {_heyHoFinished}");
             StartCoroutine(MovedHeyHo());   // 1등 헤이호가 걸리는 시간, 결과를 출력하기 위한 코루틴선언

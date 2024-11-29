@@ -22,6 +22,9 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
 
     [SerializeField] private bool _isGameStarted;   // 현재 게임 시작했는지 확인하는 변수
     public bool IsGameStarted { get { return _isGameStarted; } set { _isGameStarted = value; } }
+
+    [SerializeField] private Player[] _curPhotonPlayer;
+    public Player[] CurPhotonPlayer { get { return _curPhotonPlayer; } set { _curPhotonPlayer = value; } }
     private int _winnerIndex = 0;
 
     private void Awake()
@@ -38,8 +41,11 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
 
     private void Start()
     {
-        CurLivePlayer = 3;  // 게임 시작했을때 현재 접속되어있는 인원수 만큼 설정 (임시 2명 설정)
-                            // TODO : 나중에 PhotonNetwork.CurrentRoom.PlayerCount; 현재 게임에 접속된 플레이어 카운트 새야함
+        CurLivePlayer = PhotonNetwork.CurrentRoom.PlayerCount;  // 게임 시작했을때 현재 접속되어있는 인원수 만큼 설정 (임시 2명 설정)
+                                                                // TODO : 나중에 PhotonNetwork.CurrentRoom.PlayerCount; 현재 게임에 접속된 플레이어 카운트 새야함
+        CurPhotonPlayer = PhotonNetwork.PlayerList;
+        Debug.Log($"{CurPhotonPlayer.Length}");
+
         PhotonNetwork.LocalPlayer.SetLoad(true);
     }
 
@@ -109,6 +115,7 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
     private IEnumerator DelayGameOver()
     {
         yield return new WaitForSeconds(0.2f);  // TODO : 우선은 임시방편으로 데이터를 불러오는 시간이 조금 딜레이가 있는 것으로 확인되어서 넣은 코루틴
+        string nickName = "";
 
         if (CurLivePlayer == 1) // 남은 인원이 1명일때
         {
@@ -119,10 +126,13 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
                 {
                     _winnerIndex = i;    // 해당 인덱스가 승자를 나타내기에 설정
                     Debug.Log($"{i} 승자 인덱스");
+
+                    nickName = CurPhotonPlayer[i - 1].NickName;
+                    
                     break;
                 }
             }
-            _uiManager.ResultGame(_winnerIndex); // 결과 창 출력
+            _uiManager.ResultGame(nickName); // 결과 창 출력
             Debug.Log($"!게임 종료!");
         }
     }
@@ -133,7 +143,7 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
 
         Debug.Log($"현재 로딩된 플레이어 : {_playersLoaded}");
 
-        if (_playersLoaded == 3)    // TODO : 네트워크로 합칠때 인원 수에 관한 조정이 필요한 상태
+        if (_playersLoaded == PhotonNetwork.CurrentRoom.PlayerCount)    // TODO : 네트워크로 합칠때 인원 수에 관한 조정이 필요한 상태
         {
             photonView.RPC("KHS_BumperCartGameStart", RpcTarget.AllViaServer, PhotonNetwork.Time);  // 모두에게 게임을 시작한다는 RPC함수를 호출하겠다고 신호를 보냄
         }
