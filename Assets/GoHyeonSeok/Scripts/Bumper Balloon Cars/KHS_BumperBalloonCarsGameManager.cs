@@ -1,10 +1,8 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Photon.Pun.UtilityScripts;
-using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 using Photon.Realtime;
+using System.Collections;
+using UnityEngine;
+using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -29,7 +27,7 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -100,8 +98,26 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
     private GameObject PlayerSpawn()
     {
         Vector3 spawnPosition = SetPosition();  // 함수내에서 미리 설정한 위치로 초기화
+        Quaternion spawnRotation = PlayerRotate();
 
-        return PhotonNetwork.Instantiate("KHS/KHS_Cart", spawnPosition, Quaternion.identity);
+        return PhotonNetwork.Instantiate("KHS/KHS_Cart", spawnPosition, spawnRotation);
+    }
+
+    private Quaternion PlayerRotate()
+    {
+        // 현재 자신의 ActorNumber 대로 위치 설정
+        switch (PhotonNetwork.LocalPlayer.ActorNumber)
+        {
+            case 1:
+                return Quaternion.identity;
+            case 2:
+                return Quaternion.Euler(0f, 180f, 0f);
+            case 3:
+                return Quaternion.identity;
+            case 4:
+                return Quaternion.Euler(0f, 180f, 0f);
+        }
+        return Quaternion.identity;
     }
 
     public void GameOverPlayer()
@@ -128,7 +144,7 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
                     Debug.Log($"{i} 승자 인덱스");
 
                     nickName = CurPhotonPlayer[i - 1].NickName;
-                    
+
                     break;
                 }
             }
