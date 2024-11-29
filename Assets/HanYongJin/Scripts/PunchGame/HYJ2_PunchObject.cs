@@ -29,6 +29,9 @@ public class HYJ2_PunchObject : MonoBehaviour
         {
             Debug.Log("!");
             LightOff();
+            // TODO : 오브젝트 매니저에 isLighting = false를 전달하여 조절해보기 or
+            //          오브젝트 매니저에서 자식개체 중에 isLighting을 검사하여 true인게 있으면 실행?
+            transform.GetComponentInParent<HYJ2_ObjectManager>().RandomObjectSelect();
         }
     }
 }
