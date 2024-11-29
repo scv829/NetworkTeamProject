@@ -11,6 +11,8 @@ public class KHS_PlayerController : MonoBehaviourPun, IPunObservable
     [SerializeField] private Renderer _renderer;
     public Renderer Renderer { get { return _renderer; } set { _renderer = value; } }
 
+    [SerializeField] private KHS_PlayerUI _playerUI;
+
 
     private void Awake()
     {
@@ -34,6 +36,8 @@ public class KHS_PlayerController : MonoBehaviourPun, IPunObservable
 
         Ready(); // 플레이어 오브젝트가 생성되면 스크립트를 참조한다.
         _mechaMarathonGameManager.PlayerReady();    // 게임 매니저에 선언되어있는 PlayerReady함수를 호출하여 준비가 되었다고 알린다.
+
+        _playerUI.NickName = photonView.Owner.NickName;
         Debug.Log($"레디한 플레이어 : {photonView.Owner.ActorNumber}");
 
     }
