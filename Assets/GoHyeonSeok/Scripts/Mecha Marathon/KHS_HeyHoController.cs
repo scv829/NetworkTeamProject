@@ -56,6 +56,11 @@ public class KHS_HeyHoController : MonoBehaviourPun, IPunObservable
             targetPos = new Vector3(transform.position.x, transform.position.y, transform.position.z + count / 2 ); // TODO : 거리조절 필요?
             Debug.Log($"현재 타겟 위치 {targetPos}");
 
+            if(count == 0)  // 플레이어가 한번도 입력하지 않았다면
+            {
+                targetPos = new Vector3(transform.position.x, transform.position.y, transform.position.z); // TODO : 거리조절 필요?
+                Debug.Log($"현재 타겟 위치 {targetPos}");
+            }
 
             float _distance = Vector3.Distance(transform.position, targetPos);  // 헤이호와 타겟 위치 사이의 거리
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -62,5 +63,10 @@ public class KHS_UIManager : MonoBehaviour
     public void OnWinner(string winner)
     {
         _text.text = $"Winner is {winner} Player!";
+    }
+
+    public void NoWinner()
+    {
+        _text.text = "DRAW..";
     }
 }

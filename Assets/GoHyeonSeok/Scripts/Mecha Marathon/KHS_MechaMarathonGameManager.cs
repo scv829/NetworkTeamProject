@@ -139,8 +139,16 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
                 _maxCount = _playerController[i].TotalInputCount;   // 가장 많이 누른 횟수에 i번째 컨트롤러가 입력한 총 입력횟수 초기화
                 _heyHoIndex = i;    // 가장 많이 날아가는 헤이호를 위한 현재 i 인덱스 초기화
             }
+            if(_playerController[i].TotalInputCount == _maxCount)
+            {
+                _heyHoIndex = 5;
+            }
         }
         Debug.Log($"###########플레이어 인풋카운트 비교 끝###########{_heyHoIndex}, {_maxCount}");  // 비교를 완료했다는 디버그
+        //if(_heyHoIndex == 0)
+        //{
+        //    return 5;
+        //}
 
         return _heyHoIndex; // 가장 많이 날아가는 헤이호의 인덱스 반환
     }
@@ -231,18 +239,27 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
         int find = FindWinnerHeyHo();   // 가장 많이 날아가는 헤이호를 함수 내에서 찾고, 해당 헤이호의 인덱스를 find에 초기화
         KHS_HeyHoController heyho = _heyHoController[find]; // find 인덱스를 가지고 있는 헤이호 컨트롤러를 새로운 변수에 초기화
 
+        if(find == 5)
+        {
+            _uiManager.NoWinner();
+        }
+
         if (heyho == null)  // 해당 헤이호 컨트롤러가 혹시 비어있다면
         {
             Debug.Log($"@@@@@@@@@@@@@@@@{find}@@@@@@@@@@@@@@@@@");
+            _uiManager.NoWinner();
+        }
+        else
+        {
+            _finishTimer = heyho.FinishTime;    // 제일 멀리 날아가는 헤이호의 이동 시간 초기화
+
+            _delayHeyHo = new WaitForSeconds(_finishTimer);  // 해당 시간만큼 딜레이 초기화
+            Debug.Log($"{_finishTimer}만큼 걸릴 예정");
+
+            yield return _delayHeyHo;   // 초기화 시킨 시간 만큼 딜레이
+            ResultGame();   // 게임의 우승자를 출력해주는 함수 호출
         }
 
-        _finishTimer = heyho.FinishTime;    // 제일 멀리 날아가는 헤이호의 이동 시간 초기화
-
-        _delayHeyHo = new WaitForSeconds(_finishTimer);  // 해당 시간만큼 딜레이 초기화
-        Debug.Log($"{_finishTimer}만큼 걸릴 예정");
-
-        yield return _delayHeyHo;   // 초기화 시킨 시간 만큼 딜레이
-        ResultGame();   // 게임의 우승자를 출력해주는 함수 호출
     }
 
     /// <summary>
