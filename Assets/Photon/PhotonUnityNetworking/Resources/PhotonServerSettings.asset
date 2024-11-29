@@ -84,6 +84,7 @@ MonoBehaviour:
   - KHS_StunMove
   - HYJ2_Touch
   - HYJ2_TouchRPC
+  - SaveResultRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
