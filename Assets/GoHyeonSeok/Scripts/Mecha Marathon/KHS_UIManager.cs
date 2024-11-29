@@ -1,16 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class KHS_UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private WaitForSeconds _delay;
+    [SerializeField] private GameObject _coolTimeObj;
+    [SerializeField] private Image _coolTimeImage;
 
     private void Start()
     {
         _delay = new WaitForSeconds(1);
+        _coolTimeObj.SetActive(false);
     }
 
     public void CountDownGame()
@@ -30,13 +35,38 @@ public class KHS_UIManager : MonoBehaviour
         yield return _delay;
 
         _text.text = "Game Start!";
+        _coolTimeObj.SetActive(true);
+        StartCoroutine(CoolTimeCoroutine());
         yield return _delay;
        
         _text.text = "";
+
     }
 
-    public void OnWinner(int winnerNum)
+    private IEnumerator CoolTimeCoroutine()
     {
-        _text.text = $"Winner is {winnerNum} Player!";
+        _coolTimeImage.fillAmount = 0;
+        float duration = 5f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            _coolTimeImage.fillAmount = elapsedTime / duration;
+            yield return null;
+        }
+
+        _coolTimeImage.fillAmount = 1;
+        _coolTimeObj.SetActive(false);
+    }
+
+    public void OnWinner(string winner)
+    {
+        _text.text = $"Winner is {winner} Player!";
+    }
+
+    public void NoWinner()
+    {
+        _text.text = "DRAW..";
     }
 }

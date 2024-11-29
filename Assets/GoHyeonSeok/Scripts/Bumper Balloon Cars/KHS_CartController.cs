@@ -19,6 +19,8 @@ public class KHS_CartController : MonoBehaviourPun, IPunObservable
     [SerializeField] private bool _canMove;
     public bool CanMove { get { return _canMove; } set { _canMove = value; } }
 
+
+
     private Vector3 networkPosition;
     private float deltaPosition;
 
@@ -34,6 +36,8 @@ public class KHS_CartController : MonoBehaviourPun, IPunObservable
 
     private void Start()
     {
+
+
         CanMove = true;
         Ready();
         KHS_BumperBalloonCarsGameManager.Instance.PlayerReady();

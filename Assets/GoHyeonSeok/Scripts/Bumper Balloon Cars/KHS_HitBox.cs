@@ -95,7 +95,7 @@ public class KHS_HitBox : MonoBehaviourPun
     {
         _cartConntroller.CanMove = false;   // 움직일 수 없게 만들기
         _cartConntroller.Animator.SetTrigger("Stun");   // 애니메이터의 파라미터 트리거 활성화
-        yield return new WaitForSeconds(1.5f);  // 1.5초간 스턴
+        yield return new WaitForSeconds(1f);  // 1.5초간 스턴
 
 
         _cartConntroller.Rb.velocity = Vector3.zero; // 혹시 모를 속도 줄여주기

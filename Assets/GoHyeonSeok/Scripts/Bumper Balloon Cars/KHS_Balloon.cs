@@ -3,9 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KHS_Balloon : MonoBehaviourPun
+public class KHS_Balloon : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] private KHS_CartController _cartController;    // 플레이어 변수
+
+    [SerializeField] private Renderer _renderer;
+    public Renderer Renderer { get { return _renderer; } set { _renderer = value; } }
+
+    private void Awake()
+    {
+        Renderer = GetComponent<Renderer>();
+    }
+
+    private void Start()
+    {
+        switch (PhotonNetwork.LocalPlayer.ActorNumber)
+        {
+            case 1:
+                Renderer.material.color = Color.red; break;
+            case 2:
+                Renderer.material.color = Color.yellow; break;
+            case 3:
+                Renderer.material.color = Color.green; break;
+            case 4:
+                Renderer.material.color = Color.blue; break;
+        }
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -46,5 +69,24 @@ public class KHS_Balloon : MonoBehaviourPun
             PhotonNetwork.Destroy(gameObject);    // 풍선은 삭제
         }
 
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(Renderer.material.color.r);
+            stream.SendNext(Renderer.material.color.g);
+            stream.SendNext(Renderer.material.color.b);
+        }
+        else if (stream.IsReading)
+        {
+            Color color = new Color();
+            color.r = (float)stream.ReceiveNext();
+            color.g = (float)stream.ReceiveNext();
+            color.b = (float)stream.ReceiveNext();
+
+            Renderer.material.color = color;
+        }
     }
 }

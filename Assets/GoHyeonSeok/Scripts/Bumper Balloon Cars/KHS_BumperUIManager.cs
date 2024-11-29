@@ -13,7 +13,7 @@ public class KHS_BumperUIManager : MonoBehaviour
         StartCoroutine(CountDownCoroutine());
     }
 
-    public void ResultGame(int winner)
+    public void ResultGame(string winner)
     {
         _text.text = $"winner Is {winner} Player!";
     }
@@ -30,5 +30,8 @@ public class KHS_BumperUIManager : MonoBehaviour
         yield return _delay;
 
         _text.text = "Game Start!!!";
+        yield return _delay;
+
+        _text.text = "";
     }
 }
