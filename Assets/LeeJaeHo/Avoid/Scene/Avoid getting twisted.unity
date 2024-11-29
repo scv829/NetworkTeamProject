@@ -386,7 +386,7 @@ GameObject:
   - component: {fileID: 177641956}
   m_Layer: 0
   m_Name: UIManager
-  m_TagString: Untagged
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -405,6 +405,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 211594295}
   player: {fileID: 7575068342199396208, guid: 318c4d82aec94f942b2cb5c5bc40e804, type: 3}
+  alivePlayer: {fileID: 0}
   scoreText: {fileID: 1295482839}
   myScoreText: {fileID: 1101379017}
   readyTimerText: {fileID: 1731102194}
@@ -456,6 +457,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 0}
+  gameManager: {fileID: 211594295}
 --- !u!4 &211594294
 Transform:
   m_ObjectHideFlags: 0
@@ -491,6 +493,7 @@ MonoBehaviour:
   - {fileID: 1532210480}
   - {fileID: 258761338}
   stone: {fileID: 0}
+  playerCount: 0
   timer: 0
 --- !u!1001 &258761335
 PrefabInstance:
@@ -1967,7 +1970,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1670689863
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2035,8 +2038,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 128
-  m_fontSizeBase: 128
+  m_fontSize: 64
+  m_fontSizeBase: 64
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

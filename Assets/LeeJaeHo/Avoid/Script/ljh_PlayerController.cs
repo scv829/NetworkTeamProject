@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System.Threading;
 
 public class ljh_PlayerController : MonoBehaviourPun
 {
     [SerializeField] ljh_AvoidGameManager gameManager;
     [SerializeField] ljh_AvoidStone[] stone;
+    ljh_AvoidUIManager uiManager;
+
 
     float moveSpeed = 2;
     //Comment : 죽음 상태
@@ -20,6 +23,8 @@ public class ljh_PlayerController : MonoBehaviourPun
     {
         died = false;
         rigid = GetComponent<Rigidbody>();
+        gameManager = GameObject.FindWithTag("GameController").GetComponent<ljh_AvoidGameManager>();
+        uiManager = GameObject.FindWithTag("Finish").GetComponent<ljh_AvoidUIManager>();
     }
     void Update()
     {
@@ -30,6 +35,14 @@ public class ljh_PlayerController : MonoBehaviourPun
         if(!died)
         Move();
 
+
+        if(gameManager.curPhase == Phase.endPhase)
+        {
+            if(!died)
+            {
+                uiManager.alivePlayer = GetComponent<ljh_PlayerController>();
+            }
+        }
        
     }
 
@@ -41,9 +54,7 @@ public class ljh_PlayerController : MonoBehaviourPun
             died = true;
             transform.tag = "Untagged";
             rigid.constraints = RigidbodyConstraints.FreezeAll;
-
-            //score = 100 - gameManager.timer;
-
+            score = 35 - gameManager.timer;
         }
     }
 
@@ -55,7 +66,6 @@ public class ljh_PlayerController : MonoBehaviourPun
 
         if (x != 0 || z !=0)
             transform.forward = new Vector3(x, 0, z);
-
 
         transform.Translate(new Vector3(x, 0, z).normalized * moveSpeed * Time.deltaTime, Space.World);
         //photonView.RPC("RPCMove", RpcTarget.AllViaServer);

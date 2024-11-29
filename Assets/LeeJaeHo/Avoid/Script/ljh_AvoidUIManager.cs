@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,7 +8,7 @@ public class ljh_AvoidUIManager : MonoBehaviour
 {
     [SerializeField] ljh_AvoidGameManager gameManager;
     [SerializeField] ljh_PlayerController player;
-
+    public ljh_PlayerController alivePlayer;
 
 
     [SerializeField] public TMP_Text scoreText;
@@ -19,8 +20,6 @@ public class ljh_AvoidUIManager : MonoBehaviour
 
     private void Start()
     {
-
-
         scoreText.enabled = false;
         myScoreText.enabled = false;
         readyTimerText.enabled = false;
@@ -31,15 +30,18 @@ public class ljh_AvoidUIManager : MonoBehaviour
 
     private void Update()
     {
-        scoreText.text = player.score.ToString();
-        readyTimerText.text = $"{gameManager.timer}";
+
+        scoreText.text = $"{player.score}";
+        //readyTimerText.text = $"{gameManager.timer}";
         //timerText.text = gameManager.timer.ToString();
-        winnerText.text = $"Winner is{player}!!!"; // Todo : ¼öÁ¤ÇØ¾ßÇÔ
+
+        if(alivePlayer != null)
+        winnerText.text = $"Winner is {PhotonNetwork.LocalPlayer.NickName}!!!"; // Todo : ìˆ˜ì •í•´ì•¼í•¨
 
         if (gameManager.curPhase == Phase.phase0)
             readyTimerText.enabled = true;
 
-        else if (gameManager.curPhase == Phase.phase1)
+        else if (gameManager.curPhase == Phase.GamePhase)
         {
             readyTimerText.enabled = false;
             timerText.enabled = true;

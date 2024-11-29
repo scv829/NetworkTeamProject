@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.Demo.Cockpit;
 using Photon.Pun.Demo.PunBasics;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,10 +9,14 @@ using UnityEngine;
 
 public enum Phase
 {
-    phase0, phase1, phase2, phase3, endPhase
+    phase0, GamePhase, endPhase
 }
 public class ljh_AvoidGameManager : MonoBehaviourPun
-{
+{   //Todo: 오프닝(후순위), 점수 표기, 1등 가리기, 엔딩
+
+
+
+
     [SerializeField] public Phase curPhase;
 
     [SerializeField] public ljh_AvoidUIManager uiManager;
@@ -20,6 +25,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
 
     [SerializeField] public ljh_AvoidStone stone;
 
+    public int playerCount;
 
     //타이머
     public float timer;
@@ -29,12 +35,14 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
     float atkCooldown;
     public Coroutine attackRoutine;
     public Coroutine timerRoutine;
+    public Coroutine waitRoutine;
 
 
     private void Start()
     {
         curPhase = Phase.phase0;
         isStarted = false;
+        playerCount = 0;
     }
 
     private void Update()
@@ -51,20 +59,28 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
             }
         }
 
-        if (attackRoutine == null) // 이거 널아니라서 막혀있음 1바퀴만 도는중 문제 x
-            attackRoutine = StartCoroutine(AttackRoutine());
-
-
         TimerCalc();
         PhaseCalc();
-
+        FindPlayer();
 
 
     }
 
+    void FindPlayer()
+    {
+        List<ljh_PlayerController> players = new List<ljh_PlayerController>();
+        ljh_PlayerController curPlayer = GameObject.FindWithTag("Player").GetComponent<ljh_PlayerController>();
+        if (curPlayer.died == false)
+        {
+            players.Add(curPlayer);
+        }
+
+        if(playerCount - players.Count == 1) // 주말에 질문하자..
+            curPhase = Phase.endPhase;
+    }
+
     IEnumerator AttackRoutine()
     {
-        Debug.Log("코루틴실행");
         while ((int)curPhase > 0 || (int)curPhase < 4)
         {
                 stoneArray[Random.Range(0, stoneArray.Length)].real = true;
@@ -78,7 +94,6 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
                         stone.real = false;
                     }
                 }
-            
             yield return new WaitForSeconds(atkCooldown);
         }
         
@@ -90,8 +105,21 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
         // Todo: 타이머 3초 대기시간
         timer = 3f;
 
+        if (waitRoutine == null)
+            waitRoutine = StartCoroutine(WaitCo());
+
         if (timer <= 0)
-            curPhase = Phase.phase1;
+            curPhase = Phase.GamePhase;
+    }
+
+    IEnumerator WaitCo()
+    {
+        while (timer > 0)
+        {
+            yield return new WaitForSeconds(1f);
+            timer--;
+            uiManager.readyTimerText.text = $"{timer}";
+        }
     }
 
     public void TimerStart()
@@ -113,42 +141,14 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
         }
     }
 
-    public void Phase1()
+    public void GamePhase()
     {
         atkCooldown = 2;
 
-        // if (attackRoutine != null)
-        //     StopCoroutine(attackRoutine);
-
-        
-        //Todo: 2초마다 하나씩 떨어짐
+        if (attackRoutine != null) return;
+        attackRoutine = StartCoroutine(AttackRoutine());
     }
 
-
-    public void Phase2()
-    {
-       // if (attackRoutine != null)
-       //     StopCoroutine(attackRoutine);
-       //
-       //
-       // attackRoutine = StartCoroutine(AttackRoutine());
-        //if (attackRoutine == null)
-        //    attackRoutine = StartCoroutine(AttackRoutine());
-        //Todo: 2초마다 하나씩 떨어짐 페이크 시작
-    }
-
-    public void Phase3()
-    {
-       // atkCooldown = 1;
-       // if (attackRoutine != null)
-       //     StopCoroutine(attackRoutine);
-       //
-       //
-       // attackRoutine = StartCoroutine(AttackRoutine());
-        // if (attackRoutine == null)
-        //     attackRoutine = StartCoroutine(AttackRoutine());
-        //Todo: 1초마다 하나씩 떨어짐 페이크 있음
-    }
 
     public void EndPhase()
     {
@@ -166,18 +166,9 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
                 Wait();
                 break;
 
-            case Phase.phase1:
+            case Phase.GamePhase:
                 TimerStart();
-                Phase1();
-
-                break;
-
-            case Phase.phase2:
-                Phase2();
-                break;
-
-            case Phase.phase3:
-                Phase3();
+                GamePhase();
                 break;
 
             case Phase.endPhase:
@@ -194,18 +185,10 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
         {
             case 0:
                 if (curPhase == Phase.phase0)
-                    curPhase = Phase.phase1;
+                    curPhase = Phase.GamePhase;
 
-                else if (curPhase == Phase.phase3)
+                else if (curPhase == Phase.GamePhase)
                     curPhase = Phase.endPhase;
-                break;
-
-            case 25:
-                curPhase = Phase.phase2;
-                break;
-
-            case 15:
-                curPhase = Phase.phase3;
                 break;
         }
     }
