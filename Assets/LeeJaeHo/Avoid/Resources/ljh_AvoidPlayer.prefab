@@ -204,6 +204,8 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   stone:
   - {fileID: 0}
+  died: 0
+  score: 0
 --- !u!136 &7996549769078944148
 CapsuleCollider:
   m_ObjectHideFlags: 0

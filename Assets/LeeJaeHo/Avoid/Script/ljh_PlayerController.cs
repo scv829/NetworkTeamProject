@@ -6,7 +6,7 @@ using Photon.Pun;
 public class ljh_PlayerController : MonoBehaviourPun
 {
     [SerializeField] ljh_AvoidGameManager gameManager;
-    [SerializeField] ljh_AviodStone[] stone;
+    [SerializeField] ljh_AvoidStone[] stone;
 
     float moveSpeed = 2;
     //Comment : 죽음 상태
