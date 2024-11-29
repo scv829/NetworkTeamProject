@@ -3,18 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ljh_AviodStone : MonoBehaviourPun, IPunObservable
+public class ljh_AvoidStone : MonoBehaviourPun, IPunObservable
 {
     ljh_AvoidGameManager gameManager;
 
+    
     // 진짜 떨어지는 돌
     public bool real;
 
     // 돌 넘어지는 속도
     float rotateSpeed;
 
-    Coroutine smashCo;
-    Coroutine returnCo;
+    public Coroutine smashCo;
+    public Coroutine returnCo;
+
 
     public void Start()
     {
@@ -29,33 +31,31 @@ public class ljh_AviodStone : MonoBehaviourPun, IPunObservable
 
     public void Smash()
     {
-
-        if (smashCo == null)
-            smashCo = StartCoroutine(SmashCo());
-
-
-        //Todo: 돌이 넘어져서 바닥에 붙어야함
-        //Todo: 플레이어가 닿으면 플레이어가 장애물로 변함 > 이건 플레이어에서? 스톤에서?
-    }
-
-    public void ReturnSmash()
-    {
-
-        if (returnCo == null)
-            returnCo = StartCoroutine(ReturnCo());
-
+        if(smashCo == null)
+        smashCo = StartCoroutine(SmashCo());
 
     }
 
-    IEnumerator SmashCo()
+    public IEnumerator SmashCo()
     {
         while (true)
         {
             yield return new WaitForSeconds(0.05f);
             transform.Rotate(Vector3.forward * rotateSpeed);
-
         }
     }
+
+    public void ReturnSmash()
+    {
+
+        if (returnCo != null)
+            StopCoroutine(returnCo);
+
+        returnCo = StartCoroutine(ReturnCo());
+
+
+    }
+
 
     IEnumerator ReturnCo()
     {
@@ -66,6 +66,7 @@ public class ljh_AviodStone : MonoBehaviourPun, IPunObservable
 
             if (transform.rotation.z < 0)
             {
+                StopCoroutine(returnCo);
                 returnCo = null;
                 break;
             }
@@ -76,21 +77,20 @@ public class ljh_AviodStone : MonoBehaviourPun, IPunObservable
     {
         if (smashCo != null)
         {
-            Debug.Log("쿨리젼엔터 실행");
             if (collision.gameObject.CompareTag("Player"))
             {
                 StopCoroutine(smashCo);
-                smashCo = null;
+                //smashCo = null;
                 ReturnSmash();
-                gameManager.attackRoutine = null;
+                //gameManager.attackRoutine = null;
             }
 
             if (collision.gameObject.CompareTag("EnterWay"))
             {
                 StopCoroutine(smashCo);
-                smashCo = null;
+                //smashCo = null;
                 ReturnSmash();
-                gameManager.attackRoutine = null;
+                //gameManager.attackRoutine = null;
             }
         }
     }
