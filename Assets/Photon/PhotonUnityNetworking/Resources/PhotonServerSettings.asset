@@ -85,6 +85,9 @@ MonoBehaviour:
   - HYJ2_Touch
   - HYJ2_TouchRPC
   - SaveResultRPC
+  - RPCPhaseCalc
+  - RPCGamePhase
+  - RPCPhaseChange
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

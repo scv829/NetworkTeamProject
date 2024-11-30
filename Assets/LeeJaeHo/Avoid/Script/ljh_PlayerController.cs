@@ -4,14 +4,14 @@ using UnityEngine;
 using Photon.Pun;
 using System.Threading;
 
-public class ljh_PlayerController : MonoBehaviourPun
+public class ljh_PlayerController : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] ljh_AvoidGameManager gameManager;
     [SerializeField] ljh_AvoidStone[] stone;
     ljh_AvoidUIManager uiManager;
 
 
-    float moveSpeed = 2;
+    float moveSpeed = 3;
     //Comment : 죽음 상태
     public bool died;
     //Comment : 점수
@@ -32,29 +32,31 @@ public class ljh_PlayerController : MonoBehaviourPun
         if (!photonView.IsMine)
             return;
 
-        if(!died)
-        Move();
+        if (!died)
+            Move();
 
 
-        if(gameManager.curPhase == Phase.endPhase)
+        if (gameManager.curPhase == Phase.endPhase)
         {
-            if(!died)
+            if (!died)
             {
                 uiManager.alivePlayer = GetComponent<ljh_PlayerController>();
             }
         }
-       
+
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("ExitWay"))
+        if (collision.gameObject.CompareTag("ExitWay"))
         {
             transform.localScale = new Vector3(1, 0.35f, 1);
             died = true;
             transform.tag = "Untagged";
             rigid.constraints = RigidbodyConstraints.FreezeAll;
             score = 35 - gameManager.timer;
+            if (gameObject.CompareTag("Player"))
+                gameManager.playerCount--;
         }
     }
 
@@ -64,7 +66,7 @@ public class ljh_PlayerController : MonoBehaviourPun
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
 
-        if (x != 0 || z !=0)
+        if (x != 0 || z != 0)
             transform.forward = new Vector3(x, 0, z);
 
         transform.Translate(new Vector3(x, 0, z).normalized * moveSpeed * Time.deltaTime, Space.World);
@@ -81,5 +83,16 @@ public class ljh_PlayerController : MonoBehaviourPun
         transform.Translate(new Vector3(x, 0, z));
 
 
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if(stream.IsWriting)
+        {
+        }
+        else
+        {
+
+        }
     }
 }

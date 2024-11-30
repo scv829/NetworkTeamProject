@@ -98,6 +98,7 @@ public class ljh_AvoidTestGameScene : MonoBehaviourPunCallbacks
         gameManager.playerCount++;
 
 
+
         //Color[] vectorColor = { playerColor1, playerColor2, playerColor3, playerColor4 };
         //playerColor = new Color(vectorColor[index].r, vectorColor[index].g, vectorColor[index].b, 1);
 

@@ -13,7 +13,6 @@ public class ljh_AvoidUIManager : MonoBehaviour
 
     [SerializeField] public TMP_Text scoreText;
     [SerializeField] public TMP_Text myScoreText;
-    [SerializeField] public TMP_Text readyTimerText;
     [SerializeField] public TMP_Text timerText;
     [SerializeField] public TMP_Text winnerText;
 
@@ -22,7 +21,6 @@ public class ljh_AvoidUIManager : MonoBehaviour
     {
         scoreText.enabled = false;
         myScoreText.enabled = false;
-        readyTimerText.enabled = false;
         timerText.enabled = false;
         winnerText.enabled = false;
 
@@ -38,12 +36,9 @@ public class ljh_AvoidUIManager : MonoBehaviour
         if(alivePlayer != null)
         winnerText.text = $"Winner is {PhotonNetwork.LocalPlayer.NickName}!!!"; // Todo : 수정해야함
 
-        if (gameManager.curPhase == Phase.phase0)
-            readyTimerText.enabled = true;
 
         else if (gameManager.curPhase == Phase.GamePhase)
         {
-            readyTimerText.enabled = false;
             timerText.enabled = true;
         }
         

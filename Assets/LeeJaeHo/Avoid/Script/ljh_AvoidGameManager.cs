@@ -11,7 +11,7 @@ public enum Phase
 {
     phase0, GamePhase, endPhase
 }
-public class ljh_AvoidGameManager : MonoBehaviourPun
+public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
 {   //Todo: 오프닝(후순위), 점수 표기, 1등 가리기, 엔딩
 
 
@@ -26,13 +26,13 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
     [SerializeField] public ljh_AvoidStone stone;
 
     public int playerCount;
+    public Queue<ljh_PlayerController> playerQ;
 
     //타이머
     public float timer;
     bool isStarted;
 
     float stoneCooldown;
-    float atkCooldown;
     public Coroutine attackRoutine;
     public Coroutine timerRoutine;
     public Coroutine waitRoutine;
@@ -43,6 +43,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
         curPhase = Phase.phase0;
         isStarted = false;
         playerCount = 0;
+        timer = 3;
     }
 
     private void Update()
@@ -59,71 +60,69 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
             }
         }
 
-        TimerCalc();
+
+
+        if (timer == 0)
+        {
+            StopCoroutine(attackRoutine);
+            curPhase = Phase.endPhase;
+        }
         PhaseCalc();
-        FindPlayer();
+        //FindPlayer();
 
 
     }
 
     void FindPlayer()
     {
-        List<ljh_PlayerController> players = new List<ljh_PlayerController>();
-        ljh_PlayerController curPlayer = GameObject.FindWithTag("Player").GetComponent<ljh_PlayerController>();
-        if (curPlayer.died == false)
+        if (playerCount == 1)
         {
-            players.Add(curPlayer);
-        }
-
-        if(playerCount - players.Count == 1) // 주말에 질문하자..
             curPhase = Phase.endPhase;
+
+        }
     }
 
-    IEnumerator AttackRoutine()
+    IEnumerator AttackCo()
     {
-        while ((int)curPhase > 0 || (int)curPhase < 4)
+        while ((int)curPhase > 0 || (int)curPhase < 2)
         {
-                stoneArray[Random.Range(0, stoneArray.Length)].real = true;
+            stoneArray[Random.Range(0, stoneArray.Length)].real = true;
 
-                for (int i = 0; i < stoneArray.Length; i++)
+            for (int i = 0; i < stoneArray.Length; i++)
+            {
+                if (stoneArray[i].real == true)
                 {
-                    if (stoneArray[i].real == true)
-                    {
-                        stone = stoneArray[i];
-                        stone.Smash();
-                        stone.real = false;
-                    }
+                    stone = stoneArray[i];
+                    stone.Smash();
+                    stone.real = false;
                 }
-            yield return new WaitForSeconds(atkCooldown);
+            }
+            Debug.Log("와일문도는중");
+            yield return new WaitForSeconds(2);
         }
-        
+
+        Debug.Log("호출");
     }
 
 
     public void Wait()
     {
         // Todo: 타이머 3초 대기시간
-        timer = 3f;
 
         if (waitRoutine == null)
             waitRoutine = StartCoroutine(WaitCo());
-
-        if (timer <= 0)
-            curPhase = Phase.GamePhase;
     }
 
     IEnumerator WaitCo()
     {
-        while (timer > 0)
-        {
-            yield return new WaitForSeconds(1f);
-            timer--;
-            uiManager.readyTimerText.text = $"{timer}";
-        }
+        yield return new WaitForSeconds(3f);
+        curPhase = Phase.GamePhase;
     }
 
     public void TimerStart()
     {
+        Debug.Log("타이머스타트");
+
         if (!isStarted)
         {
             timer = 35f;
@@ -139,25 +138,51 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
             timer--;
             uiManager.timerText.text = $"Time : {timer}";
         }
+
     }
+
 
     public void GamePhase()
     {
-        atkCooldown = 2;
+        StopCoroutine(waitRoutine);
 
         if (attackRoutine != null) return;
-        attackRoutine = StartCoroutine(AttackRoutine());
+        attackRoutine = StartCoroutine(AttackCo());
+
+        PhaseChange();
+        Debug.Log("호출됨");
+    }
+
+    public void PhaseChange()
+    {
+        photonView.RPC("RPCPhaseChange", RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    public void RPCPhaseChange()
+    {
+        if (timer <= 0)
+        {
+            Debug.Log("엔드페이즈로넘어감");
+            curPhase = Phase.endPhase;
+        }
     }
 
 
     public void EndPhase()
     {
-        StopCoroutine(attackRoutine);
+        //StopCoroutine(attackRoutine);
 
         // Todo: 게임 끝 살아남은 사람 줌인 / 우선순위 낮음
         // Todo: 시간 비례해서 순위
     }
 
+    // public void PhaseCalc()
+    // {
+    //     photonView.RPC("RPCPhaseCalc", RpcTarget.AllViaServer);
+    // }
+
+    //[PunRPC]
     public void PhaseCalc()
     {
         switch (curPhase)
@@ -177,21 +202,20 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
         }
     }
 
-    public void TimerCalc()
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-
-
-        switch (timer)
+        int phaseInt = (int)curPhase;
+        if (stream.IsWriting)
         {
-            case 0:
-                if (curPhase == Phase.phase0)
-                    curPhase = Phase.GamePhase;
-
-                else if (curPhase == Phase.GamePhase)
-                    curPhase = Phase.endPhase;
-                break;
+            stream.SendNext(playerCount);
+            stream.SendNext(phaseInt);
         }
+        else
+        {
+            playerCount = (int)stream.ReceiveNext();
+            phaseInt = (int)stream.ReceiveNext();
+        }
+
+        curPhase = (Phase)phaseInt;
     }
-
-
 }
