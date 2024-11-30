@@ -6,7 +6,6 @@ using UnityEngine;
 public class ljh_AvoidStone : MonoBehaviourPun, IPunObservable
 {
     ljh_AvoidGameManager gameManager;
-
     
     // 진짜 떨어지는 돌
     public bool real;
@@ -67,6 +66,7 @@ public class ljh_AvoidStone : MonoBehaviourPun, IPunObservable
             if (transform.rotation.z < 0)
             {
                 StopCoroutine(returnCo);
+                smashCo = null;
                 returnCo = null;
                 break;
             }
@@ -80,17 +80,13 @@ public class ljh_AvoidStone : MonoBehaviourPun, IPunObservable
             if (collision.gameObject.CompareTag("Player"))
             {
                 StopCoroutine(smashCo);
-                //smashCo = null;
                 ReturnSmash();
-                //gameManager.attackRoutine = null;
             }
 
             if (collision.gameObject.CompareTag("EnterWay"))
             {
                 StopCoroutine(smashCo);
-                //smashCo = null;
                 ReturnSmash();
-                //gameManager.attackRoutine = null;
             }
         }
     }

@@ -15,6 +15,7 @@ public class ljh_AvoidTestGameScene : MonoBehaviourPunCallbacks
     public const string RoomName = "Testroom";
 
     [SerializeField] GameObject playerPrefab;
+    [SerializeField] ljh_AvoidGameManager gameManager;
 
 
     private void Start()
@@ -94,7 +95,8 @@ public class ljh_AvoidTestGameScene : MonoBehaviourPunCallbacks
 
         Vector3 playerPos = new Vector3(Random.Range(-5,5), 0, Random.Range(-5, 5));
         GameObject player = PhotonNetwork.Instantiate("ljh_AvoidPlayer", playerPos, Quaternion.identity);
-        
+        gameManager.playerCount++;
+
 
 
         //Color[] vectorColor = { playerColor1, playerColor2, playerColor3, playerColor4 };
