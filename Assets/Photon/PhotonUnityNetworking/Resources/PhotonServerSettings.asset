@@ -88,6 +88,8 @@ MonoBehaviour:
   - RPCPhaseCalc
   - RPCGamePhase
   - RPCPhaseChange
+  - RPCWait
+  - RPCTextOnOff
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

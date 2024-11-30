@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class ljh_AvoidUIManager : MonoBehaviour
+public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] ljh_AvoidGameManager gameManager;
     [SerializeField] ljh_PlayerController player;
@@ -30,29 +30,52 @@ public class ljh_AvoidUIManager : MonoBehaviour
     {
 
         scoreText.text = $"{player.score}";
-        //readyTimerText.text = $"{gameManager.timer}";
-        //timerText.text = gameManager.timer.ToString();
 
         if(alivePlayer != null)
         winnerText.text = $"Winner is {PhotonNetwork.LocalPlayer.NickName}!!!"; // Todo : 수정해야함
 
-
-        else if (gameManager.curPhase == Phase.GamePhase)
-        {
-            timerText.enabled = true;
-        }
-        
-        else if ( gameManager.curPhase == Phase.endPhase)
-        {
-            scoreText.enabled = true;
-            myScoreText.enabled= true;
-            timerText.enabled = false;
-            winnerText.enabled = true;
-        }
-
+        TextOnOff();
 
     }
 
 
+    /*public void TextOnOff()
+    {
+        photonView.RPC("RPCTextOnOff", RpcTarget.AllBufferedViaServer);
+    }*/
 
+    public void TextOnOff()
+    {
+        if (gameManager.curPhase == Phase.GamePhase)
+        {
+            timerText.enabled = true;
+        }
+
+        else if (gameManager.curPhase == Phase.endPhase)
+        {
+            scoreText.enabled = true;
+            myScoreText.enabled = true;
+            timerText.enabled = false;
+            winnerText.enabled = true;
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting) 
+        {
+            stream.SendNext(scoreText.enabled);
+            stream.SendNext(myScoreText.enabled);
+            stream.SendNext(timerText.enabled);
+            stream.SendNext(winnerText.enabled);
+        }
+        else
+        {
+            scoreText.enabled = ((bool)stream.ReceiveNext());
+            myScoreText.enabled = ((bool)stream.ReceiveNext());
+            timerText.enabled = ((bool)stream.ReceiveNext());
+            winnerText.enabled = ((bool)stream.ReceiveNext());
+
+        }
+    }
 }

@@ -11,7 +11,7 @@ public enum Phase
 {
     phase0, GamePhase, endPhase
 }
-public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
+public class ljh_AvoidGameManager : MonoBehaviourPun
 {   //Todo: 오프닝(후순위), 점수 표기, 1등 가리기, 엔딩
 
 
@@ -29,6 +29,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
     public Queue<ljh_PlayerController> playerQ;
 
     //타이머
+    public float readyTimer;
     public float timer;
     bool isStarted;
 
@@ -43,7 +44,8 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
         curPhase = Phase.phase0;
         isStarted = false;
         playerCount = 0;
-        timer = 3;
+        readyTimer = 3;
+        timer = 35;
     }
 
     private void Update()
@@ -52,7 +54,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
             return;
 
 
-        if (curPhase != Phase.endPhase)
+        if (curPhase == Phase.GamePhase)
         {
             if (timerRoutine == null)
             {
@@ -60,17 +62,8 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
             }
         }
 
-
-
-        if (timer == 0)
-        {
-            StopCoroutine(attackRoutine);
-            curPhase = Phase.endPhase;
-        }
         PhaseCalc();
         //FindPlayer();
-
-
     }
 
     void FindPlayer()
@@ -84,7 +77,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
 
     IEnumerator AttackCo()
     {
-        while ((int)curPhase > 0 || (int)curPhase < 2)
+        while (curPhase == Phase.GamePhase)
         {
             stoneArray[Random.Range(0, stoneArray.Length)].real = true;
 
@@ -97,14 +90,12 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
                     stone.real = false;
                 }
             }
-            Debug.Log("와일문도는중");
             yield return new WaitForSeconds(2);
         }
 
-        Debug.Log("호출");
     }
 
-
+    
     public void Wait()
     {
         // Todo: 타이머 3초 대기시간
@@ -121,7 +112,6 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
 
     public void TimerStart()
     {
-        Debug.Log("타이머스타트");
 
         if (!isStarted)
         {
@@ -130,10 +120,12 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
         }
     }
 
+
     IEnumerator TimerCo()
     {
         while (timer > 0)
         {
+            Debug.Log("시간초 깎이는중");
             yield return new WaitForSeconds(1f);
             timer--;
             uiManager.timerText.text = $"Time : {timer}";
@@ -144,29 +136,26 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
 
     public void GamePhase()
     {
+
         StopCoroutine(waitRoutine);
 
         if (attackRoutine != null) return;
         attackRoutine = StartCoroutine(AttackCo());
 
-        PhaseChange();
-        Debug.Log("호출됨");
     }
+    
 
     public void PhaseChange()
     {
-        photonView.RPC("RPCPhaseChange", RpcTarget.AllViaServer);
-    }
-
-    [PunRPC]
-    public void RPCPhaseChange()
-    {
-        if (timer <= 0)
+        if (curPhase == Phase.GamePhase)
         {
-            Debug.Log("엔드페이즈로넘어감");
-            curPhase = Phase.endPhase;
+            if (timer == 0)
+            {
+                curPhase = Phase.endPhase;
+            }
         }
     }
+
 
 
     public void EndPhase()
@@ -177,12 +166,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
         // Todo: 시간 비례해서 순위
     }
 
-    // public void PhaseCalc()
-    // {
-    //     photonView.RPC("RPCPhaseCalc", RpcTarget.AllViaServer);
-    // }
 
-    //[PunRPC]
     public void PhaseCalc()
     {
         switch (curPhase)
@@ -194,6 +178,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
             case Phase.GamePhase:
                 TimerStart();
                 GamePhase();
+                PhaseChange();
                 break;
 
             case Phase.endPhase:
@@ -202,20 +187,17 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
         }
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    /*public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        int phaseInt = (int)curPhase;
         if (stream.IsWriting)
         {
             stream.SendNext(playerCount);
-            stream.SendNext(phaseInt);
+            stream.SendNext(timer);
         }
         else
         {
             playerCount = (int)stream.ReceiveNext();
-            phaseInt = (int)stream.ReceiveNext();
+            timer = (float)stream.ReceiveNext();
         }
-
-        curPhase = (Phase)phaseInt;
-    }
+    }*/
 }
