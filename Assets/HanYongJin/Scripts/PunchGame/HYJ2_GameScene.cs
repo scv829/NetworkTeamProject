@@ -12,10 +12,12 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
     [SerializeField] HYJ2_FieldSpawn HYJ2_FieldSpawn;
     [SerializeField] TMP_Text gameUIText;
     [SerializeField] Color[] playerColors;
+    [SerializeField] Camera mainCamera;
     void Start()
     {
         PhotonNetwork.LocalPlayer.NickName = $"Player {Random.Range(1000, 10000)}";
-
+        
+        // TODO : 재성님에게 물어봐서 플레이어 컬러 적용법 배우기
         //Vector3 vectorColor = new Vector3(playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].r, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].g, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].b);
         //PhotonNetwork.LocalPlayer.SetPlayerColor(vectorColor);
         PhotonNetwork.LocalPlayer.SetLoad(true);
@@ -59,26 +61,35 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
     IEnumerator GameStart()
     {
         // 필드 스폰(필드가 스폰되면 필드에서 플레이어 스폰)
+        Debug.Log("필드 스폰");
         HYJ2_FieldSpawn.gameObject.GetComponent<HYJ2_FieldSpawn>().FieldSpawn();
         gameUIText.text = "Punch! with Spacebar";
-
-        // TODO: 중앙의 카메라를 필드에서 각 플레이어의 필드로 줌
-
-
-        // 1초 뒤 게임 카운트시작
         yield return new WaitForSeconds(1f);
-
-        // 3초의 카운트 뒤 게임 시작
-        gameUIText.text = "3";
-        yield return new WaitForSeconds(1f);
-        gameUIText.text = "2";
-        yield return new WaitForSeconds(1f);
-        gameUIText.text = "1";
-        yield return new WaitForSeconds(1f);
-        gameUIText.text = "Start!";
-
-        // TODO : 게임시작
-        // Field 오브젝트의 자식 객체 중 PunchObjects의 오브젝트매니저 스크립트 변수인 isStart를 트루로 변경
+        gameUIText.gameObject.SetActive(false);
+        // 중앙의 카메라를 필드에서 각 플레이어의 필드로 줌
+        CameraMove();
+        
+        // 게임 시작
         HYJ2_FieldSpawn.gameObject.GetComponent<HYJ2_FieldSpawn>().ObjectManagerOn();
+    }
+
+    private void CameraMove()
+    {
+        Debug.Log("카메라 무브");
+        switch (PhotonNetwork.LocalPlayer.ActorNumber)
+        {
+            case 1 :
+                mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(-10, 18, 10), 25f);
+                break;
+            case 2:
+                mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(10, 18, 10), 25f);
+                break;
+            case 3:
+                mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(-10, 18, -10), 25f);
+                break;
+            case 4:
+                mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(10, 18, -10), 25f);
+                break;
+        }
     }
 }

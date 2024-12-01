@@ -12,7 +12,7 @@ public class HYJ_PlayerController : MonoBehaviourPun
     private HYJ_MonsterSearch monster;
     private float time;
     private int[] playerRanks;
-    private void Start()
+    private void Awake()
     {
         monster = transform.GetComponentInParent<HYJ_MonsterSearch>();
         time = 0;
