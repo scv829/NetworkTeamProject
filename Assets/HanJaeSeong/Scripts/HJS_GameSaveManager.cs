@@ -15,6 +15,8 @@ public class HJS_GameSaveManager : MonoBehaviourPun
     
     [Header("Fade")]
     [SerializeField] HJS_FadeController fadeController;
+    [Header("Test")]
+    [SerializeField] bool isTest;
 
     private void Awake()
     {
@@ -52,7 +54,10 @@ public class HJS_GameSaveManager : MonoBehaviourPun
 
         yield return new WaitForSeconds(0.5f);  // 다른 컴퓨터의 성능에 따라 페이드가 진행되는 도중에 이동할 수 있어서 약간의 차이만큼 더 기다리기
 
-        PhotonNetwork.LoadLevel("TestConnectScene");    // 방으로 이동
+        if(isTest)
+            PhotonNetwork.LoadLevel("TestConnectScene");    // 방으로 이동
+        else
+            PhotonNetwork.LoadLevel("HJS_Test_MainScene");    // 로비로 이동
     }
 
     [PunRPC]

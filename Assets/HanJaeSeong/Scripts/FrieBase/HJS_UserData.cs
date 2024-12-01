@@ -10,6 +10,7 @@ public class HJS_UserData
     public string name;         // 유저의 닉네임
     public string email;        // 유저의 이메일(Id)
     public string description;  // 유저의 소개
+    public Vector3 spawnPos;    // 플에이어 스폰 위치
     public Record record = new Record();    // 유저의 게임 기록
 }
 

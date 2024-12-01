@@ -4251,6 +4251,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 793839353327308204, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: isTest
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 793839353327308205, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -4301,6 +4305,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 793839353327308206, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839353331160787, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839353331160787, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_Color.b
+      value: 0.09411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839353331160787, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_Color.g
+      value: 0.09411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839353331160787, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_Color.r
+      value: 0.09411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 4760626746665050580, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: isFadeIn
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4760626746665050580, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}

@@ -23,6 +23,7 @@ public class HJS_GameConnectManager : MonoBehaviourPunCallbacks
 
     [Header("Fade")]
     [SerializeField] HJS_FadeController fadeController;
+    [SerializeField, Tooltip("FadeIn: true, FadeOut: false")] bool isFadeIn;
 
     // 씬 로드 확인
     private void Start()
@@ -45,7 +46,8 @@ public class HJS_GameConnectManager : MonoBehaviourPunCallbacks
                 // 게임 시작 전 초기 설정
                 gameInitEvent?.Invoke();
                 // 카메라 활성화
-                fadeController.FadeIn();
+                if(isFadeIn) fadeController.FadeIn();
+                else fadeController.FadeOut();
                 /* 게임 동작 로직 */
                 StartCoroutine(StartCoutine());
             }
