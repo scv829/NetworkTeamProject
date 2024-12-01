@@ -210,7 +210,7 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
         Vector3 spawnPosition = SetPosition(); // 함수내에서 미리 설정한 위치로 초기화
         spawnPosition.z += 2f;  // 지정한 포지션값보다 살짝 앞에서 생성되어야하기 때문에 +2
 
-        return PhotonNetwork.Instantiate("KHS/KHS_Hey-Ho", spawnPosition, Quaternion.identity);
+        return PhotonNetwork.Instantiate("KHS/KHS_HeyHo", spawnPosition, Quaternion.identity);
 
     }
 

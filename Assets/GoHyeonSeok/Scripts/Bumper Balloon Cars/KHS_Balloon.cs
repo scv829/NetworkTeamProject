@@ -13,11 +13,7 @@ public class KHS_Balloon : MonoBehaviourPun, IPunObservable
     private void Awake()
     {
         Renderer = GetComponent<Renderer>();
-    }
-
-    private void Start()
-    {
-        switch (PhotonNetwork.LocalPlayer.ActorNumber)
+        switch (photonView.Owner.ActorNumber)
         {
             case 1:
                 Renderer.material.color = Color.red; break;
@@ -28,6 +24,11 @@ public class KHS_Balloon : MonoBehaviourPun, IPunObservable
             case 4:
                 Renderer.material.color = Color.blue; break;
         }
+    }
+
+    private void Start()
+    {
+
     }
 
     private void OnCollisionEnter(Collision collision)
