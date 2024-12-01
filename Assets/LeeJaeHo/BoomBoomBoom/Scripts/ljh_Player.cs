@@ -40,7 +40,9 @@ public class ljh_Player : MonoBehaviourPun
         testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_BoomTestGameScene>();
         inputManager = GameObject.FindWithTag("GameController");
         //buttonPos = inputManagerScript. 나중에 유저 4 > 3번 포즈 3명 > 3번포즈 2명 2번 포즈
-      
+        cartManager = GameObject.FindWithTag("Respawn");
+
+        _curPos = testGameScene.playerPos;
 
 
     }
@@ -48,26 +50,45 @@ public class ljh_Player : MonoBehaviourPun
 
     private void Update()
     {
+
+
         if (!photonView.IsMine)
             return;
 
-        Vector3 vec = _curPos;
-        if (ljh_GameManager.instance.curState == State.choice)
+        Debug.Log($"커스테이트{ljh_GameManager.instance.curState}");
+
+        if(ljh_GameManager.instance.curState != State.choice && ljh_GameManager.instance.curState != State.end)
         {
-                MovePlayer(vec);
-        }
-        
-        if((int)ljh_GameManager.instance.myTurn != (int)this.playerNumber )
-        {
-            transform.position = testGameScene.vectorPlayerSpawn[testGameScene.index];
+            transform.position = testGameScene.cartArray[testGameScene.index].transform.position;
         }
 
+        if ((int)ljh_GameManager.instance.myTurn == (int)this.playerNumber)
+        {
+            if (ljh_GameManager.instance.curState == State.choice)
+            {
+                MovePlayer(_curPos);
+            }
+        }
 
-        Debug.Log($"현재 플레이어 : { playerNumber}"); 
-        Debug.Log($"지금 턴인 플레이어 :{ljh_GameManager.instance.myTurn}"); // 이놈이 문제 마이턴 2
+        //MoveOtherPlayer(); 이따지우셈
+
         if ((int)playerNumber == (int)ljh_GameManager.instance.myTurn)
         {
             PlayingPlayer();
+        }
+    }
+
+    void MoveOtherPlayer()
+    {
+        photonView.RPC("RPCMOP", RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    void RPCMOP()
+    {
+        if ((int)ljh_GameManager.instance.myTurn != (int)this.playerNumber)
+        {
+            transform.position = testGameScene.vectorPlayerSpawn[testGameScene.index];
         }
     }
 
@@ -95,7 +116,7 @@ public class ljh_Player : MonoBehaviourPun
 
             case State.end:
                 ExitCart();
-                
+
                 break;
 
         }
@@ -104,6 +125,7 @@ public class ljh_Player : MonoBehaviourPun
     public void MovePlayer(Vector3 vector)
     {
         transform.position = vector;
+        Debug.Log($"플레이어 이름 {transform.gameObject.name}");
     }
 
 
@@ -139,8 +161,7 @@ public class ljh_Player : MonoBehaviourPun
     {
         gameObject.SetActive(false);
         inputManager.GetComponent<ljh_InputManager>().ChoiceAnswer().SetActive(false);
-        
+
     }
 
-    
 }

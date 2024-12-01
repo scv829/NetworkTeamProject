@@ -29,15 +29,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5312254207850949179, guid: 7a131f7863b98374d8ab4294a1ff5125, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.687274
+      value: -3.9154139
       objectReference: {fileID: 0}
     - target: {fileID: 5312254207850949179, guid: 7a131f7863b98374d8ab4294a1ff5125, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.058279753
+      value: 2.5067494
       objectReference: {fileID: 0}
     - target: {fileID: 5312254207850949179, guid: 7a131f7863b98374d8ab4294a1ff5125, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.7945337
+      value: 23.798174
       objectReference: {fileID: 0}
     - target: {fileID: 5312254207850949179, guid: 7a131f7863b98374d8ab4294a1ff5125, type: 3}
       propertyPath: m_LocalRotation.w
@@ -139,6 +139,7 @@ MonoBehaviour:
   cartManager: {fileID: 0}
   playerNumber: 0
   cart: {fileID: 0}
+  exitCart: {fileID: 0}
   _curPos: {x: 0, y: 0, z: 0}
   myNum: 1
   i: 1

@@ -3995,7 +3995,7 @@ GameObject:
   - component: {fileID: 759296073}
   m_Layer: 0
   m_Name: CartManager Enter
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4022,6 +4022,7 @@ MonoBehaviour:
   cart3Enter: {fileID: 156585903}
   cart4Enter: {fileID: 284648084}
   exitCart: {fileID: 870903782}
+  player: {fileID: 1622042245990138239, guid: c630c3590617841479af7e0e9276d29c, type: 3}
 --- !u!4 &759296074
 Transform:
   m_ObjectHideFlags: 0
@@ -7308,9 +7309,7 @@ MonoBehaviour:
   minus: 0
   index: 0
   curState: 0
-  Player4: {fileID: 0}
   Player3: {fileID: 1428185658}
-  Player2: {fileID: 0}
   boom: {fileID: 1294685917}
   door: {fileID: 841836663}
   sunLight: {fileID: 1911679157}
@@ -12269,7 +12268,6 @@ MonoBehaviour:
   Pos4: {x: 0, y: 0, z: 0}
   buttonParents: {fileID: 51571894}
   posParents: {fileID: 1878230325}
-  _curPos: {x: 0, y: 0, z: 0}
   boom: {fileID: 1294685917}
   defaultIndex: 0
   minus: 0
@@ -12315,7 +12313,6 @@ MonoBehaviour:
   Bomb: {fileID: 1294685919}
   inputManager: {fileID: 1788366963}
   myPos: {fileID: 5621788913710155959}
-  player: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
 --- !u!4 &4733016583352301865
 Transform:
   m_ObjectHideFlags: 0
@@ -12538,7 +12535,6 @@ MonoBehaviour:
   Bomb: {fileID: 1294685919}
   inputManager: {fileID: 1788366963}
   myPos: {fileID: 5621788913026384315}
-  player: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
 --- !u!4 &4733016584176513477
 Transform:
   m_ObjectHideFlags: 0
@@ -12593,7 +12589,6 @@ MonoBehaviour:
   Bomb: {fileID: 1294685919}
   inputManager: {fileID: 1788366963}
   myPos: {fileID: 5621788912948923285}
-  player: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
 --- !u!4 &4733016584236671569
 Transform:
   m_ObjectHideFlags: 0
@@ -12816,7 +12811,6 @@ MonoBehaviour:
   Bomb: {fileID: 1294685919}
   inputManager: {fileID: 1788366963}
   myPos: {fileID: 5621788913370126037}
-  player: {fileID: 6911332511925752833, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
 --- !u!4 &4733016584690301965
 Transform:
   m_ObjectHideFlags: 0

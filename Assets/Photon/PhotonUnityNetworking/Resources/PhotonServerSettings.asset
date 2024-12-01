@@ -90,6 +90,7 @@ MonoBehaviour:
   - RPCPhaseChange
   - RPCWait
   - RPCTextOnOff
+  - RPCMOP
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

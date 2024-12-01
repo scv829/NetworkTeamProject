@@ -1,4 +1,5 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class ljh_CartManager : MonoBehaviour
     public GameObject cart4Enter;
 
     [SerializeField] public GameObject exitCart;
+    [SerializeField] public GameObject player;
 
     public void CartMoveEnter()
     {
@@ -29,7 +31,13 @@ public class ljh_CartManager : MonoBehaviour
 
         cartArrayEnter[index].GetComponent<CinemachineDollyCart>().m_Position = 0;
         cartArrayEnter[index].GetComponent<CinemachineDollyCart>().gameObject.SetActive(false);
-        cartArrayEnter[index].GetComponent<CinemachineDollyCart>().gameObject.SetActive(true);
+        
+    }
+
+    public void CartMoveExit()
+    {
+        exitCart.GetComponent<CinemachineDollyCart>().enabled = true;
+        player.transform.position = exitCart.transform.position;
     }
 
 
