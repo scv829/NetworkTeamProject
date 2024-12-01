@@ -2,15 +2,10 @@ using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
 using Photon.Pun;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 
 public class HJS_Test_LoginPanel : MonoBehaviour
@@ -77,6 +72,7 @@ public class HJS_Test_LoginPanel : MonoBehaviour
                     HJS_UserData userData = new HJS_UserData();
                     userData.name = userId.ToString();
                     userData.email = HJS_FirebaseManager.Auth.CurrentUser.Email;
+                    userData.spawnPos = new Vector3(0, 0, 0);
 
                     userData.record.Reset();
 
@@ -96,12 +92,27 @@ public class HJS_Test_LoginPanel : MonoBehaviour
                     {
                         Debug.Log($"Record's {data} : {data.Value}");
                     }
+
+                    List<string> list = new List<string>();
+
+                    foreach (DataSnapshot data in snapshot.Child("spawnPos").Children)
+                    {
+                        list.Add(data.Value.ToString());
+                        Debug.Log($"spawnPos's {data} : {data.Value}");
+                    }
+
+                    HJS_PlayerPosition.Instance.playerPos.x = float.Parse(list[0]);
+                    HJS_PlayerPosition.Instance.playerPos.y = float.Parse(list[1]);
+                    HJS_PlayerPosition.Instance.playerPos.z = float.Parse(list[2]);
                 }
+            })
+             .ContinueWithOnMainThread(task =>
+             {
+                 PhotonNetwork.LocalPlayer.SetPlayerUID(uid);
+                 PhotonNetwork.ConnectUsingSettings();
 
-                PhotonNetwork.LocalPlayer.SetPlayerUID(uid);
-                PhotonNetwork.ConnectUsingSettings();
-
-                SceneManager.LoadScene("HJS_Test_MainScene");
-            });
+                 SceneManager.LoadScene("HJS_Test_MainScene");
+                 PhotonNetwork.AutomaticallySyncScene = true;
+             });
     }
 }
