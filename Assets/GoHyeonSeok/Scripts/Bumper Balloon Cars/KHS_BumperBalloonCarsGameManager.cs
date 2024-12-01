@@ -83,13 +83,13 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
         switch (PhotonNetwork.LocalPlayer.ActorNumber)
         {
             case 1:
-                return new Vector3(-7f, 1f, -8f);
+                return new Vector3(-7f, 0f, -8f);
             case 2:
-                return new Vector3(-7f, 1f, 8f);
+                return new Vector3(-7f, 0f, 8f);
             case 3:
-                return new Vector3(7f, 1f, -8f);
+                return new Vector3(7f, 0f, -8f);
             case 4:
-                return new Vector3(7f, 1f, 8f);
+                return new Vector3(7f, 0f, 8f);
         }
         return Vector3.zero;
     }
@@ -100,7 +100,18 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
         Vector3 spawnPosition = SetPosition();  // 함수내에서 미리 설정한 위치로 초기화
         Quaternion spawnRotation = PlayerRotate();
 
-        return PhotonNetwork.Instantiate("KHS/KHS_Cart", spawnPosition, spawnRotation);
+        switch (PhotonNetwork.LocalPlayer.ActorNumber)
+        {
+            case 1:
+                return PhotonNetwork.Instantiate("KHS/KHS_Cart1", spawnPosition, spawnRotation);
+            case 2:
+                return PhotonNetwork.Instantiate("KHS/KHS_Cart2", spawnPosition, spawnRotation);
+            case 3:
+                return PhotonNetwork.Instantiate("KHS/KHS_Cart3", spawnPosition, spawnRotation);
+            case 4:
+                return PhotonNetwork.Instantiate("KHS/KHS_Cart4", spawnPosition, spawnRotation);
+        }
+        return null;
     }
 
     private Quaternion PlayerRotate()
