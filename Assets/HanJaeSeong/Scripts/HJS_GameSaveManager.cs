@@ -9,14 +9,17 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 게임 종료에 관련된 기능을 담당해주는 스크립트
+/// </summary>
 public class HJS_GameSaveManager : MonoBehaviourPun
 {
     public static HJS_GameSaveManager Instance;         // 싱글톤
     
     [Header("Fade")]
     [SerializeField] HJS_FadeController fadeController;
-    [Header("Test")]
-    [SerializeField] bool isTest;
+    [Header("SceneName")]
+    [SerializeField] string sceneName;  // 넘어갈 씬 이름
 
     private void Awake()
     {
@@ -54,16 +57,12 @@ public class HJS_GameSaveManager : MonoBehaviourPun
 
         yield return new WaitForSeconds(0.5f);  // 다른 컴퓨터의 성능에 따라 페이드가 진행되는 도중에 이동할 수 있어서 약간의 차이만큼 더 기다리기
 
-        if(isTest)
-            PhotonNetwork.LoadLevel("TestConnectScene");    // 방으로 이동
-        else
-            PhotonNetwork.LoadLevel("HJS_Test_MainScene");    // 로비로 이동
+        PhotonNetwork.LoadLevel(sceneName);    // 씬으로 이동
     }
 
     [PunRPC]
     private void SaveResultRPC(bool isWinner)
     {
-
         Debug.Log($"{PhotonNetwork.LocalPlayer.NickName} is start");
         FirebaseUser user = HJS_FirebaseManager.Auth.CurrentUser;
 

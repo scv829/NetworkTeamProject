@@ -101,9 +101,7 @@ public class HJS_Test_LoginPanel : MonoBehaviour
                         Debug.Log($"spawnPos's {data} : {data.Value}");
                     }
 
-                    HJS_PlayerPosition.Instance.playerPos.x = float.Parse(list[0]);
-                    HJS_PlayerPosition.Instance.playerPos.y = float.Parse(list[1]);
-                    HJS_PlayerPosition.Instance.playerPos.z = float.Parse(list[2]);
+                    HJS_PlayerPosition.Instance.PlayerPos = new Vector3 (float.Parse(list[0]), float.Parse(list[1]), float.Parse(list[2]));
                 }
             })
              .ContinueWithOnMainThread(task =>
