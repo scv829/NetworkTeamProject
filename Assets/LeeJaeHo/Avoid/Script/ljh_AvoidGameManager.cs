@@ -63,16 +63,31 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
         }
 
         PhaseCalc();
-        //FindPlayer();
+        FindPlayer();
     }
 
     void FindPlayer()
     {
-        if (playerCount == 1)
+        if (curPhase == Phase.GamePhase)
         {
-            curPhase = Phase.endPhase;
-
+            if (playerCount == 1)
+            {
+                curPhase = Phase.endPhase;
+                AlivePlayer();
+            }
         }
+    }
+
+    void AlivePlayer()
+    {
+        photonView.RPC("RPCAP", RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    void RPCAP()
+    {
+        uiManager.alivePlayer = GameObject.FindWithTag("Player").GetComponent<ljh_PlayerController>();
+        Debug.Log($"이름 {uiManager.alivePlayer.myName}");
     }
 
     IEnumerator AttackCo()
@@ -125,7 +140,6 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
     {
         while (timer > 0)
         {
-            Debug.Log("시간초 깎이는중");
             yield return new WaitForSeconds(1f);
             timer--;
             uiManager.timerText.text = $"Time : {timer}";

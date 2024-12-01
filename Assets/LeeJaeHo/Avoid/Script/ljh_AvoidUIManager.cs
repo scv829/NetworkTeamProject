@@ -28,11 +28,8 @@ public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
 
     private void Update()
     {
-
-        scoreText.text = $"{player.score}";
-
         if(alivePlayer != null)
-        winnerText.text = $"Winner is {PhotonNetwork.LocalPlayer.NickName}!!!"; // Todo : 수정해야함
+        winnerText.text = $"Winner is {alivePlayer.myName}!!!"; // Todo : 수정해야함
 
         TextOnOff();
 
@@ -68,13 +65,16 @@ public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
             stream.SendNext(myScoreText.enabled);
             stream.SendNext(timerText.enabled);
             stream.SendNext(winnerText.enabled);
+            stream.SendNext(alivePlayer?.myName);
         }
         else
         {
-            scoreText.enabled = ((bool)stream.ReceiveNext());
-            myScoreText.enabled = ((bool)stream.ReceiveNext());
-            timerText.enabled = ((bool)stream.ReceiveNext());
-            winnerText.enabled = ((bool)stream.ReceiveNext());
+            scoreText.enabled = (bool)stream.ReceiveNext();
+            myScoreText.enabled = (bool)stream.ReceiveNext();
+            timerText.enabled = (bool)stream.ReceiveNext();
+            winnerText.enabled = (bool)stream.ReceiveNext();
+            if(alivePlayer != null)
+            alivePlayer.myName = (string)stream.ReceiveNext();
 
         }
     }
