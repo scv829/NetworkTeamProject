@@ -33,7 +33,7 @@ public class ljh_Player : MonoBehaviourPun
     public Vector3 _curPos;
     public int myNum;
 
-    public int i = 1;
+    public bool winnerCheck;
 
     private void Start()
     {
@@ -43,6 +43,7 @@ public class ljh_Player : MonoBehaviourPun
         cartManager = GameObject.FindWithTag("Respawn");
 
         _curPos = testGameScene.playerPos;
+        winnerCheck = false;
 
 
     }
@@ -55,7 +56,6 @@ public class ljh_Player : MonoBehaviourPun
         if (!photonView.IsMine)
             return;
 
-        Debug.Log($"커스테이트{ljh_GameManager.instance.curState}");
 
         if(ljh_GameManager.instance.curState != State.choice && ljh_GameManager.instance.curState != State.end)
         {
