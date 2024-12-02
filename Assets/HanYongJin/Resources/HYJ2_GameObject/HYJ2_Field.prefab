@@ -1931,6 +1931,7 @@ MonoBehaviour:
   - {fileID: 7347412335470280226}
   fieldUIText: {fileID: 8489090777158981305}
   playerRanks: 
+  isStart: 0
   lightScoreCount: 0
 --- !u!1 &7347412335848191728
 GameObject:

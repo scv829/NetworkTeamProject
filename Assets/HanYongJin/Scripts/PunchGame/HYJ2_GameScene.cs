@@ -10,13 +10,16 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
 {
     public const string RoomName = "TestRoom";
     [SerializeField] HYJ2_FieldSpawn HYJ2_FieldSpawn;
-    [SerializeField] TMP_Text gameUIText;
+    [SerializeField] TextMeshProUGUI _gameUIText;
     [SerializeField] Color[] playerColors;
 
     [SerializeField] Camera mainCamera;
 
-    //플레이어 색상
-    
+    //승자 플레이어
+    public int WinPlayer;
+
+    [SerializeField] private Player[] _curPhotonPlayer;
+    public Player[] CurPhotonPlayer { get { return _curPhotonPlayer; } set { _curPhotonPlayer = value; } }
 
     void Start()
     {
@@ -27,6 +30,7 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetPlayerColor(vectorColor);
         PhotonNetwork.LocalPlayer.SetLoad(true);
 
+        CurPhotonPlayer = PhotonNetwork.PlayerList;
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
@@ -38,6 +42,7 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
             Debug.Log($"모든 플레이어 로딩 완료 여부 : {allLoaded} ");
             if (allLoaded)
             {
+                Debug.Log(PhotonNetwork.PlayerList.Length);
                 // 게임 진행코드
                 StartCoroutine(GameStart());
             }
@@ -68,10 +73,10 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
         // 필드 스폰(필드가 스폰되면 필드에서 플레이어 스폰)
         Debug.Log("필드 스폰");
         HYJ2_FieldSpawn.gameObject.GetComponent<HYJ2_FieldSpawn>().FieldSpawn();
-        gameUIText.text = "Punch! with Spacebar";
+        _gameUIText.text = "Punch! with Spacebar";
 
-        yield return new WaitForSeconds(1f);
-        gameUIText.gameObject.SetActive(false);
+        yield return new WaitForSeconds(2.5f);
+        _gameUIText.gameObject.SetActive(false);
         // 중앙의 카메라를 필드에서 각 플레이어의 필드로 줌
         CameraMove();
         
@@ -99,5 +104,24 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
                 mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(10, 18, -10), 25f);
                 break;
         }
+    }
+
+    public void GameEnd(int _playerNumber)
+    {
+        if(_playerNumber != 0)
+        {
+            Debug.Log(_playerNumber);
+            photonView.RPC("HYJ2_GameEnd", RpcTarget.All, _playerNumber);
+        }
+    }
+
+    [PunRPC]
+    public void HYJ2_GameEnd(int playerNumber)
+    {
+        _gameUIText.gameObject.SetActive(true);
+        _gameUIText.text = $"{playerNumber}P is Winner!";
+        mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(0, 35, 0), 25f);
+        Player winner = CurPhotonPlayer[playerNumber - 1];
+        HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
     }
 }
