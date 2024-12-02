@@ -56,7 +56,10 @@ public class HJS_GameMap : MonoBehaviour
         }
     }
 
-    public bool SceneEmpty => selectSceneList.Count >= 1;
+    public bool SceneEmpty()
+    {
+        return selectSceneList.Count >= 1 ? false : true;
+    }
 
     public bool ContainSelectScene(string name) => selectSceneList.Contains(name);
 

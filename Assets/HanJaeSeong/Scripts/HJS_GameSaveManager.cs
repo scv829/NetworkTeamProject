@@ -59,7 +59,16 @@ public class HJS_GameSaveManager : MonoBehaviourPun
         yield return new WaitForSeconds(0.5f);  // 다른 컴퓨터의 성능에 따라 페이드가 진행되는 도중에 이동할 수 있어서 약간의 차이만큼 더 기다리기
 
         Debug.Log(sceneName);
-        PhotonNetwork.LoadLevel(sceneName);    // 씬으로 이동
+
+        if (HJS_GameMap.instance is null || HJS_GameMap.instance.SceneEmpty())
+        {
+            PhotonNetwork.LoadLevel(sceneName);    // 초기 설정한 씬으로 이동
+        }
+        else
+        { 
+            PhotonNetwork.LoadLevel(HJS_GameMap.instance.NextMap());    // 씬으로 이동
+        }
+
     }
 
     [PunRPC]
