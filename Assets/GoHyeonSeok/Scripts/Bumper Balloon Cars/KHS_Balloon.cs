@@ -10,6 +10,10 @@ public class KHS_Balloon : MonoBehaviourPun, IPunObservable
     [SerializeField] private Renderer _renderer;
     public Renderer Renderer { get { return _renderer; } set { _renderer = value; } }
 
+    [SerializeField] private bool _isTouched;
+
+    public bool IsTouched { get { return _isTouched; } set { _isTouched = value; } }
+
     private void Awake()
     {
         Renderer = GetComponent<Renderer>();
@@ -28,16 +32,17 @@ public class KHS_Balloon : MonoBehaviourPun, IPunObservable
 
     private void Start()
     {
-
+        IsTouched = false;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log($"{collision.collider.tag}");
-        if (collision.collider.CompareTag("Player"))    // 카트 앞에 달려있는 가시에 부딪혔을때
+        if (collision.collider.CompareTag("Player") && IsTouched == false)    // 카트 앞에 달려있는 가시에 부딪혔을때
         {
             Debug.Log($"{collision.gameObject.name} 감지됨 !");
             photonView.RPC("KHS_DistroyBallon", RpcTarget.AllBuffered); // RPC
+            IsTouched = true;
         }
     }
 
@@ -65,10 +70,10 @@ public class KHS_Balloon : MonoBehaviourPun, IPunObservable
         _cartController.IsGameOver = true;  // 해당 플레이어가 게임 오버됐음을 알리기 위한 bool변수
         _cartController.gameObject.SetActive(false);    // 해당 플레이어가 게임오버 되었으니 비활성화 진행
 
-        if(photonView.IsMine)
-        {
-            PhotonNetwork.Destroy(gameObject);    // 풍선은 삭제
-        }
+        //if(photonView.IsMine)
+        //{
+        //    PhotonNetwork.Destroy(gameObject);    // 풍선은 삭제
+        //}
 
     }
 
