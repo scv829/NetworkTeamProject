@@ -133,13 +133,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 070ef559525cbd24b9ba8dcc03e5ef0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputManagerScript: {fileID: 0}
   testGameScene: {fileID: 0}
   inputManager: {fileID: 0}
   cartManager: {fileID: 0}
   playerNumber: 0
-  cart: {fileID: 0}
   exitCart: {fileID: 0}
   _curPos: {x: 0, y: 0, z: 0}
-  myNum: 1
   winnerCheck: 1

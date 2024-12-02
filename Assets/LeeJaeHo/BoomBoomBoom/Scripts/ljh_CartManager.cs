@@ -1,16 +1,13 @@
 using Cinemachine;
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ljh_CartManager : MonoBehaviour
+public class ljh_CartManager : MonoBehaviourPun
 {
     public GameObject[] cartArrayEnter;
-    public GameObject cart1Enter;
-    public GameObject cart2Enter;
-    public GameObject cart3Enter;
-    public GameObject cart4Enter;
 
     [SerializeField] public GameObject exitCart;
     [SerializeField] public GameObject player;
@@ -40,6 +37,6 @@ public class ljh_CartManager : MonoBehaviour
         player.transform.position = exitCart.transform.position;
     }
 
-
+    
 }
 
