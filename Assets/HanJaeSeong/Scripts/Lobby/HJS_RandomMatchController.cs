@@ -57,7 +57,8 @@ public class HJS_RandomMatchController : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(MAP_NAME))
         {
-            PlayerNumbering.OnPlayerNumberingChanged -= UpdatePlayers;
+            PlayerNumbering.OnPlayerNumberingChanged -= UpdateRandomPlayers;
+            Debug.Log("RandomMacth의 Start");
             PhotonNetwork.LeaveRoom();
         }
 
@@ -68,21 +69,24 @@ public class HJS_RandomMatchController : MonoBehaviourPunCallbacks
 
     public void StartMatch()
     {
-        PlayerNumbering.OnPlayerNumberingChanged += UpdatePlayers;
+        PlayerNumbering.OnPlayerNumberingChanged += UpdateRandomPlayers;
 
         Debug.Log("StartMatch");
 
         if (PhotonNetwork.InRoom) return;
+
 
         PhotonHastable properties = new PhotonHastable { { MAP_NAME, sceneName } };
 
         // 방 설정
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 2;
-        roomOptions.CustomRoomProperties = new PhotonHastable { { MAP_NAME, sceneName} };
+        roomOptions.CustomRoomProperties = new PhotonHastable { { MAP_NAME, sceneName } };
+        roomOptions.CustomRoomPropertiesForLobby = new string[] { MAP_NAME };
 
         sb.Clear();
         sb.Append($"RandomRoom {DateTime.Now}");
+        Debug.Log("RandomMatchController의 StartMatch");
 
         PhotonNetwork.JoinRandomOrCreateRoom(expectedCustomRoomProperties: properties, roomName: sb.ToString(), roomOptions: roomOptions);
         Debug.Log($"connectRoom {PhotonNetwork.LocalPlayer.NickName}");
@@ -90,7 +94,7 @@ public class HJS_RandomMatchController : MonoBehaviourPunCallbacks
 
     public void StopMatch()
     {
-        PlayerNumbering.OnPlayerNumberingChanged -= UpdatePlayers;
+        PlayerNumbering.OnPlayerNumberingChanged -= UpdateRandomPlayers;
 
         Debug.Log("StopMatch");
         
@@ -98,7 +102,7 @@ public class HJS_RandomMatchController : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
-    private void UpdatePlayers()
+    private void UpdateRandomPlayers()
     {
         // 로딩이 안되어 있으면 넘어가기 금지
         foreach(Player player in PhotonNetwork.PlayerList)
@@ -114,8 +118,8 @@ public class HJS_RandomMatchController : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.CurrentRoom.PlayerCount.Equals(PhotonNetwork.CurrentRoom.MaxPlayers))
         {
-            PlayerNumbering.OnPlayerNumberingChanged -= UpdatePlayers;
-            player.LeaveRoom();
+            PlayerNumbering.OnPlayerNumberingChanged -= UpdateRandomPlayers;
+            player.LeaveScene();
             PhotonNetwork.LoadLevel(sceneName);
         }
     }

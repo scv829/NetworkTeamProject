@@ -1,5 +1,3 @@
-using Photon.Pun;
-using System;
 using System.Text;
 using TMPro;
 using UnityEngine.UI;
@@ -37,6 +35,7 @@ public class HJS_MatchView : HJS_BaseUI
         #region 방 생성 UI
         GetUI("CreateRoomPanel").SetActive(false);
         GetUI<Slider>("PlayerCountSlider").onValueChanged.AddListener(UpdatePlayerCount);
+        GetUI<Button>("CloseJoinRoomButton").onClick.AddListener(CloseCreateRoomPanel);
         #endregion
 
         #region 방 수정 UI
@@ -44,7 +43,6 @@ public class HJS_MatchView : HJS_BaseUI
         GetUI<Button>("EditButton").onClick.AddListener(ShowEditSetting);
         GetUI<Button>("ApplyEditRoomButton").onClick.AddListener(CloseEditSetting);
         GetUI<Button>("CloseEditRoomButton").onClick.AddListener(CloseEditSetting);
-
         #endregion
     }
 
@@ -67,8 +65,13 @@ public class HJS_MatchView : HJS_BaseUI
     }
 
     private void CloseJoinLobbyPanel() => GetUI("JoinLobbyPanel").SetActive(false);
+    private void CloseCreateRoomPanel()
+    {
+        GetUI("CreateRoomPanel").SetActive(false);
+        GetUI("JoinLobbyPanel").SetActive(true);
+    }
 
-    private void UpdatePlayerCount(float value) 
+    private void UpdatePlayerCount(float value)
     {
         sb.Clear();
         int playerCount = (int)value;

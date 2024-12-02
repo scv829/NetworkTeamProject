@@ -30,6 +30,11 @@ public class HJS_GameMap : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        ResetList();
+    }
+
     public string NextMap()
     {
         if(selectSceneList.Count == 0)

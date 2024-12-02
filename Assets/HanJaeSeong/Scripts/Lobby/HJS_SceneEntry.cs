@@ -15,6 +15,7 @@ public class HJS_SceneEntry : MonoBehaviour
     {
         // 정보 설정
         sceneNameText.text = sceneName;
+        ResetSetting();
     }
 
     public void CheckScene()
