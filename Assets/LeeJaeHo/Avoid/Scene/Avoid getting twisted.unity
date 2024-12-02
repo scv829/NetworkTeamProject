@@ -406,7 +406,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 211594295}
   player: {fileID: 7575068342199396208, guid: 318c4d82aec94f942b2cb5c5bc40e804, type: 3}
-  alivePlayer: {fileID: 0}
   scoreText: {fileID: 1295482839}
   myScoreText: {fileID: 1101379017}
   timerText: {fileID: 968717886}
@@ -449,6 +448,67 @@ MonoBehaviour:
   sceneViewId: 6
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!1001 &195076595
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 793839353327308203, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: sceneViewId
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839353327308205, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839353327308205, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839353327308205, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839353327308205, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839353327308205, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839353327308205, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839353327308205, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839353327308205, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839353327308205, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839353327308205, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839353327308205, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839353327308206, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_Name
+      value: GameConnectManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
 --- !u!1 &211594292
 GameObject:
   m_ObjectHideFlags: 0
@@ -482,6 +542,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 0}
   gameManager: {fileID: 211594295}
+  playerList: []
 --- !u!4 &211594294
 Transform:
   m_ObjectHideFlags: 0
@@ -517,9 +578,11 @@ MonoBehaviour:
   - {fileID: 1532210480}
   - {fileID: 258761338}
   stone: {fileID: 0}
+  testScene: {fileID: 211594293}
   playerCount: 0
   readyTimer: 0
   timer: 0
+  _alivePlayer: {fileID: 0}
 --- !u!114 &211594296
 MonoBehaviour:
   m_ObjectHideFlags: 0

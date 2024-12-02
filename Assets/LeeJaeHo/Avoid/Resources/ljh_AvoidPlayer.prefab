@@ -110,7 +110,6 @@ GameObject:
   - component: {fileID: 7099253556105585634}
   - component: {fileID: 7575068342199396208}
   - component: {fileID: 7996549769078944148}
-  - component: {fileID: -5098219934335239977}
   m_Layer: 0
   m_Name: ljh_AvoidPlayer
   m_TagString: Player
@@ -154,7 +153,6 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 7575068342199396208}
-  - {fileID: -5098219934335239977}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -233,22 +231,6 @@ CapsuleCollider:
   m_Height: 1.02
   m_Direction: 1
   m_Center: {x: 0, y: 0.42, z: 0}
---- !u!114 &-5098219934335239977
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7532427953807426678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 0
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &7941928962904230731
 GameObject:
   m_ObjectHideFlags: 0

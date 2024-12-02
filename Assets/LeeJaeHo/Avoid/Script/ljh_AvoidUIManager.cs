@@ -8,7 +8,6 @@ public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] ljh_AvoidGameManager gameManager;
     [SerializeField] ljh_PlayerController player;
-    public ljh_PlayerController alivePlayer;
 
 
     [SerializeField] public TMP_Text scoreText;
@@ -28,8 +27,8 @@ public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
 
     private void Update()
     {
-        if(alivePlayer != null)
-        winnerText.text = $"Winner is {alivePlayer.myName}!!!"; // Todo : 수정해야함
+        if(gameManager._alivePlayer != null)
+        winnerText.text = $"Winner is {gameManager._alivePlayer.myName}!!!"; // Todo : 수정해야함
 
         TextOnOff();
 
@@ -65,7 +64,7 @@ public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
             stream.SendNext(myScoreText.enabled);
             stream.SendNext(timerText.enabled);
             stream.SendNext(winnerText.enabled);
-            stream.SendNext(alivePlayer?.myName);
+            stream.SendNext(gameManager._alivePlayer?.myName);
         }
         else
         {
@@ -73,8 +72,8 @@ public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
             myScoreText.enabled = (bool)stream.ReceiveNext();
             timerText.enabled = (bool)stream.ReceiveNext();
             winnerText.enabled = (bool)stream.ReceiveNext();
-            if(alivePlayer != null)
-            alivePlayer.myName = (string)stream.ReceiveNext();
+            if(gameManager._alivePlayer != null)
+                gameManager._alivePlayer.myName = (string)stream.ReceiveNext();
 
         }
     }
