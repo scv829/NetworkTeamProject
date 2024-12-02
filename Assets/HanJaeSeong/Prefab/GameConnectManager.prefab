@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 793839353327308205}
-  - component: {fileID: 4760626746665050580}
   - component: {fileID: 793839353327308204}
   - component: {fileID: 793839353327308203}
   m_Layer: 0
@@ -35,31 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4760626746665050580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 793839353327308206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3db7e2b7755d0d24eaadd812f51af707, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameInitEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  gameStartEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  isOver: 0
-  playerColors:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 1, g: 1, b: 0, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 0, g: 0, b: 1, a: 1}
-  fadeController: {fileID: 793839354760725600}
 --- !u!114 &793839353327308204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

@@ -284,7 +284,9 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
     private void ResultGame()
     {
         Debug.Log($"승자는 {FindWinnerHeyHo()} 번 플레이어 입니다!");
-        _uiManager.OnWinner(CurPhotonPlayer[FindWinnerHeyHo() - 1].NickName); // UI매니저 속 함수를 사용해서 화면 출력
+        Player winner = CurPhotonPlayer[FindWinnerHeyHo() - 1];
+        _uiManager.OnWinner(winner.NickName); // UI매니저 속 함수를 사용해서 화면 출력
+        HJS_GameSaveManager.Instance.GameOver(new Player[] { winner} );
     }
 
     [PunRPC]

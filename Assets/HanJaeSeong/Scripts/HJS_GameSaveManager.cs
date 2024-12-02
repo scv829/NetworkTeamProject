@@ -51,12 +51,14 @@ public class HJS_GameSaveManager : MonoBehaviourPun
     private IEnumerator ChangeSceneRoutine()
     {
         // 페이드 역할이 모두 끝났을 때 
+        Debug.Log("페이드 역할 끝남");
         yield return new WaitUntil(() => {
             return fadeController.isFadeOver.Equals(true);
         });
-
+        Debug.Log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         yield return new WaitForSeconds(0.5f);  // 다른 컴퓨터의 성능에 따라 페이드가 진행되는 도중에 이동할 수 있어서 약간의 차이만큼 더 기다리기
 
+        Debug.Log(sceneName);
         PhotonNetwork.LoadLevel(sceneName);    // 씬으로 이동
     }
 
