@@ -3,6 +3,7 @@ using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
 using Fusion;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -32,7 +33,7 @@ public class HJS_FusionPlayerController : NetworkBehaviour
        if(HasStateAuthority)
        {
             camera.Priority = 15;
-            name = HJS_FirebaseManager.Auth.CurrentUser.DisplayName;
+            name = PhotonNetwork.LocalPlayer.NickName;
        }
        nickname.text = name;
     }

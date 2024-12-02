@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4921620440040726721}
   - component: {fileID: 2010898695939053378}
   - component: {fileID: 2162424946647198433}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3431909137320756537}
   m_LocalRotation: {x: 0, y: 0.0000000851577, z: 0.0000000104981055, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: -3}
+  m_LocalPosition: {x: 0, y: 2.2222223, z: -3.3333335}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 1479106699572658088}
   - component: {fileID: 124573205194739514}
   - component: {fileID: 3365124041909909757}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: BackCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,7 +328,7 @@ GameObject:
   - component: {fileID: 2969114034743334540}
   - component: {fileID: 4702159364162230253}
   - component: {fileID: 6367900080991099475}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -634,7 +634,7 @@ GameObject:
   - component: {fileID: 1767809609632589551}
   - component: {fileID: -3876833634329790059}
   - component: {fileID: 1591876897780073320}
-  - component: {fileID: 6554549135634376671}
+  - component: {fileID: 3753356025077916975}
   m_Layer: 0
   m_Name: TestPlayer
   m_TagString: Player
@@ -651,8 +651,8 @@ Transform:
   m_GameObject: {fileID: 7733295017122051536}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7733295015662218683}
   - {fileID: 2209756352647815458}
@@ -690,7 +690,7 @@ CharacterController:
   serializedVersion: 2
   m_Height: 2
   m_Radius: 0.5
-  m_SlopeLimit: 45
+  m_SlopeLimit: 0
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
@@ -730,22 +730,28 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 8493851079376406228}
   - {fileID: -3876833634329790059}
---- !u!54 &6554549135634376671
-Rigidbody:
+--- !u!195 &3753356025077916975
+NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7733295017122051536}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 0
 --- !u!1 &8273193302444985286
 GameObject:
   m_ObjectHideFlags: 0
@@ -757,7 +763,7 @@ GameObject:
   - component: {fileID: 1930721269566992951}
   - component: {fileID: 1783414273862405375}
   - component: {fileID: 577582757866762760}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -834,7 +840,7 @@ GameObject:
   - component: {fileID: 992214304785760371}
   - component: {fileID: 7927848716106775534}
   - component: {fileID: 8762085051475851318}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: FrontCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
