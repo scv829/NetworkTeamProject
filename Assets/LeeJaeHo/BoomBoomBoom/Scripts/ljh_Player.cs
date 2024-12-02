@@ -44,7 +44,7 @@ public class ljh_Player : MonoBehaviourPun
 
         _curPos = testGameScene.playerPos;
         winnerCheck = false;
-
+        exitCart = ljh_GameManager.instance.cartManagerEnter.exitCart;
 
     }
 
@@ -61,6 +61,12 @@ public class ljh_Player : MonoBehaviourPun
         {
             transform.position = testGameScene.cartArray[testGameScene.index].transform.position;
         }
+
+        if(ljh_GameManager.instance.curState == State.end)
+        {
+            transform.position = exitCart.transform.position;
+        }
+
 
         if ((int)ljh_GameManager.instance.myTurn == (int)this.playerNumber)
         {
@@ -115,7 +121,8 @@ public class ljh_Player : MonoBehaviourPun
                 break;
 
             case State.end:
-                ExitCart();
+                //ExitCart();
+                cartManager.GetComponent<ljh_CartManager>().CartMoveExit();
 
                 break;
 
@@ -143,7 +150,6 @@ public class ljh_Player : MonoBehaviourPun
         ljh_BoomTestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_BoomTestGameScene>();
         GameObject player = testGameScene.player;
 
-        exitCart = ljh_GameManager.instance.cartManagerEnter.exitCart;
 
         player.transform.parent = exitCart.transform;
 

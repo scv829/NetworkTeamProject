@@ -1,10 +1,11 @@
 using Cinemachine;
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ljh_CartManager : MonoBehaviour
+public class ljh_CartManager : MonoBehaviourPun, IPunObservable
 {
     public GameObject[] cartArrayEnter;
     public GameObject cart1Enter;
@@ -40,6 +41,16 @@ public class ljh_CartManager : MonoBehaviour
         player.transform.position = exitCart.transform.position;
     }
 
-
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+           // stream.SendNext(transform.position);
+        }
+        else
+        {
+           // transform.position = (Vector3)stream.ReceiveNext();
+        }
+    }
 }
 
