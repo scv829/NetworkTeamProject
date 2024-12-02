@@ -53,7 +53,8 @@ MonoBehaviour:
   playerCurMoveSpeed: 0
   playerAnimator: {fileID: 8821632217984054836}
   touchArea: {fileID: 5561855913762163665}
-  playerRigidBody: {fileID: 0}
+  bodyRenderer: {fileID: 8821632217988286708}
+  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &170888761100956051
 MonoBehaviour:
   m_ObjectHideFlags: 0

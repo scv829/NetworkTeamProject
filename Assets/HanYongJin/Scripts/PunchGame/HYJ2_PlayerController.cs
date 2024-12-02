@@ -10,11 +10,21 @@ public class HYJ2_PlayerController : MonoBehaviourPun
     [SerializeField] float playerCurMoveSpeed; // 플레이어의 현재 이동속도
     [SerializeField] Animator playerAnimator;
     [SerializeField] BoxCollider touchArea;
-    [SerializeField] Rigidbody playerRigidBody;
+    
 
+    //색상
+    [SerializeField] Renderer bodyRenderer;
+    [SerializeField] Color color;
 
     private Vector3 lastPosition; // 플레이어의 이전 지점 > 현재 이동속도를 구하기 위한 변수
     private bool isAttack = false; // 플레이어 공격 판별 변수
+
+    private void Start()
+    {
+        Vector3 vectorColor = photonView.Owner.GetPlayerColor();
+        color.r = vectorColor.x; color.g = vectorColor.y; color.b = vectorColor.z;
+        bodyRenderer.material.color = color;
+    }
 
     private void Update()
     {
