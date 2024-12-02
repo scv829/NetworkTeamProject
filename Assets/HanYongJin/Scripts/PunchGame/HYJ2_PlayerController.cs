@@ -44,32 +44,12 @@ public class HYJ2_PlayerController : MonoBehaviourPun
         }
     }
 
-    private void FixedUpdate()
-    {
-        //PlayerRunningAnimator();
-    }
-
-    private void PlayerRunningAnimator() // 플레이어의 속도에 따라 애니메이션 실행
-    {
-        playerCurMoveSpeed = GetPlayerSpeed(); // 플레이어의 현재 속도
-        if (playerCurMoveSpeed > 0)
-        {
-            playerAnimator.SetBool("isRunning", true);
-        }
-        else if (playerCurMoveSpeed <= 0)
-        {
-            playerAnimator.SetBool("isRunning", false);
-        }
-    }
-
     private void Move() // 플레이어 이동
     {
-        
         //position 기반 이동
         Vector3 moveDir = Vector3.zero;
         moveDir.x = Input.GetAxisRaw("Horizontal");
         moveDir.z = Input.GetAxisRaw("Vertical");
-        
 
         if (moveDir == Vector3.zero)
         {
@@ -79,19 +59,6 @@ public class HYJ2_PlayerController : MonoBehaviourPun
         playerAnimator.SetBool("isRunning", true);
         transform.Translate(moveDir.normalized * moveSpeed * Time.deltaTime, Space.World);
         transform.forward = moveDir.normalized;
-        
-
-        //RigidBody 기반 이동
-
-    }
-
-
-    float GetPlayerSpeed() // 플레이어의 현재 이동 속도
-    {
-        float speed = (((transform.position-lastPosition).magnitude)/Time.deltaTime);
-        lastPosition = transform.position;
-
-        return speed;
     }
 
     IEnumerator PlayerTouch() // 플레이어 터치 애니메이션 플레이 & 기능

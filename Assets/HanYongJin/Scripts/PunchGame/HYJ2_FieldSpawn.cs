@@ -12,8 +12,13 @@ public class HYJ2_FieldSpawn : MonoBehaviourPun
     {
         Vector3 spawnPoint = SetPosition();
         GameObject Field = PhotonNetwork.Instantiate("HYJ2_GameObject/HYJ2_Field",spawnPoint,Quaternion.identity);
-        //TODO : 플레이어 스폰
+        //if (photonView.IsMine == false) return;
+        //GameObject.FindWithTag("GameController").GetComponent<HYJ2_GameScene>().HYJ2_FieldSpawn = Field;
+
+        // 플레이어 스폰
         HYJ2_PlayerSpawn.GetComponent<HYJ2_PlayerSpawn>().PlayerSpawn(spawnPoint);
+
+        HYJ2_ObjectManager = Field.GetComponentInChildren<HYJ2_ObjectManager>();
     }
 
     public Vector3 SetPosition()
@@ -34,7 +39,6 @@ public class HYJ2_FieldSpawn : MonoBehaviourPun
 
     public void ObjectManagerOn()
     {
-        // TODO : 생성된 필드의 오브젝트의 컴포넌트 접근하기
-        HYJ2_ObjectManager.GetComponent<HYJ2_ObjectManager>().ManagerOn();
+        HYJ2_ObjectManager.GetComponentInChildren<HYJ2_ObjectManager>().ManagerOn();
     }
 }

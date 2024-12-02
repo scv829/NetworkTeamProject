@@ -11,7 +11,7 @@ public class HYJ2_ObjectManager : MonoBehaviour
     [SerializeField] TMP_Text fieldUIText;
     [SerializeField] int[] playerRanks;
 
-    private bool isStart = true;
+    private bool isStart = false;
     private bool isLighting = false;
     private bool isEnding = false;
     private int lightScoreCount = 0;

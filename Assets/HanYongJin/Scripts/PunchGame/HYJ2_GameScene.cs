@@ -69,12 +69,14 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
         Debug.Log("필드 스폰");
         HYJ2_FieldSpawn.gameObject.GetComponent<HYJ2_FieldSpawn>().FieldSpawn();
         gameUIText.text = "Punch! with Spacebar";
+
         yield return new WaitForSeconds(1f);
         gameUIText.gameObject.SetActive(false);
         // 중앙의 카메라를 필드에서 각 플레이어의 필드로 줌
         CameraMove();
         
         // 게임 시작
+
         HYJ2_FieldSpawn.gameObject.GetComponent<HYJ2_FieldSpawn>().ObjectManagerOn();
     }
 
