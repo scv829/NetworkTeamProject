@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
@@ -14,18 +15,18 @@ public class HYJ2_ObjectManager : MonoBehaviour
     [SerializeField] private bool isStart = false;
     private bool isLighting = false;
     private bool isEnding = false;
-    [SerializeField] int lightScoreCount = 0;
-
-    
+    [SerializeField] int lightScoreCount = 0;    
 
     private void Update()
     {
-        if(lightScoreCount == 20 && !isEnding)
+        if(lightScoreCount == 3 && !isEnding)
         {
             isEnding = true;
             isStart = false;
-            GameObject mainCamera = GameObject.FindWithTag("MainCamera");
-            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(0,35,0), 25f);
+            //GameObject mainCamera = GameObject.FindWithTag("MainCamera");
+            //mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(0,35,0), 25f);
+            
+            GameObject.FindWithTag("GameController").GetComponent<HYJ2_GameScene>().GameEnd(PhotonNetwork.LocalPlayer.ActorNumber);
         }
 
         if (isStart)
