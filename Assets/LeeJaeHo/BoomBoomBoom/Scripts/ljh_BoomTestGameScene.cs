@@ -70,7 +70,7 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
         playerColor3 = new (0, 1, 0);
         playerColor4 = new (0, 0, 0);
 
-        PhotonNetwork.LocalPlayer.NickName = $"Player{Random.Range(0000,9999)}"; // 이거 지우고
+        //PhotonNetwork.LocalPlayer.NickName = $"Player{Random.Range(0000,9999)}"; // 이거 지우고
         //PhotonNetwork.ConnectUsingSettings(); // 이거 지우고
 
         PhotonNetwork.LocalPlayer.SetLoad(true);
@@ -144,13 +144,14 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
 
     private void PlayerSpawn()
     {
+        
         index = PhotonNetwork.LocalPlayer.ActorNumber - 1;
         vectorPlayerSpawn = new Vector3[] { playerPos1, playerPos2, playerPos3, playerPos4};
 
         playerPos = new Vector3(vectorPlayerSpawn[index].x, 0, vectorPlayerSpawn[index].z);
         player = PhotonNetwork.Instantiate("ljh_Player", playerPos, Quaternion.identity);
         player.GetComponent<ljh_Player>().playerNumber = (PlayerNumber)index;
-        
+        Debug.Log(player.GetComponent<ljh_Player>().playerNumber);
 
         Color[] vectorColor = { playerColor1, playerColor2, playerColor3, playerColor4 };
         playerColor = new Color(vectorColor[index].r, vectorColor[index].g, vectorColor[index].b, 1);

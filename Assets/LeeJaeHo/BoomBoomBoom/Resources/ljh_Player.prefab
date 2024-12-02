@@ -142,4 +142,4 @@ MonoBehaviour:
   exitCart: {fileID: 0}
   _curPos: {x: 0, y: 0, z: 0}
   myNum: 1
-  i: 1
+  winnerCheck: 1
