@@ -11,10 +11,10 @@ public class HYJ2_ObjectManager : MonoBehaviour
     [SerializeField] TMP_Text fieldUIText;
     [SerializeField] int[] playerRanks;
 
-    private bool isStart = false;
+    [SerializeField] private bool isStart = false;
     private bool isLighting = false;
     private bool isEnding = false;
-    private int lightScoreCount = 0;
+    [SerializeField] int lightScoreCount = 0;
 
     
 
@@ -53,7 +53,6 @@ public class HYJ2_ObjectManager : MonoBehaviour
     public void ManagerOn()
     {
         StartCoroutine(StartCountAndUI());
-        isStart = true;
     }
 
     IEnumerator StartCountAndUI()
@@ -71,5 +70,6 @@ public class HYJ2_ObjectManager : MonoBehaviour
         fieldUIText.text = "Start!";
         yield return new WaitForSeconds(0.2f);
         fieldUIText.gameObject.SetActive(false);
+        isStart = true;
     }
 }

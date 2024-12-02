@@ -76,6 +76,7 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
         CameraMove();
         
         // 게임 시작
+        
 
         HYJ2_FieldSpawn.gameObject.GetComponent<HYJ2_FieldSpawn>().ObjectManagerOn();
     }

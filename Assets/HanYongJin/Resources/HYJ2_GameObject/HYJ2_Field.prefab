@@ -569,7 +569,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectManager: {fileID: 7347412335744653307}
-  light: {fileID: 7347412336246293016}
+  light: {fileID: 7156511855451438978}
 --- !u!1 &663400497353226074
 GameObject:
   m_ObjectHideFlags: 0
@@ -1931,6 +1931,7 @@ MonoBehaviour:
   - {fileID: 7347412335470280226}
   fieldUIText: {fileID: 8489090777158981305}
   playerRanks: 
+  lightScoreCount: 0
 --- !u!1 &7347412335848191728
 GameObject:
   m_ObjectHideFlags: 0
