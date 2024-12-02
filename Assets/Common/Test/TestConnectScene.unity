@@ -1550,11 +1550,12 @@ MonoBehaviour:
   startButton: {fileID: 1325996720}
   sceneNames:
   - Mecha Marathon
-  - Minigame_LJH
+  - BoomBoomBoom
   - HYJ_SmashGame
   - HJS_HeartScene
   - Bumper Balloon Cars
   - HYJ_PunchGame
+  - Avoid getting twisted
   sceneSelectCanvas: {fileID: 708314450}
   selectContent: {fileID: 1733709591}
   sceneEntryPrefab: {fileID: 3251164917335118900, guid: a1db4210204cf35448523771ddb319bd, type: 3}
@@ -2269,7 +2270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05c6d2ac6fedb404d86f21d7e0575b00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userId: 2
+  userId: 1
 --- !u!1 &960914922
 GameObject:
   m_ObjectHideFlags: 0

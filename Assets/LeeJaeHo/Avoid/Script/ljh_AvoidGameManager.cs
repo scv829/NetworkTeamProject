@@ -176,9 +176,11 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
 
     public void EndPhase()
     {
-        Player winner = uiManager.alivePlayer.GetComponent<Player>();
-        HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
-        
+        if (uiManager.alivePlayer != null)
+        {
+            Player winner = uiManager.alivePlayer.GetComponent<Player>();
+            HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
+        }
         // Todo: 게임 끝 살아남은 사람 줌인 / 우선순위 낮음
         // Todo: 시간 비례해서 순위
     }
