@@ -20,6 +20,11 @@ public class HJS_RandomMatchController : MonoBehaviourPunCallbacks
     [Header("ConnectPlayer")]
     [SerializeField] HJS_FusionPlayerController player;
 
+    [Header("SceneName")]
+    [SerializeField] string sceneName;
+
+
+    private const string MAP_NAME = "mn";
     private StringBuilder sb = new StringBuilder();
 
     private void OnTriggerEnter(Collider other)
@@ -67,13 +72,17 @@ public class HJS_RandomMatchController : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.InRoom) return;
 
+        PhotonHastable properties = new PhotonHastable { { MAP_NAME, sceneName } };
+
+        // 방 설정
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 2;
+        roomOptions.CustomRoomProperties = new PhotonHastable { { MAP_NAME, sceneName} };
 
         sb.Clear();
-        sb.Append($"HJS_Room {Random.Range(1000,10000)}");
+        sb.Append($"RandomRoom {DateTime.Now}");
 
-        PhotonNetwork.JoinOrCreateRoom("Hjs_ROom", roomOptions, TypedLobby.Default);
+        PhotonNetwork.JoinRandomOrCreateRoom(expectedCustomRoomProperties: properties, roomName: sb.ToString(), roomOptions: roomOptions);
         Debug.Log($"connectRoom {PhotonNetwork.LocalPlayer.NickName}");
     }
 
@@ -105,7 +114,7 @@ public class HJS_RandomMatchController : MonoBehaviourPunCallbacks
         {
             PlayerNumbering.OnPlayerNumberingChanged -= UpdatePlayers;
             player.LeaveRoom();
-            PhotonNetwork.LoadLevel("HJS_HeartScene");
+            PhotonNetwork.LoadLevel(sceneName);
         }
     }
     
