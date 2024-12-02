@@ -1,10 +1,13 @@
 using Photon.Pun;
+using System;
 using System.Text;
 using TMPro;
 using UnityEngine.UI;
 
 public class HJS_MatchView : HJS_BaseUI
 {
+
+    private StringBuilder sb = new StringBuilder();
 
     private void Awake()
     {
@@ -22,6 +25,27 @@ public class HJS_MatchView : HJS_BaseUI
         GetUI<Button>("RandomMatchStopButton").onClick.AddListener(HideRandomMatchStopUI);
         GetUI<Button>("RandomMatchCloseButton").onClick.AddListener(CloseRandomMatchPanel);
         #endregion
+
+        #region 방 참가 UI
+        // 일단 화면을 비활성화
+        GetUI("JoinLobbyPanel").SetActive(false);
+        // 이벤트 메소드 연결
+        GetUI<Button>("JoinLobbyCloseButton").onClick.AddListener(CloseJoinLobbyPanel);
+        GetUI<Button>("ShowCreateJoinRoomPanelButton").onClick.AddListener(ShowCreateRoomPanel);
+        #endregion
+
+        #region 방 생성 UI
+        GetUI("CreateRoomPanel").SetActive(false);
+        GetUI<Slider>("PlayerCountSlider").onValueChanged.AddListener(UpdatePlayerCount);
+        #endregion
+
+        #region 방 수정 UI
+        GetUI("CreateRoomPanel").SetActive(false);
+        GetUI<Button>("EditButton").onClick.AddListener(ShowEditSetting);
+        GetUI<Button>("ApplyEditRoomButton").onClick.AddListener(CloseEditSetting);
+        GetUI<Button>("CloseEditRoomButton").onClick.AddListener(CloseEditSetting);
+
+        #endregion
     }
 
     private void ShowRandomMatchStopUI()
@@ -36,4 +60,36 @@ public class HJS_MatchView : HJS_BaseUI
     }
     private void CloseRandomMatchPanel() => GetUI("RandomMatchPanel").SetActive(false);
 
+    private void ShowCreateRoomPanel()
+    {
+        GetUI("JoinLobbyPanel").SetActive(false);
+        GetUI("CreateRoomPanel").SetActive(true);
+    }
+
+    private void CloseJoinLobbyPanel() => GetUI("JoinLobbyPanel").SetActive(false);
+
+    private void UpdatePlayerCount(float value) 
+    {
+        sb.Clear();
+        int playerCount = (int)value;
+        sb.Append($"Player: {playerCount}");
+        GetUI<TMP_Text>("PlayerCount").SetText(sb);
+    }
+
+    private void ShowEditSetting()
+    {
+        GetUI<TMP_InputField>("RoomNameInputField").interactable = false;
+        GetUI("CloseEditRoomButton").SetActive(true);
+        GetUI("ApplyEditRoomButton").SetActive(true);
+        GetUI("CreateRoomPanel").SetActive(true);
+        GetUI("JoinRoomPanel").SetActive(false);
+    }
+    private void CloseEditSetting()
+    {
+        GetUI<TMP_InputField>("RoomNameInputField").interactable = true;
+        GetUI("CloseEditRoomButton").SetActive(false);
+        GetUI("ApplyEditRoomButton").SetActive(false);
+        GetUI("CreateRoomPanel").SetActive(false);
+        GetUI("JoinRoomPanel").SetActive(true);
+    }
 }
