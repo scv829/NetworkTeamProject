@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -20,7 +21,7 @@ public enum MyTurn
     player3,
     player4
 };
-public class ljh_GameManager : MonoBehaviourPun, IPunObservable
+public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
 {
     [SerializeField] public ljh_Boom bomb;
     [SerializeField] public ljh_UIManager uiManager;
@@ -205,6 +206,12 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
         door.transform.rotation = Quaternion.Euler(0, 90, 0);
         sunLight.transform.rotation = Quaternion.Euler(130, 48, 0);
         cartManagerEnter.CartMoveExit();
+
+        if (player.GetComponent<ljh_Player>().winnerCheck)
+        {
+            Player winner = player.GetComponent<Player>();
+            HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
+        }
     }
 
     [PunRPC]

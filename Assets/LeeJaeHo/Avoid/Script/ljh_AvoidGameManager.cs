@@ -1,8 +1,10 @@
 using Photon.Pun;
 using Photon.Pun.Demo.Cockpit;
 using Photon.Pun.Demo.PunBasics;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -174,8 +176,9 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
 
     public void EndPhase()
     {
-        //StopCoroutine(attackRoutine);
-
+        Player winner = uiManager.alivePlayer.GetComponent<Player>();
+        HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
+        
         // Todo: 게임 끝 살아남은 사람 줌인 / 우선순위 낮음
         // Todo: 시간 비례해서 순위
     }

@@ -38,6 +38,7 @@ public class ljh_CartManager : MonoBehaviour
     {
         exitCart.GetComponent<CinemachineDollyCart>().enabled = true;
         player.transform.position = exitCart.transform.position;
+        player.GetComponent<ljh_Player>().winnerCheck = true;
     }
 
 
