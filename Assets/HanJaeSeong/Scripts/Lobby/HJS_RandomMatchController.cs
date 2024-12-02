@@ -55,9 +55,11 @@ public class HJS_RandomMatchController : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        // 플레이어 넘버링 체인지는 어디서 호출하는게 좋냐
-        // 시작 패널이 활성화 되었을 때가 좋다
-        // 그럼 거기에 넣는게 좋지 않냐? 그게 추가하는 시점이다
+        if (PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(MAP_NAME))
+        {
+            PlayerNumbering.OnPlayerNumberingChanged -= UpdatePlayers;
+            PhotonNetwork.LeaveRoom();
+        }
 
         // 버튼에 이벤트를 연결
         matchView.GetUI<Button>("RandomMatchStartButton").onClick.AddListener(StartMatch);
