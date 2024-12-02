@@ -24,7 +24,6 @@ public enum MyTurn
 };
 public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
 {
-    [SerializeField] public ljh_Boom bomb;
     [SerializeField] public ljh_UIManager uiManager;
     [SerializeField] public ljh_InputManager inputManager;
     [SerializeField] public ljh_Player player;
@@ -36,15 +35,11 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
     public int deathCount = 0;
     public int defaultIndex;
     public int minus;
-    [SerializeField] public int index;
 
 
     [SerializeField] public State curState;
 
-    [SerializeField] public GameObject Player3;
-
     [Header("기타 오브젝트")]
-    [SerializeField] public GameObject boom;
     [SerializeField] public GameObject door;
     [SerializeField] public GameObject sunLight;
 

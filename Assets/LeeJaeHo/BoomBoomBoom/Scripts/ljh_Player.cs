@@ -17,21 +17,15 @@ public enum PlayerNumber
 };
 public class ljh_Player : MonoBehaviourPun
 {
-    //[SerializeField] ljh_InputManager inputManagerScript;
-    [SerializeField] ljh_InputManager inputManagerScript;
     [SerializeField] ljh_BoomTestGameScene testGameScene;
     [SerializeField] GameObject inputManager;
     [SerializeField] GameObject cartManager;
 
-    GameObject[] buttonPos;
     public PlayerNumber playerNumber;
-
-    [SerializeField] GameObject cart;
 
     [SerializeField] GameObject exitCart;
 
     public Vector3 _curPos;
-    public int myNum;
 
     public bool winnerCheck;
 
@@ -57,7 +51,7 @@ public class ljh_Player : MonoBehaviourPun
             return;
 
 
-        if(ljh_GameManager.instance.curState != State.choice && ljh_GameManager.instance.curState != State.end)
+        if(ljh_GameManager.instance.curState == State.idle || ljh_GameManager.instance.curState == State.enter)
         {
             transform.position = testGameScene.cartArray[testGameScene.index].transform.position;
         }
@@ -76,27 +70,13 @@ public class ljh_Player : MonoBehaviourPun
             }
         }
 
-        //MoveOtherPlayer(); 이따지우셈
-
         if ((int)playerNumber == (int)ljh_GameManager.instance.myTurn)
         {
             PlayingPlayer();
         }
     }
 
-    void MoveOtherPlayer()
-    {
-        photonView.RPC("RPCMOP", RpcTarget.AllViaServer);
-    }
-
-    [PunRPC]
-    void RPCMOP()
-    {
-        if ((int)ljh_GameManager.instance.myTurn != (int)this.playerNumber)
-        {
-            transform.position = testGameScene.vectorPlayerSpawn[testGameScene.index];
-        }
-    }
+    
 
     public void PlayingPlayer()
     {
@@ -132,7 +112,6 @@ public class ljh_Player : MonoBehaviourPun
     public void MovePlayer(Vector3 vector)
     {
         transform.position = vector;
-        Debug.Log($"플레이어 이름 {transform.gameObject.name}");
     }
 
 
@@ -145,16 +124,6 @@ public class ljh_Player : MonoBehaviourPun
 
     }
 
-    public void ExitCart()
-    {
-        ljh_BoomTestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_BoomTestGameScene>();
-        GameObject player = testGameScene.player;
-
-
-        player.transform.parent = exitCart.transform;
-
-        exitCart.GetComponent<CinemachineDollyCart>().enabled = true;
-    }
 
 
     public void PlayerDied()
@@ -169,5 +138,9 @@ public class ljh_Player : MonoBehaviourPun
         inputManager.GetComponent<ljh_InputManager>().ChoiceAnswer().SetActive(false);
 
     }
+
+    
+
+
 
 }

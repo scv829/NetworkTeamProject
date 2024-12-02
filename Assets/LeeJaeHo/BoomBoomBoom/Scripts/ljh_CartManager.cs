@@ -5,13 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ljh_CartManager : MonoBehaviourPun, IPunObservable
+public class ljh_CartManager : MonoBehaviourPun
 {
     public GameObject[] cartArrayEnter;
-    public GameObject cart1Enter;
-    public GameObject cart2Enter;
-    public GameObject cart3Enter;
-    public GameObject cart4Enter;
 
     [SerializeField] public GameObject exitCart;
     [SerializeField] public GameObject player;
@@ -41,16 +37,6 @@ public class ljh_CartManager : MonoBehaviourPun, IPunObservable
         player.transform.position = exitCart.transform.position;
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-           // stream.SendNext(transform.position);
-        }
-        else
-        {
-           // transform.position = (Vector3)stream.ReceiveNext();
-        }
-    }
+    
 }
 

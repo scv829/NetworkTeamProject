@@ -7,14 +7,6 @@ public class ljh_Button : MonoBehaviourPun
 {
     public bool WinButton;
 
-    public ljh_ButtonParent buttonParent;
-
-    [SerializeField] ljh_Boom Bomb;
-    [SerializeField] GameObject inputManager;
-    [SerializeField] GameObject myPos;
-
-
-
     public void PushedButton(ljh_Button button)
     {
         button.transform.position = button.transform.position + new Vector3(0, 1, 0);

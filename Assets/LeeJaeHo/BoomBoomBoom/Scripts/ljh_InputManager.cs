@@ -16,20 +16,10 @@ public class ljh_InputManager : MonoBehaviourPun
     int curUserNum;
 
     [SerializeField] ljh_SpotLight _spotlight;
-    [SerializeField] ljh_UIManager uiManager;
-    [SerializeField] ljh_CartManager cartManager;
     [SerializeField] ljh_ButtonParent buttonParent;
 
     [SerializeField] GameObject player;
-    [SerializeField] List<GameObject> players;
-    [SerializeField] GameObject button;
-    [SerializeField] GameObject spotlight;
 
-    [Header("유저가 서는 자리 좌표")]
-    [SerializeField] public Vector3 Pos1;
-    [SerializeField] public Vector3 Pos2;
-    [SerializeField] public Vector3 Pos3;
-    [SerializeField] public Vector3 Pos4;
 
     [Header("n명 남은 상황의 버튼 부모 오브젝트")]
     [SerializeField] GameObject buttonParents;
@@ -99,15 +89,6 @@ public class ljh_InputManager : MonoBehaviourPun
 
     }
 
-    public void DeletePos()
-    {
-        Array.Clear(buttonParents.GetComponent<ljh_ButtonParent>().buttonArray, 0, 1);
-        Array.Clear(posParents.GetComponent<ljh_PosParent>().posArray, 0, 1);
-    }
-
-    
-
-    
 
     public void SelectButton(Vector3 curPos)
     {
