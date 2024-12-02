@@ -30,7 +30,7 @@ public class ljh_CartManager : MonoBehaviour
         int index = testGameScene.index;
 
         cartArrayEnter[index].GetComponent<CinemachineDollyCart>().m_Position = 0;
-        cartArrayEnter[index].GetComponent<CinemachineDollyCart>().gameObject.SetActive(false);
+        cartArrayEnter[index].GetComponent<CinemachineDollyCart>().enabled = false;
         
     }
 
@@ -38,7 +38,6 @@ public class ljh_CartManager : MonoBehaviour
     {
         exitCart.GetComponent<CinemachineDollyCart>().enabled = true;
         player.transform.position = exitCart.transform.position;
-        player.GetComponent<ljh_Player>().winnerCheck = true;
     }
 
 

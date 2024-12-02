@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.Demo.Cockpit;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -59,6 +60,9 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     Coroutine turnCoroutine;
 
+    Player[] curPhotonList;
+    bool end;
+
     private void Awake()
     {
         if (instance == null)
@@ -67,19 +71,22 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
         else if (instance != this)
             Destroy(gameObject);
 
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
         curUserNum = 4; // ToDo : 테스트용도로 4로 둔 상태 추후에 0으로 교체 및 테스트게임신에서 주석 해제
 
         if (curState != State.idle)
             curState = State.idle;
 
-        
+
 
     }
 
     private void Start()
     {
+        end = false;
+        curPhotonList = PhotonNetwork.PlayerList;
+
         UserNumCalculate(curUserNum - deathCount);
 
 
@@ -88,7 +95,7 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
             for (int i = 0; i < scene.playerArray.Length - 1; i++)
             {
                 scene.playerArray[i].GetComponent<ljh_Player>().playerNumber = (PlayerNumber)i;
-                
+
                 // 인트인 리스트에 
             }
         }
@@ -105,9 +112,9 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Update()
     {
-            Playing();
-        
-        
+        Playing();
+
+
 
     }
     public void UserNumCalculate(int curUserNum)
@@ -147,24 +154,21 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
         switch (curState)
         {
             case State.idle:
-                //uiManager.ShowUiIdle();
                 inputManager.FindPlayer(player.gameObject);
                 playingCheck = true;
                 break;
 
             case State.enter:
-                //uiManager.ShowUiEnterMove();
                 posManager.EndPoint();
                 break;
 
             case State.choice:
-                //uiManager.ShowUiChoice();
-                cartManagerEnter.CartReset();
+                if ((int)ljh_GameManager.instance.myTurn == (int)this.playerNumber)
+                    cartManagerEnter.CartReset();
 
                 break;
 
             case State.die:
-                //uiManager.ShowUiExitMove();
                 if (playingCheck)
                 {
                     photonView.RPC("RPCNextTurn", RpcTarget.All);
@@ -173,14 +177,15 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
                 break;
 
             case State.end:
-                GameEnd();
+                if (!end)
+                    GameEnd();
                 break;
 
         }
         return;
     }
 
-    
+
 
     public void MoveStart()
     {
@@ -203,15 +208,17 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     public void GameEnd()
     {
+        end = true;
         door.transform.rotation = Quaternion.Euler(0, 90, 0);
         sunLight.transform.rotation = Quaternion.Euler(130, 48, 0);
         cartManagerEnter.CartMoveExit();
 
-        if (player.GetComponent<ljh_Player>().winnerCheck)
-        {
-            Player winner = player.GetComponent<Player>();
-            HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
-        }
+        Debug.Log(curPhotonList[(int)myTurn].NickName);
+
+        Player winner = curPhotonList[(int)myTurn];
+        HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
+
+
     }
 
     [PunRPC]
@@ -228,12 +235,12 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
                 myTurn = MyTurn.player3;
                 curState = State.idle;
                 break;
-           
+
             case MyTurn.player3:
                 myTurn = MyTurn.player4;
                 curState = State.idle;
                 break;
-           
+
         }
     }
 

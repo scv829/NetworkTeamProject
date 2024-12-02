@@ -40,6 +40,7 @@ public class ljh_ButtonParent : MonoBehaviourPun
         {
             // Comment : 생존
             bomb.NoBoom();
+            player.GetComponent<ljh_Player>().winnerCheck = true;
             ljh_GameManager.instance.curState = State.end;
 
         }

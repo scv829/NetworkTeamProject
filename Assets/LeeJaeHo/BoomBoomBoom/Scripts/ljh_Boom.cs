@@ -50,10 +50,6 @@ public class ljh_Boom : MonoBehaviourPun
     public void NoBoomRPC()
     {
         bomb.SetActive(false);
-        // 사운드
-        // 터지는 효과
-        // 플레이어 탈락
-        Invoke("BoomReset", 1f);
     }
 
     
