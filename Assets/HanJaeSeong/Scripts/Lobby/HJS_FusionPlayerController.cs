@@ -34,7 +34,8 @@ public class HJS_FusionPlayerController : NetworkBehaviour
        {
             camera.Priority = 15;
             name = PhotonNetwork.LocalPlayer.NickName;
-       }
+            gameObject.GetComponent<NetworkTransform>().Teleport(HJS_PlayerPosition.Instance.PlayerPos);
+        }
        nickname.text = name;
     }
 
@@ -55,7 +56,6 @@ public class HJS_FusionPlayerController : NetworkBehaviour
         {
             return;
         }
-
         Vector3 move = Vector3.forward * moveDir.z * Runner.DeltaTime * playerSpeed;
         float rotate = moveDir.x * rotateSpeed * Runner.DeltaTime;
 
@@ -72,18 +72,19 @@ public class HJS_FusionPlayerController : NetworkBehaviour
         moveDir.x = Input.GetAxis("Horizontal");
         moveDir.z = Input.GetAxis("Vertical");
     }
-    public void LeaveRoom()
+    public void LeaveScene()
     {
         if (HasStateAuthority == false)
         {
             return;
         }
 
+        Debug.Log("SavePosition");
         // 현재 위치를 기억하고
         HJS_PlayerPosition.Instance.PlayerPos = transform.position;
 
-        // 연결을 종료한다 -> 내가 사라진다
+        Debug.Log("PauseServer");
+        // 연결을 멈춘다 -> 내가 사라진다
         Runner.Shutdown();
     }
-
 }
