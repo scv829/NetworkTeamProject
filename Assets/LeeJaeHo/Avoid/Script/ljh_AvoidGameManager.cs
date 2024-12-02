@@ -13,7 +13,7 @@ public enum Phase
 {
     phase0, GamePhase, endPhase
 }
-public class ljh_AvoidGameManager : MonoBehaviourPun
+public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
 {   //Todo: 오프닝(후순위), 점수 표기, 1등 가리기, 엔딩
 
 
@@ -145,7 +145,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
         }
     }
 
-
+    
     IEnumerator TimerCo()
     {
         while (timer > 0)
@@ -228,6 +228,20 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
                 if (!isEnd)
                     EndPhase();
                 break;
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if(stream.IsWriting)
+        {
+            stream.SendNext(timer);
+            stream.SendNext(uiManager.timerText.text);
+        }
+        else
+        {
+            timer = (float)stream.ReceiveNext();
+            uiManager.timerText.text = (string)stream.ReceiveNext();
         }
     }
 
