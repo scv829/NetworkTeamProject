@@ -32,7 +32,7 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
     Color playerColor3;
     Color playerColor4;
 
-    [SerializeField] GameObject[] cartArray;
+    [SerializeField] public GameObject[] cartArray;
     [SerializeField] GameObject cart1;
     [SerializeField] GameObject cart2;
     [SerializeField] GameObject cart3;
@@ -71,24 +71,25 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
         playerColor4 = new (0, 0, 0);
 
         PhotonNetwork.LocalPlayer.NickName = $"Player{Random.Range(0000,9999)}"; // 이거 지우고
-        //PhotonNetwork.ConnectUsingSettings(); // 이거 지우고
+        PhotonNetwork.ConnectUsingSettings(); // 이거 지우고
 
         PhotonNetwork.LocalPlayer.SetLoad(true);
     }
 
-
-   // public override void OnConnectedToMaster()
-   // {
-   //     RoomOptions options = new RoomOptions();
-   //     options.MaxPlayers = 4;
-   //     options.IsVisible = false;
-   //
-   //     PhotonNetwork.JoinOrCreateRoom(RoomName, options, TypedLobby.Default);
-   // }
+    //이놈 주석
+    public override void OnConnectedToMaster()
+    {
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 4;
+        options.IsVisible = false;
+   
+        PhotonNetwork.JoinOrCreateRoom(RoomName, options, TypedLobby.Default);
+    }
 
     public override void OnJoinedRoom()
     {
-        //StartCoroutine(StartDelayRoutine());
+        //이놈 주석
+        StartCoroutine(StartDelayRoutine());
     }
 
     IEnumerator StartDelayRoutine()
@@ -96,30 +97,31 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(1f);
         TestGameStart();
     }
+    //이놈 주석 해제
+   // public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
+   // {
+   //     if (changedProps.ContainsKey(HJS_CustomProperty.LOAD))
+   //     {
+   //         Debug.Log($"{targetPlayer.NickName} 이 로딩이 완료되었습니다. ");
+   //         bool allLoaded = CheckAllLoad();
+   //         Debug.Log($"모든 플레이어 로딩 완료 여부 : {allLoaded} ");
+   //         if (allLoaded)
+   //         {
+   //             StartCoroutine(StartDelayRoutine());
+   //         }
+   //     }
+   // }
 
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
-    {
-        if (changedProps.ContainsKey(HJS_CustomProperty.LOAD))
-        {
-            Debug.Log($"{targetPlayer.NickName} 이 로딩이 완료되었습니다. ");
-            bool allLoaded = CheckAllLoad();
-            Debug.Log($"모든 플레이어 로딩 완료 여부 : {allLoaded} ");
-            if (allLoaded)
-            {
-                StartCoroutine(StartDelayRoutine());
-            }
-        }
-    }
-
-    private bool CheckAllLoad()
-    {
-        foreach (Player player in PhotonNetwork.PlayerList)
-        {
-            if (player.GetLoad() == false)
-                return false;
-        }
-        return true;
-    }
+    //이놈 주석 해제
+   // private bool CheckAllLoad()
+   // {
+   //     foreach (Player player in PhotonNetwork.PlayerList)
+   //     {
+   //         if (player.GetLoad() == false)
+   //             return false;
+   //     }
+   //     return true;
+   // }
     public void TestGameStart()
     { 
         PlayerSpawn();
@@ -150,33 +152,13 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
         player.GetComponent<ljh_Player>().playerNumber = (PlayerNumber)index;
         
 
-
-        RideCart(player);
-
         Color[] vectorColor = { playerColor1, playerColor2, playerColor3, playerColor4 };
         playerColor = new Color(vectorColor[index].r, vectorColor[index].g, vectorColor[index].b, 1);
 
         player.GetComponentInChildren<Renderer>().material.color = playerColor;
 
 
-        
-
     }
-
-    private void RideCart(GameObject player)
-    {
-        player.transform.parent = cartArray[index].transform;
-    }
-
-    
-
-
-
-
-
-
-
-
 
 
 }

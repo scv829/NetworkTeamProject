@@ -90,6 +90,7 @@ MonoBehaviour:
   - RPCPhaseChange
   - RPCWait
   - RPCTextOnOff
+  - RPCMOP
   - RPCAddPlayerCount
   - RPCAP
   DisableAutoOpenWizard: 1

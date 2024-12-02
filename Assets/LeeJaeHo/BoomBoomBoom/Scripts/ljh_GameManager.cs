@@ -39,9 +39,7 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
 
     [SerializeField] public State curState;
 
-    [SerializeField] public GameObject Player4;
     [SerializeField] public GameObject Player3;
-    [SerializeField] public GameObject Player2;
 
     [Header("기타 오브젝트")]
     [SerializeField] public GameObject boom;
@@ -106,7 +104,6 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
 
     private void Update()
     {
-        Debug.Log($"현재 마이턴 {myTurn}");
             Playing();
         
         
@@ -207,6 +204,7 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
     {
         door.transform.rotation = Quaternion.Euler(0, 90, 0);
         sunLight.transform.rotation = Quaternion.Euler(130, 48, 0);
+        cartManagerEnter.CartMoveExit();
     }
 
     [PunRPC]
@@ -222,7 +220,6 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
             case MyTurn.player2:
                 myTurn = MyTurn.player3;
                 curState = State.idle;
-                Debug.Log("2에서 3로 진행했음");
                 break;
            
             case MyTurn.player3:
@@ -233,10 +230,6 @@ public class ljh_GameManager : MonoBehaviourPun, IPunObservable
         }
     }
 
-    public void ButtonReset()
-    {
-
-    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

@@ -37,8 +37,6 @@ public class ljh_InputManager : MonoBehaviourPun
     [Header("n명 남은 상황의 자리 부모 오브젝트")]
     [SerializeField] GameObject posParents;
 
-    public Vector3 _curPos;
-
     [SerializeField] GameObject boom;
 
     public int defaultIndex;
@@ -50,9 +48,6 @@ public class ljh_InputManager : MonoBehaviourPun
     public ljh_Pos[] _pos;
     public Coroutine _boomCoroutine;
 
-    private void OnEnable()
-    {
-    }
     private void Start()
     {
         defaultIndex = ljh_GameManager.instance.defaultIndex ;// 4인일땐 2 3인일땐 2로 

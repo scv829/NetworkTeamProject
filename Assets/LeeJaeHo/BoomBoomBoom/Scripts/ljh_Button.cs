@@ -13,7 +13,6 @@ public class ljh_Button : MonoBehaviourPun
     [SerializeField] GameObject inputManager;
     [SerializeField] GameObject myPos;
 
-    [SerializeField] GameObject player;
 
 
     public void PushedButton(ljh_Button button)
