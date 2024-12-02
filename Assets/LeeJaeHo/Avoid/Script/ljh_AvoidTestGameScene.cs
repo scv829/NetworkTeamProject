@@ -17,7 +17,8 @@ public class ljh_AvoidTestGameScene : MonoBehaviourPunCallbacks
     [SerializeField] GameObject playerPrefab;
     [SerializeField] ljh_AvoidGameManager gameManager;
 
-    public List<ljh_PlayerController> playerList;
+    public ljh_PlayerController[] playerList;
+    public int index;
 
     private void Start()
     {
@@ -26,7 +27,8 @@ public class ljh_AvoidTestGameScene : MonoBehaviourPunCallbacks
         //PhotonNetwork.ConnectUsingSettings(); // 이거 지우고 실전
 
         PhotonNetwork.LocalPlayer.SetLoad(true);
-        playerList = new List<ljh_PlayerController>();
+        playerList = new ljh_PlayerController[4];
+        
     }
 
     //테스트용
@@ -100,9 +102,8 @@ public class ljh_AvoidTestGameScene : MonoBehaviourPunCallbacks
         Debug.Log($"스폰된 플레이어의 이름{PhotonNetwork.LocalPlayer.NickName}");
         AddPlayerCount();
         player.GetComponent<ljh_PlayerController>().myName = PhotonNetwork.LocalPlayer.NickName;
-
-        playerList.Add(player.GetComponent<ljh_PlayerController>());
-
+        index = PhotonNetwork.LocalPlayer.ActorNumber - 1;
+        playerList[index] = player.GetComponent<ljh_PlayerController>();
         
 
         //Color[] vectorColor = { playerColor1, playerColor2, playerColor3, playerColor4 };
