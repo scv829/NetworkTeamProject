@@ -19,7 +19,7 @@ public class HYJ2_ObjectManager : MonoBehaviour
 
     private void Update()
     {
-        if(lightScoreCount == 3 && !isEnding)
+        if(lightScoreCount == 10 && !isEnding)
         {
             isEnding = true;
             isStart = false;
