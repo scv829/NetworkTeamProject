@@ -1056,7 +1056,7 @@ GameObject:
   - component: {fileID: 1449803486}
   m_Layer: 0
   m_Name: GameScene
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1124,7 +1124,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HYJ2_PlayerSpawn: {fileID: 1449803485}
   HYJ2_ObjectManager: {fileID: 0}
-  fieldUIText: {fileID: 0}
 --- !u!1 &1663793359
 GameObject:
   m_ObjectHideFlags: 0
