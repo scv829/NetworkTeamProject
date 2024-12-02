@@ -155,12 +155,14 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
                     Debug.Log($"{i} 승자 인덱스");
 
                     nickName = CurPhotonPlayer[i - 1].NickName;
-
+                    Player winner = CurPhotonPlayer[i - 1];
+                    HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
                     break;
                 }
             }
             _uiManager.ResultGame(nickName); // 결과 창 출력
             Debug.Log($"!게임 종료!");
+
         }
     }
 
