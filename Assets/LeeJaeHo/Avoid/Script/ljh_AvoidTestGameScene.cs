@@ -93,9 +93,11 @@ public class ljh_AvoidTestGameScene : MonoBehaviourPunCallbacks
     private void PlayerSpawn()
     {
 
-        Vector3 playerPos = new Vector3(Random.Range(-5,5), 0, Random.Range(-5, 5));
+        Vector3 playerPos = new Vector3(Random.Range(-3,3), 0, Random.Range(-3, 3));
         GameObject player = PhotonNetwork.Instantiate("ljh_AvoidPlayer", playerPos, Quaternion.identity);
-        gameManager.playerCount++;
+        Debug.Log($"스폰된 플레이어의 이름{PhotonNetwork.LocalPlayer.NickName}");
+        AddPlayerCount();
+        player.GetComponent<ljh_PlayerController>().myName = PhotonNetwork.LocalPlayer.NickName;
 
 
 
@@ -109,16 +111,15 @@ public class ljh_AvoidTestGameScene : MonoBehaviourPunCallbacks
 
     }
 
+    public void AddPlayerCount()
+    {
+        photonView.RPC("RPCAddPlayerCount", RpcTarget.AllViaServer);
+    }
 
-    
-
-
-
-
-
-
-
-
-
+    [PunRPC]
+    public void RPCAddPlayerCount()
+    {
+        gameManager.playerCount++;
+    }
 
 }

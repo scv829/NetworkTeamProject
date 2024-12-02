@@ -9,7 +9,7 @@ using UnityEngine.UI;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 /// <summary>
-/// 게임 입장과 게임 퇴장에 관련된 기능을 담당해주는 스크립트
+/// 게임 입장에 관련된 기능을 담당해주는 스크립트
 /// </summary>
 public class HJS_GameConnectManager : MonoBehaviourPunCallbacks
 {
@@ -18,12 +18,14 @@ public class HJS_GameConnectManager : MonoBehaviourPunCallbacks
     [Header("GameStart"), Tooltip("실질적인 게임을 시작 요청을 하는 부분")]
     [SerializeField] UnityEvent gameStartEvent;
 
+    [Header("InitOver"), Tooltip("사전 작업이 끝났는지 확인")]
+    [SerializeField] bool isOver;
+
     [Header("Player")] 
     [SerializeField] Color[] playerColors;  // 플레이어의 색상
 
     [Header("Fade")]
     [SerializeField] HJS_FadeController fadeController;
-    [SerializeField, Tooltip("FadeIn: true, FadeOut: false")] bool isFadeIn;
 
     // 씬 로드 확인
     private void Start()
@@ -44,10 +46,9 @@ public class HJS_GameConnectManager : MonoBehaviourPunCallbacks
             if (allLoaded)
             {
                 // 게임 시작 전 초기 설정
-                gameInitEvent?.Invoke();
-                // 카메라 활성화
-                if(isFadeIn) fadeController.FadeIn();
-                else fadeController.FadeOut();
+                StartCoroutine(InitRoutine());
+                // 페이드 부분
+                StartCoroutine(FadeRoutine());
                 /* 게임 동작 로직 */
                 StartCoroutine(StartCoutine());
             }
@@ -64,7 +65,26 @@ public class HJS_GameConnectManager : MonoBehaviourPunCallbacks
         }
         return true;
     }
+    
+    // 화면에 안보이게 작업해야할 내용들
+    private IEnumerator InitRoutine()
+    {
+        yield return null;
+        gameInitEvent?.Invoke();
 
+        isOver = true;
+    }
+
+    // 페이드 진행
+    private IEnumerator FadeRoutine()
+    {
+        // 앞의 사전 작업을 다 끝내면
+        yield return new WaitUntil(() => { return isOver; });
+
+        fadeController.FadeIn();
+    }
+
+    // 게임 시작 로직
     private IEnumerator StartCoutine()
     {
         // 페이드 애니메이션이 끝났을 때

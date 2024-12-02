@@ -91,6 +91,8 @@ MonoBehaviour:
   - RPCWait
   - RPCTextOnOff
   - RPCMOP
+  - RPCAddPlayerCount
+  - RPCAP
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

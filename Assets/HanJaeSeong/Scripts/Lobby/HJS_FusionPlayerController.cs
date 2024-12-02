@@ -18,6 +18,12 @@ public class HJS_FusionPlayerController : NetworkBehaviour
         _controller = GetComponent<CharacterController>();
     }
 
+    // 접속이 끊어질 때 <- 파괴가 된다 <- 그때 데이터에 저장
+    private void OnDestroy()
+    {
+        HJS_PlayerPosition.Instance.PlayerPos = transform.position;
+    }
+
     public override void FixedUpdateNetwork()
     {
         // Only move own player and not every other player. Each player controls its own player object.
@@ -46,7 +52,7 @@ public class HJS_FusionPlayerController : NetworkBehaviour
         }
 
         // 현재 위치를 기억하고
-        HJS_PlayerPosition.Instance.playerPos = transform.position;
+        HJS_PlayerPosition.Instance.PlayerPos = transform.position;
 
         // 연결을 종료한다 -> 내가 사라진다
         Runner.Shutdown();

@@ -18,6 +18,10 @@ public class HYJ2_PlayerController : MonoBehaviourPun
 
     private void Update()
     {
+        if(photonView.IsMine == false)
+        {
+            return;
+        }
 
         if (!isAttack) // 플레이어가 공격 중이 아닐 때
         {

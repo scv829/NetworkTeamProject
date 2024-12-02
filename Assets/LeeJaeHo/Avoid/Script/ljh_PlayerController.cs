@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using System.Threading;
+using UnityEngine.Events;
+using Photon.Pun.Demo.Cockpit;
 
 public class ljh_PlayerController : MonoBehaviourPun, IPunObservable
 {
@@ -19,12 +21,18 @@ public class ljh_PlayerController : MonoBehaviourPun, IPunObservable
 
     Rigidbody rigid;
 
+    public UnityEvent onPlayerDead;
+
+    public string myName;
+
     private void Start()
     {
         died = false;
         rigid = GetComponent<Rigidbody>();
         gameManager = GameObject.FindWithTag("GameController").GetComponent<ljh_AvoidGameManager>();
         uiManager = GameObject.FindWithTag("Finish").GetComponent<ljh_AvoidUIManager>();
+
+        //myName = PhotonNetwork.LocalPlayer.NickName;
     }
     void Update()
     {
@@ -36,28 +44,37 @@ public class ljh_PlayerController : MonoBehaviourPun, IPunObservable
             Move();
 
 
-        if (gameManager.curPhase == Phase.endPhase)
-        {
-            if (!died)
-            {
-                uiManager.alivePlayer = GetComponent<ljh_PlayerController>();
-            }
-        }
 
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("ExitWay"))
+        if (CompareTag("Player"))
         {
-            transform.localScale = new Vector3(1, 0.35f, 1);
-            died = true;
-            transform.tag = "Untagged";
-            rigid.constraints = RigidbodyConstraints.FreezeAll;
-            score = 35 - gameManager.timer;
-            if (gameObject.CompareTag("Player"))
-                gameManager.playerCount--;
+            if (collision.gameObject.CompareTag("ExitWay"))
+            {
+                transform.localScale = new Vector3(1, 0.35f, 1);
+                died = true;
+                transform.tag = "Untagged";
+                rigid.constraints = RigidbodyConstraints.FreezeAll;
+                Dead();
+            }
         }
+    }
+
+    public void Score()
+    {
+        uiManager.scoreText.text = $"{35 - gameManager.timer}";
+    }
+
+    public void DeletePlayer()
+    {
+        gameManager.playerCount--;
+    }
+
+    private void Dead()
+    {
+        onPlayerDead.Invoke();
     }
 
 

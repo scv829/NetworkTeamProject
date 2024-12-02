@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 
 public class HYJ2_FieldSpawn : MonoBehaviourPun
 {
@@ -15,7 +16,7 @@ public class HYJ2_FieldSpawn : MonoBehaviourPun
         HYJ2_PlayerSpawn.GetComponent<HYJ2_PlayerSpawn>().PlayerSpawn(spawnPoint);
     }
 
-    private Vector3 SetPosition()
+    public Vector3 SetPosition()
     {
         switch (PhotonNetwork.LocalPlayer.ActorNumber)
         {
@@ -33,6 +34,7 @@ public class HYJ2_FieldSpawn : MonoBehaviourPun
 
     public void ObjectManagerOn()
     {
+        // TODO : 생성된 필드의 오브젝트의 컴포넌트 접근하기
         HYJ2_ObjectManager.GetComponent<HYJ2_ObjectManager>().ManagerOn();
     }
 }
