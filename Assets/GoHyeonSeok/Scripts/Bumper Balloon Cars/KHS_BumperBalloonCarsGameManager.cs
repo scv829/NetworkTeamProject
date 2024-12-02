@@ -136,12 +136,15 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
         CurLivePlayer--;    // 현재 살아있는 플레이어 인원
         Debug.Log($"현재 남은 플레이어 {CurLivePlayer} 명");
 
-        StartCoroutine(DelayGameOver());
+        if( CurLivePlayer == 1)
+        {
+            StartCoroutine(DelayGameOver());
+        }
     }
 
     private IEnumerator DelayGameOver()
     {
-        yield return new WaitForSeconds(0.2f);  // TODO : 우선은 임시방편으로 데이터를 불러오는 시간이 조금 딜레이가 있는 것으로 확인되어서 넣은 코루틴
+        yield return new WaitForSeconds(0.5f);  // TODO : 우선은 임시방편으로 데이터를 불러오는 시간이 조금 딜레이가 있는 것으로 확인되어서 넣은 코루틴
         string nickName = "";
 
         if (CurLivePlayer == 1) // 남은 인원이 1명일때
