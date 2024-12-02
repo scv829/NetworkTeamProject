@@ -11,6 +11,7 @@ public class ljh_PlayerController : MonoBehaviourPun, IPunObservable
     [SerializeField] ljh_AvoidGameManager gameManager;
     [SerializeField] ljh_AvoidStone[] stone;
     ljh_AvoidUIManager uiManager;
+    
 
 
     float moveSpeed = 3;
@@ -58,14 +59,12 @@ public class ljh_PlayerController : MonoBehaviourPun, IPunObservable
                 transform.tag = "Untagged";
                 rigid.constraints = RigidbodyConstraints.FreezeAll;
                 Dead();
+                
             }
         }
     }
 
-    public void Score()
-    {
-        uiManager.scoreText.text = $"{35 - gameManager.timer}";
-    }
+    
 
     public void DeletePlayer()
     {
@@ -106,10 +105,13 @@ public class ljh_PlayerController : MonoBehaviourPun, IPunObservable
     {
         if(stream.IsWriting)
         {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
         }
         else
         {
-
+            transform.position = (Vector3)stream.ReceiveNext();
+            transform.rotation = (Quaternion)stream.ReceiveNext();
         }
     }
 }

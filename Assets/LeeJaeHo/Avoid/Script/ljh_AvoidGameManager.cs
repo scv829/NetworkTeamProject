@@ -27,6 +27,8 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
 
     [SerializeField] public ljh_AvoidStone stone;
 
+    [SerializeField] public ljh_AvoidTestGameScene testScene;
+
     public int playerCount;
     public Queue<ljh_PlayerController> playerQ;
 
@@ -40,6 +42,10 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
     public Coroutine timerRoutine;
     public Coroutine waitRoutine;
 
+    public Player[] curPhotonList;
+
+    public ljh_PlayerController _alivePlayer;
+    bool isEnd;
 
     private void Start()
     {
@@ -48,6 +54,9 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
         playerCount = 0;
         readyTimer = 3;
         timer = 35;
+
+        curPhotonList = PhotonNetwork.PlayerList;
+        isEnd = false;
     }
 
     private void Update()
@@ -88,8 +97,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
     [PunRPC]
     void RPCAP()
     {
-        uiManager.alivePlayer = GameObject.FindWithTag("Player").GetComponent<ljh_PlayerController>();
-        Debug.Log($"이름 {uiManager.alivePlayer.myName}");
+        _alivePlayer = GameObject.FindWithTag("Player").GetComponent<ljh_PlayerController>();
     }
 
     IEnumerator AttackCo()
@@ -112,7 +120,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
 
     }
 
-    
+
     public void Wait()
     {
         // Todo: 타이머 3초 대기시간
@@ -159,7 +167,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
         attackRoutine = StartCoroutine(AttackCo());
 
     }
-    
+
 
     public void PhaseChange()
     {
@@ -176,16 +184,32 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
 
     public void EndPhase()
     {
-        if (uiManager.alivePlayer != null)
-        {
-            Player winner = uiManager.alivePlayer.GetComponent<Player>();
-            HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
-        }
+        isEnd = true;
+        int index = WinnerCalc();
+
+        Player winner = curPhotonList[index]; // 인덱스를 어떻게?
+        HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
+
         // Todo: 게임 끝 살아남은 사람 줌인 / 우선순위 낮음
         // Todo: 시간 비례해서 순위
     }
 
+    public int WinnerCalc()
+    {
+        //테스트씬에서 만든 플레이어 리스트에 승리 변수를 넣어주고 
+        // curPhotonList[index] 
+        // index = 승리 변수가진 플레이어 리스트 인덱스 
+        // 
 
+        for (int i = 0; i < curPhotonList.Length; i++)
+        {
+            if (testScene.playerList[i].died == false)
+            {
+                return i;
+            }
+        }
+        return 0;
+    }
     public void PhaseCalc()
     {
         switch (curPhase)
@@ -201,7 +225,8 @@ public class ljh_AvoidGameManager : MonoBehaviourPun
                 break;
 
             case Phase.endPhase:
-                EndPhase();
+                if (!isEnd)
+                    EndPhase();
                 break;
         }
     }
