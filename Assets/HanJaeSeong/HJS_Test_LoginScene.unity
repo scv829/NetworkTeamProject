@@ -13076,6 +13076,7 @@ MonoBehaviour:
   - HJS_HeartScene
   - Bumper Balloon Cars
   - HYJ_PunchGame
+  - Avoid getting twisted
   selectSceneList: []
 --- !u!1001 &708035440
 PrefabInstance:
