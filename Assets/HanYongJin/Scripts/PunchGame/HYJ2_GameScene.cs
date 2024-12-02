@@ -12,14 +12,19 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
     [SerializeField] HYJ2_FieldSpawn HYJ2_FieldSpawn;
     [SerializeField] TMP_Text gameUIText;
     [SerializeField] Color[] playerColors;
+
     [SerializeField] Camera mainCamera;
+
+    //플레이어 색상
+    
+
     void Start()
     {
         PhotonNetwork.LocalPlayer.NickName = $"Player {Random.Range(1000, 10000)}";
         
         // TODO : 재성님에게 물어봐서 플레이어 컬러 적용법 배우기
-        //Vector3 vectorColor = new Vector3(playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].r, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].g, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].b);
-        //PhotonNetwork.LocalPlayer.SetPlayerColor(vectorColor);
+        Vector3 vectorColor = new Vector3(playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].r, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].g, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].b);
+        PhotonNetwork.LocalPlayer.SetPlayerColor(vectorColor);
         PhotonNetwork.LocalPlayer.SetLoad(true);
 
     }
