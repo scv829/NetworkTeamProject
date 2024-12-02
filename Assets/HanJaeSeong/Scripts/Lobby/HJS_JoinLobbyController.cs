@@ -25,40 +25,15 @@ public class HJS_JoinLobbyController : MonoBehaviourPunCallbacks
         matchView.GetUI<Button>("JoinLobbyCloseButton").onClick.AddListener(LeaveLobby);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        // 플레이어의 충돌만 확인할 건데
-        if (other.transform.CompareTag("Player") && player == null)
-        {
-            // 움직인 캐릭터의 소유자가 아닐 경우 보여줄 필요가 없다.
-            if (other.transform.GetComponent<NetworkBehaviour>().HasStateAuthority == false) return;
-
-            player = other.GetComponent<HJS_FusionPlayerController>();
-            PhotonNetwork.JoinLobby();
-
-            matchView.GetUI("JoinLobbyPanel").SetActive(true);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        // 플레이어의 충돌만 확인하는데 
-        if (other.transform.CompareTag("Player"))
-        {
-            // 움직인 캐릭터의 소유자가 아닐 경우 보여줄 필요가 없다.
-            if (other.transform.GetComponent<NetworkBehaviour>().HasStateAuthority == false) return;
-
-            if (player != null && player.Equals(other.transform.GetComponent<HJS_FusionPlayerController>()))
-            {
-                player = null;
-            }
-        }
-    }
-
     private void LeaveLobby()
     {
         Debug.Log("로비에서 나갔습니다");
-        PhotonNetwork.LeaveLobby();
+        if(PhotonNetwork.InLobby) PhotonNetwork.LeaveLobby();
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+            Debug.Log("JoinLobbyController의 LeaveLobby");
+        }
     }
 
     public void UpdateRoomList(List<RoomInfo> roomList)
