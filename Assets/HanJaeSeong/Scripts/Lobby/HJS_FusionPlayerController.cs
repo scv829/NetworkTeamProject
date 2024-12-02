@@ -1,3 +1,4 @@
+using Cinemachine;
 using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
@@ -12,14 +13,14 @@ public class HJS_FusionPlayerController : NetworkBehaviour
 {
     private CharacterController _controller;
 
+    [SerializeField] CinemachineVirtualCamera camera;
     [SerializeField] TMP_Text nickname;
     [SerializeField] float playerSpeed = 5f;
     [SerializeField] float rotateSpeed = 90f;
     private Vector3 moveDir;
 
     // 네트워크 상에서의 위치
-    [Networked] Vector3 NetworkedPosition { get; set; }
-    [Networked] Quaternion NetworkedRotation { get; set; }
+    [Networked] string name { get; set; }
 
     private void Awake()
     {
@@ -28,10 +29,15 @@ public class HJS_FusionPlayerController : NetworkBehaviour
 
     public override void Spawned()
     {
-       nickname.text = HJS_FirebaseManager.Auth.CurrentUser.DisplayName;
+       if(HasStateAuthority)
+       {
+            camera.Priority = 15;
+            name = HJS_FirebaseManager.Auth.CurrentUser.DisplayName;
+       }
+       nickname.text = name;
     }
 
-    // 접속이 끊어질 때 <- 파괴가 된다 <- 그때 데이터에 저장
+    // 접속이 끊어질 때 <- 파괴가 된다 <- 그때 데이터에 저장aa
     private void OnDestroy()
     {
         if (HasStateAuthority == false)
@@ -52,17 +58,9 @@ public class HJS_FusionPlayerController : NetworkBehaviour
         Vector3 move = Vector3.forward * moveDir.z * Runner.DeltaTime * playerSpeed;
         float rotate = moveDir.x * rotateSpeed * Runner.DeltaTime;
 
-        // 모든 클라이언트에서 작동 x
-        if (Runner.IsSharedModeMasterClient)
-        {
-            // Master Client에서만 네트워크 상태를 업데이트
-            NetworkedPosition += transform.TransformDirection(move);
-            NetworkedRotation = Quaternion.Euler(0, transform.eulerAngles.y + rotate, 0);
-        }
-
         // 위치를 동기화
-        transform.position = NetworkedPosition;
-        transform.rotation = NetworkedRotation;
+        transform.position += transform.TransformDirection(move);
+        transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y + rotate, 0);
     }
 
     private void Update()
@@ -73,7 +71,6 @@ public class HJS_FusionPlayerController : NetworkBehaviour
         moveDir.x = Input.GetAxis("Horizontal");
         moveDir.z = Input.GetAxis("Vertical");
     }
-
     public void LeaveRoom()
     {
         if (HasStateAuthority == false)
