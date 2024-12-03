@@ -14,8 +14,12 @@ public class HJS_FusionPlayerController : NetworkBehaviour, IAfterSpawned
 {
     private CharacterController _controller;
 
+    [Header("Child")]
     [SerializeField] CinemachineVirtualCamera camera;
     [SerializeField] TMP_Text nickname;
+    [SerializeField] GameObject frontCanvas;
+    [SerializeField] GameObject backCanvas;
+    [Header("Spec")]
     [SerializeField] float playerSpeed = 5f;
     [SerializeField] float rotateSpeed = 90f;
     private Vector3 moveDir;
@@ -35,9 +39,9 @@ public class HJS_FusionPlayerController : NetworkBehaviour, IAfterSpawned
             camera.Priority = 15;
             name = PhotonNetwork.LocalPlayer.NickName;
             gameObject.GetComponent<NetworkTransform>().Teleport(HJS_PlayerPosition.Instance.PlayerPos);
-            _controller.enabled = true;
-            Debug.Log($"spawnPosition { transform.position} ");
-        }
+            frontCanvas.layer = 26;
+            backCanvas.layer = 26;
+       }
        nickname.text = name;
     }
 
@@ -93,6 +97,6 @@ public class HJS_FusionPlayerController : NetworkBehaviour, IAfterSpawned
 
     public void AfterSpawned()
     {
-        Debug.Log($"AfterSpawnPosition {transform.position} ");
+        _controller.enabled = true;
     }
 }

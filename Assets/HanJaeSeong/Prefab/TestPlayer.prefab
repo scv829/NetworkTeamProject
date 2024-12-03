@@ -675,6 +675,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 5480488252894207410}
   nickname: {fileID: 6367900080991099475}
+  frontCanvas: {fileID: 9045128946391596240}
+  backCanvas: {fileID: 5460302346214181357}
   playerSpeed: 5
   rotateSpeed: 180
 --- !u!143 &1767809609632589551
