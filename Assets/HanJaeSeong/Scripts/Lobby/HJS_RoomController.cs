@@ -48,22 +48,26 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
 
             player = other.GetComponent<HJS_FusionPlayerController>();
 
-            if (!PhotonNetwork.InLobby) 
+            // 포톤이 준비가 되었을 때만 아래 기능을 수행
+            if (PhotonNetwork.IsConnectedAndReady)
             {
-                PhotonNetwork.JoinLobby();
-                matchView.GetUI("JoinLobbyPanel").SetActive(true);
-                Debug.Log("RoomController의 Ontrigger의 Inlobby");
+                // 만약 해당 트리거에 충돌이 되었을 때
+                if (!PhotonNetwork.InLobby) 
+                {
+                    PhotonNetwork.JoinLobby(); // <- 여기 문제 (일단 연결이 되었는지 확인 필요)
+                    matchView.GetUI("JoinLobbyPanel").SetActive(true);
+                    Debug.Log("RoomController의 Ontrigger의 Inlobby");
+                }
+                // 로비에 있어서 들어갔는데 <- 현재 내가 방안에 있을 때(게임 씬 -> 광장 씬 넘어올 때)
+                if(PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ROOM_TYPE))
+                {
+                    Debug.Log("RoomController의 Ontrigger의 inROOM");
+                    PhotonNetwork.LeaveLobby();
+                    matchView.GetUI("JoinLobbyPanel").SetActive(false);
+                    matchView.GetUI("JoinRoomPanel").SetActive(true);
+                    UpdatePlayers();
+                }
             }
-
-            if(PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ROOM_TYPE))
-            {
-                Debug.Log("RoomController의 Ontrigger의 inROOM");
-                PhotonNetwork.LeaveLobby();
-                matchView.GetUI("JoinLobbyPanel").SetActive(false);
-                matchView.GetUI("JoinRoomPanel").SetActive(true);
-                UpdatePlayers();
-            }
-
         }
     }
 
@@ -81,7 +85,6 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
             }
         }
     }
-
 
     // 방에 들어왔을 때
     public override void OnJoinedRoom()
@@ -119,7 +122,8 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
         foreach (HJS_PlayerEntry entry in playerEntries)        // 일단 방의 UI를 초기화 시키기
         {
             entry.SetEmpty();
-            entry.gameObject.SetActive(false);
+            if (entry.gameObject is null) continue;             // GameObject가 없을 때 그냥 넘어가기, PlayNubering.Awake가 더 빨리 불러져서 그런듯하다.
+            entry.gameObject.SetActive(false);                  
         }
 
         // 칸은 현재 룸의 최대만 가능
