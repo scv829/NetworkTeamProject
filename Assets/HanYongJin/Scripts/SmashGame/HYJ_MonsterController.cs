@@ -17,7 +17,7 @@ public class HYJ_MonsterController : MonoBehaviour
     {
         for (int i = 0; i < monsterCount; i++)
         {
-            monster.transform.GetChild(i).transform.position += new Vector3(0, -1, 0);
+            monster.transform.GetChild(i).transform.position += new Vector3(0, -1, 0); // 몬스터 바디를 파괴 시, 몬스터의 위치를 내려주기
         }
     }
 
