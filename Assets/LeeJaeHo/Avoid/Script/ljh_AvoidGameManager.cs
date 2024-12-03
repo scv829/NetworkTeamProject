@@ -152,7 +152,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
         {
             yield return new WaitForSeconds(1f);
             timer--;
-            uiManager.timerText.text = $"Time : {timer}";
+            uiManager.timerText.text = $"남은 시간 : {timer}초..";
         }
 
     }

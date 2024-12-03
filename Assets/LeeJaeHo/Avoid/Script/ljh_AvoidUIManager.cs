@@ -25,7 +25,7 @@ public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
     private void Update()
     {
         if(gameManager._alivePlayer != null)
-        winnerText.text = $"Winner is {gameManager._alivePlayer.myName}!!!"; // Todo : 수정해야함
+        winnerText.text = $"살아남은 생존자는.... {gameManager._alivePlayer.myName}입니다!!!"; // Todo : 수정해야함
 
         TextOnOff();
 

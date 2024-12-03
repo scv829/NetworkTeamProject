@@ -97,6 +97,7 @@ MonoBehaviour:
   - HYJ_GameEnd
   - RPCUI
   - RPCAddPL
+  - RPCDNL
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
