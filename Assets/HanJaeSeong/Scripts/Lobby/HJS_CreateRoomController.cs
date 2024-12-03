@@ -40,6 +40,9 @@ public class HJS_CreateRoomController : MonoBehaviour
         matchView.GetUI<Button>("ApplyEditRoomButton").onClick.AddListener(EditRoom);
     }
 
+    /// <summary>
+    /// 선택한 맵의 리스트 초기화 함수
+    /// </summary>
     private void ResetSceneEntry()
     {
         for (int i = 0; i < sceneList.Count; i++)
@@ -48,6 +51,9 @@ public class HJS_CreateRoomController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 방을 만들었을 때
+    /// </summary>
     private void CreateRoom()
     {
         // 방 이름
@@ -55,8 +61,7 @@ public class HJS_CreateRoomController : MonoBehaviour
 
         if (roomName == "")
         {
-            matchView.GetUI<TMP_Text>("PopupText").text = "Room name is required";
-            matchView.GetUI("PopupPanel").SetActive(true);
+            matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("Room name is required");
             return;
         }
 
@@ -75,8 +80,7 @@ public class HJS_CreateRoomController : MonoBehaviour
         // 맵은 하나라도 선택을 해야한다
         if(scenes.Count < 1)
         {
-            matchView.GetUI<TMP_Text>("PopupText").text = "You must select at least one map.";
-            matchView.GetUI("PopupPanel").SetActive(true);
+            matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("You must select at least one map.");
             return;
         }
 
@@ -90,12 +94,18 @@ public class HJS_CreateRoomController : MonoBehaviour
         PhotonNetwork.CreateRoom(roomName, options);
     }
 
+    /// <summary>
+    /// 수정 화면에 들어갔을 때 UI 데이터 갱신
+    /// </summary>
     private void ResetEditRoom()
     {
         matchView.GetUI<TMP_InputField>("RoomNameInputField").text = PhotonNetwork.CurrentRoom.Name;
         matchView.GetUI<Slider>("PlayerCountSlider").value = PhotonNetwork.CurrentRoom.MaxPlayers;
     }
 
+    /// <summary>
+    /// 방을 수정하는 함수
+    /// </summary>
     private void EditRoom()
     {
         // 최대 플레이어 수
@@ -113,8 +123,7 @@ public class HJS_CreateRoomController : MonoBehaviour
         // 맵은 하나라도 선택을 해야한다
         if (scenes.Count < 1)
         {
-            matchView.GetUI<TMP_Text>("PopupText").text = "하나 이상의 맵을 선택해야 합니다.";
-            matchView.GetUI("PopupPanel").SetActive(true);
+            matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("하나 이상의 맵을 선택해야 합니다.");
             return;
         }
 
