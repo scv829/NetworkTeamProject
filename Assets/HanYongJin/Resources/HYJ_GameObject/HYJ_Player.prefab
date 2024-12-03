@@ -517,6 +517,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timerCanvas: {fileID: 132595203998745454}
   playerRankText: {fileID: 7260628535274384778}
+  bodyRenderer: {fileID: 3153527135784848118}
+  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &8982965109545220644
 MonoBehaviour:
   m_ObjectHideFlags: 0

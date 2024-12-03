@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class HYJ_MonsterSearch : MonoBehaviourPun
 {
-    [SerializeField] GameObject monster;
+    [SerializeField] public GameObject monster;
     [SerializeField] public int monsterCount;
-
     private void Update()
     {
         monsterCount = monster.transform.childCount;

@@ -17,6 +17,9 @@ public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
 
     [SerializeField] Color[] playerColors;
 
+
+    [SerializeField] private Player[] _curPhotonPlayer;
+    public Player[] CurPhotonPlayer { get { return _curPhotonPlayer; } set { _curPhotonPlayer = value; } }
     void Start()
     {
         PhotonNetwork.LocalPlayer.NickName = $"Player {Random.Range(1000, 10000)}";
@@ -25,6 +28,8 @@ public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
         Vector3 vectorColor = new Vector3(playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].r, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].g, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].b);
         PhotonNetwork.LocalPlayer.SetPlayerColor(vectorColor);
         PhotonNetwork.LocalPlayer.SetLoad(true);
+
+        CurPhotonPlayer = PhotonNetwork.PlayerList;
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
@@ -84,5 +89,25 @@ public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
         timer.gameObject.GetComponent<HYJ_GameTimer>().TimerStart();
         playerSpawnPoint.GetComponent<HYJ_PlayerSpawn>().PlayerSpawn();
         monsterSpawnPoint.GetComponent <HYJ_MonsterSpawn>().MonsterSpawn();
+    }
+
+    public void GameEnd(int _winnerNumber)
+    {
+        Debug.Log("AAAAAAAA");
+        if(_winnerNumber != 0)
+        {
+            Debug.Log("BBBBBBBBBBB");
+            GameObject.FindWithTag("Player").SetActive(false);
+            photonView.RPC("HYJ_GameEnd", RpcTarget.All, _winnerNumber);
+        }
+    }
+
+    [PunRPC]
+    public void HYJ_GameEnd(int winnerNumber)
+    {
+        Debug.Log("CCCCCCCCCC");
+        gameStartCountText.text = $"{winnerNumber}P is Winner!!!";
+        Player winner = CurPhotonPlayer[winnerNumber-1];
+        HJS_GameSaveManager.Instance.GameOver(new Player[] {winner});
     }
 }
