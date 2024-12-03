@@ -62,6 +62,7 @@ public class KHS_Balloon : MonoBehaviourPun, IPunObservable
         _cartController.IsGameOver = true;  // 해당 플레이어가 게임 오버됐음을 알리기 위한 bool변수
         _cartController.gameObject.SetActive(false);    // 해당 플레이어가 게임오버 되었으니 비활성화 진행
 
+
         //if(photonView.IsMine)
         //{
         //    PhotonNetwork.Destroy(gameObject);    // 풍선은 삭제

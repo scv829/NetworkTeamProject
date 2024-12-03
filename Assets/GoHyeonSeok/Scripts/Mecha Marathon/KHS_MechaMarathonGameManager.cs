@@ -135,16 +135,9 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
                 _maxCount = _playerController[i].TotalInputCount;   // 가장 많이 누른 횟수에 i번째 컨트롤러가 입력한 총 입력횟수 초기화
                 _heyHoIndex = i;    // 가장 많이 날아가는 헤이호를 위한 현재 i 인덱스 초기화
             }
-            //if(_playerController[i].TotalInputCount == _maxCount)
-            //{
-            //    _heyHoIndex = 5;
-            //}
+
         }
         Debug.Log($"###########플레이어 인풋카운트 비교 끝###########{_heyHoIndex}, {_maxCount}");  // 비교를 완료했다는 디버그
-        //if(_heyHoIndex == 0)
-        //{
-        //    return 5;
-        //}
 
         return _heyHoIndex; // 가장 많이 날아가는 헤이호의 인덱스 반환
     }
@@ -319,3 +312,13 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
         }
     }
 }
+
+//if(_playerController[i].TotalInputCount == _maxCount)
+//{
+//    _heyHoIndex = 5;
+//}
+
+//if(_heyHoIndex == 0)
+//{
+//    return 5;
+//}
