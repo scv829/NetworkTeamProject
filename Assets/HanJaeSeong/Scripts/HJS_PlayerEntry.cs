@@ -42,7 +42,7 @@ public class HJS_PlayerEntry : MonoBehaviour
         {
             if (player.GetPlayerNumber().Equals(index))
             {
-                profile.getUserProfile(player.GetPlayerUID());
+                profile.GetUserProfile(player.GetPlayerUID());
                 break;
             }
         }
