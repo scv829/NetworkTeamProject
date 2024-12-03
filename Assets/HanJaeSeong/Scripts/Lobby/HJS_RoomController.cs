@@ -100,7 +100,7 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
         }
     }
     
-    
+    // 방에서 나갔을 때
     public override void OnLeftRoom() 
     {
         Debug.Log("RoomController의 OnLeftRoom");
@@ -108,6 +108,9 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
         HJS_GameMap.instance.ResetList();
     }
 
+    /// <summary>
+    /// 참가하는 방의 플레이어에 따라 UI를 업데이트를 하는 부분
+    /// </summary>
     public void UpdatePlayers()
     {
         // TODO: 모두 제거했는데 계속 작동 왜?
@@ -137,7 +140,9 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.LocalPlayer.IsMasterClient)           // 게임 시작 버튼과 방 수정은 방장만 가능
         {
-            matchView.GetUI("StartButton").SetActive(true);
+            if(!HJS_GameMap.instance.SceneEmpty()) 
+                matchView.GetUI("StartButton").SetActive(true); // 게임 시작 버튼은 리스트가 있을 때에 본다
+            
             matchView.GetUI("EditButton").SetActive(true);
         }
         else
