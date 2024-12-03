@@ -40,7 +40,15 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
     public int index;
 
     public Vector3[] vectorPlayerSpawn;
-    [SerializeField] Color[] playerColors;
+
+    [SerializeField]
+    public static Color[] playerColors = new Color[]
+    {
+        Color.red,
+        new Color(1f, 0.5f, 0f),
+        Color.yellow,
+        Color.green
+    };
 
 
     private void Start()

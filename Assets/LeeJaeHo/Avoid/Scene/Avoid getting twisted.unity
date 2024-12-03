@@ -542,6 +542,11 @@ MonoBehaviour:
   gameManager: {fileID: 211594295}
   playerList: []
   index: 0
+  playerColors:
+  - {r: 1, g: 0, b: 0, a: 0}
+  - {r: 1, g: 0.6, b: 0, a: 0}
+  - {r: 1, g: 0.90713394, b: 0, a: 0}
+  - {r: 0.06549895, g: 1, b: 0, a: 0}
 --- !u!4 &211594294
 Transform:
   m_ObjectHideFlags: 0
