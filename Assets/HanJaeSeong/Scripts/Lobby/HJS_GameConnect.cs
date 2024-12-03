@@ -34,31 +34,8 @@ public class HJS_GameConnect : SimulationBehaviour, IPlayerJoined
         Debug.Log("login init");
         StartGameArgs args = new StartGameArgs();
         args.GameMode = GameMode.Shared;
-        args.SessionName = "kr";
-        args.CustomLobbyName = "Lobbys";
 
-    //   Debug.Log("scene init");
-    //   var scene = SceneRef.FromIndex(9);
-    //
-    //   Debug.Log($"scene after {scene}");
-    //
-    //   Debug.Log("sceneinfo init");
-    //   var sceneInfo = new NetworkSceneInfo();
-    //
-    //   if (scene.IsValid)
-    //   {
-    //   Debug.Log("sceneinfo true");
-    //       sceneInfo.AddSceneRef(scene, LoadSceneMode.Single);
-    //   }
-    //   Debug.Log("sceneinfo after");
-    //
-    //   //args.Scene = scene;
-
-        Debug.Log("hi");
-
-
-        NetworkRunner runner = FindObjectOfType<NetworkRunner>();
-        runner.StartGame(args);
+        transform.GetComponent<NetworkRunner>().StartGame(args);
     }
 
 }
