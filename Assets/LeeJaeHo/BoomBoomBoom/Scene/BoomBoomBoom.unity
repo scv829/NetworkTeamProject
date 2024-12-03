@@ -358,7 +358,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonArray: []
-  player: {fileID: 0}
   bomb: {fileID: 1294685919}
 --- !u!114 &51571897
 MonoBehaviour:
@@ -378,7 +377,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 51571896}
   sceneViewId: 3
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -4152,10 +4152,6 @@ MonoBehaviour:
   - {fileID: 530734142}
   - {fileID: 156585903}
   - {fileID: 284648084}
-  cart1Enter: {fileID: 1264861814}
-  cart2Enter: {fileID: 530734142}
-  cart3Enter: {fileID: 156585903}
-  cart4Enter: {fileID: 284648084}
   exitCart: {fileID: 870903782}
   player: {fileID: 1622042245990138239, guid: c630c3590617841479af7e0e9276d29c, type: 3}
 --- !u!4 &759296074
@@ -6326,6 +6322,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 210720881216264570, guid: 2023a0a9a67424f45a0c87b7b4d32d48, type: 3}
   m_PrefabInstance: {fileID: 1035226698}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1035226700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841836663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 11
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &1058104077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7669,7 +7687,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16cbb718565cea348b8c274a309b8303, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bomb: {fileID: 0}
   uiManager: {fileID: 1935685963}
   inputManager: {fileID: 2133425116530062048}
   player: {fileID: 6512782074757413719, guid: ef8cdf042f8143643ab422259ee9dc4f, type: 3}
@@ -7680,10 +7697,7 @@ MonoBehaviour:
   deathCount: 0
   defaultIndex: 0
   minus: 0
-  index: 0
   curState: 0
-  Player3: {fileID: 1428185658}
-  boom: {fileID: 1294685917}
   door: {fileID: 841836663}
   sunLight: {fileID: 1911679157}
   playerNumber: 0
@@ -11403,6 +11417,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1911679159}
   - component: {fileID: 1911679158}
+  - component: {fileID: 1911679160}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -11487,6 +11502,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 228.2, y: 11.6, z: 0}
+--- !u!114 &1911679160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911679157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 12
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1935685961
 GameObject:
   m_ObjectHideFlags: 0
@@ -12764,17 +12801,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spotlight: {fileID: 1771053367}
-  uiManager: {fileID: 0}
-  cartManager: {fileID: 759296073}
   buttonParent: {fileID: 51571896}
   player: {fileID: 1622042245990138239, guid: c630c3590617841479af7e0e9276d29c, type: 3}
-  players: []
-  button: {fileID: 543636440}
-  spotlight: {fileID: 1771053363}
-  Pos1: {x: 0, y: 0, z: 0}
-  Pos2: {x: 0, y: 0, z: 0}
-  Pos3: {x: 0, y: 0, z: 0}
-  Pos4: {x: 0, y: 0, z: 0}
   buttonParents: {fileID: 51571894}
   posParents: {fileID: 1878230325}
   boom: {fileID: 1294685917}
@@ -12818,10 +12846,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WinButton: 0
-  buttonParent: {fileID: 0}
-  Bomb: {fileID: 1294685919}
-  inputManager: {fileID: 1788366963}
-  myPos: {fileID: 5621788913710155959}
 --- !u!4 &4733016583352301865
 Transform:
   m_ObjectHideFlags: 0
@@ -13040,10 +13064,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WinButton: 0
-  buttonParent: {fileID: 0}
-  Bomb: {fileID: 1294685919}
-  inputManager: {fileID: 1788366963}
-  myPos: {fileID: 5621788913026384315}
 --- !u!4 &4733016584176513477
 Transform:
   m_ObjectHideFlags: 0
@@ -13094,10 +13114,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WinButton: 0
-  buttonParent: {fileID: 0}
-  Bomb: {fileID: 1294685919}
-  inputManager: {fileID: 1788366963}
-  myPos: {fileID: 5621788912948923285}
 --- !u!4 &4733016584236671569
 Transform:
   m_ObjectHideFlags: 0
@@ -13316,10 +13332,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WinButton: 0
-  buttonParent: {fileID: 0}
-  Bomb: {fileID: 1294685919}
-  inputManager: {fileID: 1788366963}
-  myPos: {fileID: 5621788913370126037}
 --- !u!4 &4733016584690301965
 Transform:
   m_ObjectHideFlags: 0
