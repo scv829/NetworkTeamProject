@@ -7,6 +7,9 @@ using WebSocketSharp;
 
 public class HJS_SignUpPanel : MonoBehaviour
 {
+    [Header("Login")]
+    [SerializeField] GameObject loginPanel;
+
     [Header("Popup")]
     [SerializeField] HJS_PopupPanel popupPanel;
 
@@ -133,6 +136,7 @@ public class HJS_SignUpPanel : MonoBehaviour
 
                 popupPanel.ShowPopup("Send verification your email");
                 gameObject.SetActive(false);
+                loginPanel.SetActive(true);
 
                 // 인증 메일 전송
                 result.User.SendEmailVerificationAsync().ContinueWithOnMainThread(task =>
