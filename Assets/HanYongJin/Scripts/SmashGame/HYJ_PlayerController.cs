@@ -12,15 +12,24 @@ public class HYJ_PlayerController : MonoBehaviourPun
     private HYJ_MonsterSearch monster;
     private float time;
     private int[] playerRanks;
-    private void Awake()
+
+    //색상
+    [SerializeField] Renderer bodyRenderer;
+    [SerializeField] Color color;
+
+    private void Start()
     {
-        monster = transform.GetComponentInParent<HYJ_MonsterSearch>();
+        monster = gameObject.transform.GetComponentInParent<HYJ_MonsterSearch>();
         time = 0;
         playerRanks = new int[4];
         for(int i = 0; i < playerRanks.Length; i++)
         {
             playerRanks[i] = 0; // 랭크를 0으로 초기화
         }
+
+        Vector3 vectorColor = photonView.Owner.GetPlayerColor();
+        color.r = vectorColor.x; color.g = vectorColor.y; color.b = vectorColor.z;
+        bodyRenderer.material.color = color;
     }
 
     private void Update()
@@ -42,7 +51,9 @@ public class HYJ_PlayerController : MonoBehaviourPun
         }
         if (monster.monsterCount <= 0 && time > 0)
         {
-            photonView.RPC("PlayerRecord", RpcTarget.All);
+            //TODO : 전원 멈추고 승자가 누군지 알려주기
+            GameObject.FindWithTag("GameController").GetComponent<HYJ_TestGameScene>().GameEnd(PhotonNetwork.LocalPlayer.ActorNumber);
+            
         }
     }
 
@@ -54,23 +65,5 @@ public class HYJ_PlayerController : MonoBehaviourPun
         transform.Rotate(new Vector3(0, 90, 0));
     }
 
-    [PunRPC]
-    public void PlayerRecord()
-    {
-        for(int i = 0; i< playerRanks.Length; i++)
-        {
-            if(playerRanks[i] == 0)
-            {
-                playerRanks[i] = photonView.ViewID;
-                timerCanvas.gameObject.SetActive(true);
-                Debug.Log(i+1);
-                playerRankText.text = i+1.ToString() +"등";
-                if(i == 3)
-                {
-                    //TODO : 게임 종료 결과창 보여주기
-                    Debug.Log("게임 끝");
-                }
-            }
-        }
-    }
+    
 }

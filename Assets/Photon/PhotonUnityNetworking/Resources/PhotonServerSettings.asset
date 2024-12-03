@@ -94,6 +94,7 @@ MonoBehaviour:
   - RPCAddPlayerCount
   - RPCAP
   - HYJ2_GameEnd
+  - HYJ_GameEnd
   - RPCUI
   DisableAutoOpenWizard: 1
   ShowSettings: 1

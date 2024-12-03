@@ -16,7 +16,7 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
     [SerializeField] Camera mainCamera;
 
     //승자 플레이어
-    public int WinPlayer;
+    //public int WinPlayer;
 
     [SerializeField] private Player[] _curPhotonPlayer;
     public Player[] CurPhotonPlayer { get { return _curPhotonPlayer; } set { _curPhotonPlayer = value; } }
@@ -110,7 +110,7 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
     {
         if(_playerNumber != 0)
         {
-            Debug.Log(_playerNumber);
+            GameObject.FindWithTag("Player").SetActive(false);
             photonView.RPC("HYJ2_GameEnd", RpcTarget.All, _playerNumber);
         }
     }
