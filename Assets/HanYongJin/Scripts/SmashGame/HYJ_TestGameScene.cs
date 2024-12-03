@@ -93,10 +93,8 @@ public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
 
     public void GameEnd(int _winnerNumber)
     {
-        Debug.Log("AAAAAAAA");
         if(_winnerNumber != 0)
         {
-            Debug.Log("BBBBBBBBBBB");
             GameObject.FindWithTag("Player").SetActive(false);
             photonView.RPC("HYJ_GameEnd", RpcTarget.All, _winnerNumber);
         }
@@ -105,7 +103,7 @@ public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
     [PunRPC]
     public void HYJ_GameEnd(int winnerNumber)
     {
-        Debug.Log("CCCCCCCCCC");
+        gameStartCountText.gameObject.SetActive(true);
         gameStartCountText.text = $"{winnerNumber}P is Winner!!!";
         Player winner = CurPhotonPlayer[winnerNumber-1];
         HJS_GameSaveManager.Instance.GameOver(new Player[] {winner});

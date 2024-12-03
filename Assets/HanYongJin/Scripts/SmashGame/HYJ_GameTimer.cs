@@ -6,12 +6,6 @@ using Photon.Pun;
 
 public class HYJ_GameTimer : MonoBehaviourPun
 {
-    /*  TODO : 게임 타이머 만들기
-     *  1. UI로 타이머를 만들기
-     *  2. 타이머는 두가지다. 개인타이머 / 전체 타이머
-     *  3. 개인 타이머 저장 기능 만들기 > 몬스터컨트롤러.몬스터다이 함수를 통해 기능 사용할 수 있도록 하기 > 기록/점수 저장용
-     *  4. 전체 타이머는 플레이어 전원이 
-     */
     [Header("전체 타이머")]
     [SerializeField] TMP_Text timerLeftText;
     [SerializeField] TMP_Text mid;
@@ -32,12 +26,12 @@ public class HYJ_GameTimer : MonoBehaviourPun
     public void TimerUpdate()
     {
         time += Time.deltaTime;
-        if(time <= 10f)
+        if(time <= 10f) //10초를 넘기지 않았을 때
         {
-            timerLeftText.text = $"{(int)time}";
-            timerRightText.text = $"{(int)((time % 1) * 100)}";
+            timerLeftText.text = $"{(int)time}"; // 타이머의 초 단위
+            timerRightText.text = $"{(int)((time % 1) * 100)}";  // 초의 하위 소수 단위
         }
-        else
+        else  // 10초가 넘어가게 되었을 때
         {
             mid.gameObject.SetActive(false);
             timerLeftText.color = new Color(0.8f, 0.0f, 0.0f);
@@ -47,7 +41,7 @@ public class HYJ_GameTimer : MonoBehaviourPun
         }
     }
 
-    public void TimerStart()
+    public void TimerStart() // 타이머를 시작시키기 위한 함수
     {
         timerStart = true;
     }
