@@ -4726,7 +4726,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &854746591
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10493,8 +10493,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 911d42e2130aecb4294799b41b90d27e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 1622042245990138239, guid: c630c3590617841479af7e0e9276d29c, type: 3}
-  inputManager: {fileID: 2133425116530062048}
   playerSpawner1: {fileID: 795693243}
   playerSpawner2: {fileID: 951244318}
   playerSpawner3: {fileID: 711090599}
@@ -10504,10 +10502,6 @@ MonoBehaviour:
   - {fileID: 530734142}
   - {fileID: 156585903}
   - {fileID: 284648084}
-  cart1: {fileID: 1264861814}
-  cart2: {fileID: 530734142}
-  cart3: {fileID: 156585903}
-  cart4: {fileID: 284648084}
   curUserNum: 0
   player: {fileID: 0}
   playerArray: []
@@ -10515,6 +10509,7 @@ MonoBehaviour:
   playerPos: {x: 0, y: 0, z: 0}
   index: 0
   vectorPlayerSpawn: []
+  playerColors: []
 --- !u!4 &1788366965
 Transform:
   m_ObjectHideFlags: 0

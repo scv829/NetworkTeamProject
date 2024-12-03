@@ -64,7 +64,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
         if (!PhotonNetwork.IsMasterClient)
             return;
 
-
+        //Comment 게임페이즈에 돌입 시 시간초 흘러가기 시작
         if (curPhase == Phase.GamePhase)
         {
             if (timerRoutine == null)
@@ -73,7 +73,9 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
             }
         }
 
+        //Comment : 페이즈 에 따라 게임 진행 처리
         PhaseCalc();
+        //Commnet : 우승자 찾기 위한 함수
         FindPlayer();
     }
 
@@ -89,6 +91,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
         }
     }
 
+    // Comment 생존자 찾기 함수
     void AlivePlayer()
     {
         photonView.RPC("RPCAP", RpcTarget.AllViaServer);
@@ -100,6 +103,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
         _alivePlayer = GameObject.FindWithTag("Player").GetComponent<ljh_PlayerController>();
     }
 
+    //Comment : 비석 공격 코루틴
     IEnumerator AttackCo()
     {
         while (curPhase == Phase.GamePhase)
@@ -120,7 +124,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
 
     }
 
-
+    //Comment : 게임 시작시 로딩 대기시간
     public void Wait()
     {
         // Todo: 타이머 3초 대기시간
@@ -140,7 +144,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
 
         if (!isStarted)
         {
-            timer = 35f;
+            timer = 15f;
             isStarted = true;
         }
     }
@@ -157,7 +161,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
 
     }
 
-
+    // 게임 페이즈 실행 함수
     public void GamePhase()
     {
 
@@ -168,7 +172,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
 
     }
 
-
+    // 페이즈 변경 함수
     public void PhaseChange()
     {
         if (curPhase == Phase.GamePhase)
@@ -181,26 +185,20 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
     }
 
 
-
+    //엔드 페이즈 함수
     public void EndPhase()
     {
         isEnd = true;
         int index = WinnerCalc();
 
-        Player winner = curPhotonList[index]; // 인덱스를 어떻게?
+        Player winner = curPhotonList[index];
         HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
 
-        // Todo: 게임 끝 살아남은 사람 줌인 / 우선순위 낮음
-        // Todo: 시간 비례해서 순위
     }
 
+    //Comment 승자 계산 함수
     public int WinnerCalc()
     {
-        //테스트씬에서 만든 플레이어 리스트에 승리 변수를 넣어주고 
-        // curPhotonList[index] 
-        // index = 승리 변수가진 플레이어 리스트 인덱스 
-        // 
-
         for (int i = 0; i < curPhotonList.Length; i++)
         {
             if (testScene.playerList[i].died == false)
@@ -244,18 +242,4 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
             uiManager.timerText.text = (string)stream.ReceiveNext();
         }
     }
-
-    /*public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(playerCount);
-            stream.SendNext(timer);
-        }
-        else
-        {
-            playerCount = (int)stream.ReceiveNext();
-            timer = (float)stream.ReceiveNext();
-        }
-    }*/
 }
