@@ -44,6 +44,14 @@ public class HJS_MatchView : HJS_BaseUI
         GetUI<Button>("ApplyEditRoomButton").onClick.AddListener(CloseEditSetting);
         GetUI<Button>("CloseEditRoomButton").onClick.AddListener(CloseEditSetting);
         #endregion
+
+        #region 옵션 UI
+
+        GetUI("OptionPanel").SetActive(false);
+        GetUI<Button>("CloseOptionButton").onClick.AddListener(CloseOptionPanel);
+
+
+        #endregion
     }
 
     private void ShowRandomMatchStopUI()
@@ -94,5 +102,10 @@ public class HJS_MatchView : HJS_BaseUI
         GetUI("ApplyEditRoomButton").SetActive(false);
         GetUI("CreateRoomPanel").SetActive(false);
         GetUI("JoinRoomPanel").SetActive(true);
+    }
+
+    private void CloseOptionPanel()
+    {
+        GetUI("OptionPanel").SetActive(false);
     }
 }

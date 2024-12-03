@@ -29780,6 +29780,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3eae07975484cf409516c250bac5a90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connect: {fileID: 0}
   emailField: {fileID: 1320229246}
   passwordField: {fileID: 947949789}
   popupPanel: {fileID: 1693396872}

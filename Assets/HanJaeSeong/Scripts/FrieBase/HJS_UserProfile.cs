@@ -10,6 +10,10 @@ using UnityEngine;
 
 public class HJS_UserProfile : MonoBehaviour
 {
+    [Header("UI")]
+    [SerializeField] HJS_MatchView matchView;
+
+    [Header("Spec")]
     [SerializeField, Tooltip("유저의 닉네임")] TMP_Text nicknameText;
     [SerializeField, Tooltip("유저의 소개")] TMP_Text descriptionText;
     [SerializeField, Tooltip("유저의 승률")] TMP_Text rateText;
@@ -90,5 +94,22 @@ public class HJS_UserProfile : MonoBehaviour
                 // 모든 정보가 세팅이 되면 보여주기
                 gameObject.SetActive(true);
             });
+    }
+
+    public void UpdateProfile()
+    {
+        // 일단 자신의 유저를 가져고
+        FirebaseUser my = HJS_FirebaseManager.Auth.CurrentUser;
+
+        // 만약 로그인이 안됐을 때 호출은 안되게 설정
+        if (my == null)
+            return;
+
+        // 데이터베이스에 요청
+        userDateRef = HJS_FirebaseManager.Database.RootReference.Child("UserData").Child(my.UserId);
+
+        
+        
+
     }
 }
