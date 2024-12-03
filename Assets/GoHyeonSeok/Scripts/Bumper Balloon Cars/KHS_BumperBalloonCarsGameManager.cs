@@ -21,12 +21,13 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
     [SerializeField] private bool _isGameStarted;   // 현재 게임 시작했는지 확인하는 변수
     public bool IsGameStarted { get { return _isGameStarted; } set { _isGameStarted = value; } }
 
-    [SerializeField] private Player[] _curPhotonPlayer;
+    [SerializeField] private Player[] _curPhotonPlayer; // 현재 포톤 네트워크에 접속된 플레이어의 리스트를 받는 변수
     public Player[] CurPhotonPlayer { get { return _curPhotonPlayer; } set { _curPhotonPlayer = value; } }
-    private int _winnerIndex = 0;
+    private int _winnerIndex = 0;   // 우승자의 인덱스를 위한 변수
 
     private void Awake()
     {
+        // 싱글톤 패턴 사용으로 인해 예외처리 진행
         if (Instance == null)
         {
             Instance = this;
@@ -39,12 +40,12 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
 
     private void Start()
     {
-        CurLivePlayer = PhotonNetwork.CurrentRoom.PlayerCount;  // 게임 시작했을때 현재 접속되어있는 인원수 만큼 설정 (임시 2명 설정)
-                                                                // TODO : 나중에 PhotonNetwork.CurrentRoom.PlayerCount; 현재 게임에 접속된 플레이어 카운트 새야함
-        CurPhotonPlayer = PhotonNetwork.PlayerList;
+        CurLivePlayer = PhotonNetwork.CurrentRoom.PlayerCount;  // 게임 시작했을때 현재 접속되어있는 인원수 만큼 설정
+                                                                
+        CurPhotonPlayer = PhotonNetwork.PlayerList; // 현재 포톤네트워크에 접속된 플레이어 담아주기
         Debug.Log($"{CurPhotonPlayer.Length}");
 
-        PhotonNetwork.LocalPlayer.SetLoad(true);
+        PhotonNetwork.LocalPlayer.SetLoad(true);    // 로드되었을시
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
@@ -97,10 +98,10 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
     // 플레이어(카트) 스폰 함수
     private GameObject PlayerSpawn()
     {
-        Vector3 spawnPosition = SetPosition();  // 함수내에서 미리 설정한 위치로 초기화
-        Quaternion spawnRotation = PlayerRotate();
+        Vector3 spawnPosition = SetPosition();  // 함수 내에서 미리 설정한 위치로 초기화
+        Quaternion spawnRotation = PlayerRotate();  // 함수 내에세 미리 설정한 회전으로 초기화
 
-        switch (PhotonNetwork.LocalPlayer.ActorNumber)
+        switch (PhotonNetwork.LocalPlayer.ActorNumber)  // 현재 플레이어 넘버링에 따라서 소환되는 위치 설정
         {
             case 1:
                 return PhotonNetwork.Instantiate("KHS/KHS_Cart1", spawnPosition, spawnRotation);
@@ -114,7 +115,7 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
         return null;
     }
 
-    private Quaternion PlayerRotate()
+    private Quaternion PlayerRotate()   // 플레이어의 회전 값을 반환시켜주는 함수
     {
         // 현재 자신의 ActorNumber 대로 위치 설정
         switch (PhotonNetwork.LocalPlayer.ActorNumber)
@@ -131,18 +132,18 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
         return Quaternion.identity;
     }
 
-    public void GameOverPlayer()
+    public void GameOverPlayer()    // 플레이어가 게임오버되었을때 호출되는 함수
     {
-        CurLivePlayer--;    // 현재 살아있는 플레이어 인원
+        CurLivePlayer--;    // 현재 살아있는 플레이어 인원 1명 줄여주기
         Debug.Log($"현재 남은 플레이어 {CurLivePlayer} 명");
 
-        if( CurLivePlayer == 1)
+        if( CurLivePlayer == 1) // 현재 살아있는 플레이어가 1명이라면,
         {
-            StartCoroutine(DelayGameOver());
+            StartCoroutine(DelayGameOver());    // 게임을 마무리하고 결과창을 출력하는 코루틴 함수 호출
         }
     }
 
-    private IEnumerator DelayGameOver()
+    private IEnumerator DelayGameOver() // 게임을 마무리하고 결과창을 출력하는 코루틴 함수
     {
         yield return new WaitForSeconds(0.5f);  // TODO : 우선은 임시방편으로 데이터를 불러오는 시간이 조금 딜레이가 있는 것으로 확인되어서 넣은 코루틴
         string nickName = "";
@@ -207,13 +208,13 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
         {
             stream.SendNext(IsGameStarted); // 현재 게임 시작했는지 확인하는 변수
             stream.SendNext(CurLivePlayer); // 현재 살아있는 플레이어 인원 변수
-            stream.SendNext(_winnerIndex);
+            stream.SendNext(_winnerIndex);  // 우승자 인덱스 변수
         }
         else if (stream.IsReading)
         {
             IsGameStarted = (bool)stream.ReceiveNext(); // 현재 게임 시작했는지 확인하는 변수
             CurLivePlayer = (int)stream.ReceiveNext();  // 현재 살아있는 플레이어 인원 변수
-            _winnerIndex = (int)stream.ReceiveNext();
+            _winnerIndex = (int)stream.ReceiveNext();   // 우승자 인덱스 변수
         }
     }
 }

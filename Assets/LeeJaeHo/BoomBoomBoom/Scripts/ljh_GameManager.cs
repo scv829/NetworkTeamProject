@@ -24,7 +24,6 @@ public enum MyTurn
 };
 public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
 {
-    [SerializeField] public ljh_Boom bomb;
     [SerializeField] public ljh_UIManager uiManager;
     [SerializeField] public ljh_InputManager inputManager;
     [SerializeField] public ljh_Player player;
@@ -36,15 +35,11 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
     public int deathCount = 0;
     public int defaultIndex;
     public int minus;
-    [SerializeField] public int index;
 
 
     [SerializeField] public State curState;
 
-    [SerializeField] public GameObject Player3;
-
     [Header("기타 오브젝트")]
-    [SerializeField] public GameObject boom;
     [SerializeField] public GameObject door;
     [SerializeField] public GameObject sunLight;
 
@@ -60,7 +55,7 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     Coroutine turnCoroutine;
 
-    Player[] curPhotonList;
+    public Player[] curPhotonList;
     bool end;
 
     private void Awake()
@@ -213,9 +208,9 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
         sunLight.transform.rotation = Quaternion.Euler(130, 48, 0);
         cartManagerEnter.CartMoveExit();
 
-        Debug.Log(curPhotonList[(int)myTurn].NickName);
 
         Player winner = curPhotonList[(int)myTurn];
+        uiManager.ShowUiEnd();
         HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
 
 
@@ -251,11 +246,15 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             stream.SendNext(curState);
             stream.SendNext(myTurn);
+            stream.SendNext(door.transform.rotation);
+            stream.SendNext(sunLight.transform.rotation);
         }
         else
         {
             curState = (State)stream.ReceiveNext();
             myTurn = (MyTurn)stream.ReceiveNext();
+            door.transform.rotation = (Quaternion)stream.ReceiveNext();
+            sunLight.transform.rotation = (Quaternion)stream.ReceiveNext();
         }
     }
 }

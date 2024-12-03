@@ -40,14 +40,9 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
     private void Start()
     {
         IsStarted = false;  // 게임씬에 진입했을시에는 false
-        PhotonNetwork.LocalPlayer.SetLoad(true);
+        PhotonNetwork.LocalPlayer.SetLoad(true);    // 로딩이 완료되었다고 알리기
 
-        //if (PhotonNetwork.IsMasterClient)   // 마스터 클라이언트만 진행
-        //{
-        //    _totalplayers = PhotonNetwork.CurrentRoom.PlayerCount;  // 총 플레이어 수 저장
-        //}
-
-        CurPhotonPlayer = PhotonNetwork.PlayerList;
+        CurPhotonPlayer = PhotonNetwork.PlayerList; // 현재 포톤네트워크에 접속되어있는 플레이어 목록 넣어주기
     }
 
     // Update 함수
@@ -71,7 +66,8 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
 
     }
 
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
+    // 플레이어의 프로퍼티에 변경사항이 있을때 호출되는 함수
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)    
     {
         if (changedProps.ContainsKey(HJS_CustomProperty.LOAD))
         {
@@ -152,16 +148,6 @@ public class KHS_MechaMarathonGameManager : MonoBehaviourPunCallbacks, IPunObser
 
         return _heyHoIndex; // 가장 많이 날아가는 헤이호의 인덱스 반환
     }
-
-    // 방에 참가했을때 호출되는 함수
-    //public override void OnJoinedRoom()
-    //{
-
-    //    GameObject player = PlayerSpawn();  // 방에 들어왔을때 플레이어 생성
-    //    GameObject heyho = HeyHoSpawn();   // 방에 들어왔을때 헤이호 생성
-    //    // 생성한 heyho에 플레이어 컨트롤러 변수에 생성한 플레이어의 스크립트 참조시켜주기
-    //    heyho.GetComponent<KHS_HeyHoController>()._playerController = player.GetComponent<KHS_PlayerController>();
-    //}
 
 
     // 네트워크에 진입 후 준비에 필요한 시간 살짝 주는 함수

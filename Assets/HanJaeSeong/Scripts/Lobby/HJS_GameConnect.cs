@@ -19,14 +19,14 @@ public class HJS_GameConnect : SimulationBehaviour, IPlayerJoined
     {
         if (player == Runner.LocalPlayer)
         {
-            Runner.Spawn(PlayerPrefab, HJS_PlayerPosition.Instance.PlayerPos, Quaternion.identity);
+            Runner.Spawn(PlayerPrefab, spawnPoint.position, Quaternion.identity);
             Runner.StartCoroutine(FadeRoutine());
         }
     }
 
     private IEnumerator FadeRoutine()
     {
-        yield return new WaitForSeconds(Runner.RemoteRenderTime);
+        yield return new WaitForSeconds(3f);
 
         fadeController.FadeIn();
     }

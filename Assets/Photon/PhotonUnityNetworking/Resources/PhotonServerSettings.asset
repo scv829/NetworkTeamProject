@@ -95,6 +95,7 @@ MonoBehaviour:
   - RPCAP
   - HYJ2_GameEnd
   - HYJ_GameEnd
+  - RPCUI
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

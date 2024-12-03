@@ -5,15 +5,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
-public class ljh_ButtonParent : MonoBehaviourPun
+public class ljh_ButtonParent : MonoBehaviourPun,IPunObservable
 {
     [SerializeField] public ljh_Button[] buttonArray;
-    [SerializeField] public GameObject player;
 
     [SerializeField] ljh_Boom bomb;
 
-    GameObject button;
-    bool buttonOnOff;
+    int WinNum;
 
     private void Start()
     {
@@ -23,7 +21,7 @@ public class ljh_ButtonParent : MonoBehaviourPun
         buttonArray = GetComponentsInChildren<ljh_Button>();
 
         //Comment : 랜덤한 버튼에 윈버튼 넣어줌
-        int WinNum = Random.Range(0, buttonArray.Length - 1);
+        WinNum = Random.Range(0, buttonArray.Length - 1);
         buttonArray[WinNum].GetComponent<ljh_Button>().WinButton = true;
 
 
@@ -61,4 +59,15 @@ public class ljh_ButtonParent : MonoBehaviourPun
 
     }
 
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if(stream.IsWriting)
+        {
+            stream.SendNext(WinNum);
+        }
+        else
+        {
+            WinNum = (int)stream.ReceiveNext();
+        }
+    }
 }

@@ -148,6 +148,7 @@ public class HJS_GameMaster : MonoBehaviourPunCallbacks
             int number = player.GetPlayerNumber();
             scoreUIs[number].SetProfile(player.GetPlayerColor());
             scoreUIs[number].gameObject.SetActive(true);
+            inputUIs[number].transform.GetChild(0).GetComponent<TMP_Text>().text = (player.IsLocal) ? $"<color=\"green\">{player.NickName}</color>" : player.NickName;
             inputUIs[number].SetActive(true);
         }
 

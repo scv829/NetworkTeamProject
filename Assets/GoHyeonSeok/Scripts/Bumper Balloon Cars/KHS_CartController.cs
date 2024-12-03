@@ -4,43 +4,41 @@ using UnityEngine.UIElements;
 
 public class KHS_CartController : MonoBehaviourPun, IPunObservable
 {
-    [SerializeField] float _moveSpeed;
-    [SerializeField] float _bodyRotateSpeed;
+    [SerializeField] float _moveSpeed;          // 카트의 이동속도 변수
+    [SerializeField] float _bodyRotateSpeed;    // 카트의 회전속도 변수
 
-    [SerializeField] bool _isGameOver;
+    [SerializeField] bool _isGameOver;          // 현재 플레이어가 게임오버되었는지 확인하는 변수
     public bool IsGameOver { get { return _isGameOver; } set { _isGameOver = value; } }
 
-    private Rigidbody rb;
+    private Rigidbody rb;   // 카트의 리지드바디 변수
     public Rigidbody Rb { get { return rb; } set { rb = value; } }
 
-    [SerializeField] Animator _animator;
+    [SerializeField] Animator _animator;    // 애니메이션 재생을 위한 애니메이터 변수
     public Animator Animator { get { return _animator; } set { _animator = value; } }
 
-    [SerializeField] private bool _canMove;
+    [SerializeField] private bool _canMove; // 현재 움직일 수 있는 상황인지 판단하기 위한 변수
     public bool CanMove { get { return _canMove; } set { _canMove = value; } }
 
 
 
-    private Vector3 networkPosition;
-    private float deltaPosition;
+    private Vector3 networkPosition;    // 동기화를 위한 네트워크 포지션 변수
+    private float deltaPosition;        // 지연보상을 적용한 포지션 변수
 
-    private Quaternion networkRotation;
-    private float deltaRotation;
+    private Quaternion networkRotation; // 동기화를 위한 네트워크 회전 변수
+    private float deltaRotation;        // 지연보상을 적용한 회전 변수
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        PhotonNetwork.SendRate = 60;
-        PhotonNetwork.SerializationRate = 60;
+        PhotonNetwork.SendRate = 60;    // 초당 패키지를 몇번 보내는지 횟수 설정
+        PhotonNetwork.SerializationRate = 60;   // 초당 OnPhotonSerialize가 몇번 실행하는지 횟수
     }
 
     private void Start()
     {
-
-
-        CanMove = true;
-        Ready();
-        KHS_BumperBalloonCarsGameManager.Instance.PlayerReady();
+        CanMove = true; // 시작시엔 움직일 수 있기에 true
+        Ready();    //  오브젝트가 생성되고 준비가 완료되었다고 알리기위해 호출
+        KHS_BumperBalloonCarsGameManager.Instance.PlayerReady();    // 로드되었다고 게임매니저에 선언되어있는 함수 사용
         Debug.Log($"레디한 플레이어 : {photonView.Owner.ActorNumber}");
     }
 

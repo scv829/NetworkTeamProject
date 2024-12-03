@@ -10,16 +10,13 @@ public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
     [SerializeField] ljh_PlayerController player;
 
 
-    [SerializeField] public TMP_Text scoreText;
-    [SerializeField] public TMP_Text myScoreText;
+    
     [SerializeField] public TMP_Text timerText;
     [SerializeField] public TMP_Text winnerText;
 
 
     private void Start()
     {
-        scoreText.enabled = false;
-        myScoreText.enabled = false;
         timerText.enabled = false;
         winnerText.enabled = false;
 
@@ -49,8 +46,6 @@ public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
 
         else if (gameManager.curPhase == Phase.endPhase)
         {
-            scoreText.enabled = true;
-            myScoreText.enabled = true;
             timerText.enabled = false;
             winnerText.enabled = true;
         }
@@ -60,16 +55,12 @@ public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting) 
         {
-            stream.SendNext(scoreText.enabled);
-            stream.SendNext(myScoreText.enabled);
             stream.SendNext(timerText.enabled);
             stream.SendNext(winnerText.enabled);
             stream.SendNext(gameManager._alivePlayer?.myName);
         }
         else
         {
-            scoreText.enabled = (bool)stream.ReceiveNext();
-            myScoreText.enabled = (bool)stream.ReceiveNext();
             timerText.enabled = (bool)stream.ReceiveNext();
             winnerText.enabled = (bool)stream.ReceiveNext();
             if(gameManager._alivePlayer != null)

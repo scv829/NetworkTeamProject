@@ -86,23 +86,23 @@ public class KHS_HeyHoController : MonoBehaviourPun, IPunObservable
         }
     }
 
-    private void ReadyHeyHo()   // 스크립트 참조를 위한 RPC 함수
+    private void ReadyHeyHo()   // 스크립트 참조를 위한 RPC 함수를 호출하는 함수
     {
         photonView.RPC("ReadyHeyHoRPC", RpcTarget.AllBuffered);
     }
 
 
     [PunRPC]
-    private void ReadyHeyHoRPC()
+    private void ReadyHeyHoRPC()    // 스크립트 참조를 위한 RPC 함수
     {
         _mechaMarathonGameManager.HeyHoController[photonView.Owner.ActorNumber] = this;
         Debug.Log($"{photonView.Owner.ActorNumber}번째 헤이호 스크립트 참조 성공");
     }
 
     [PunRPC]
-    private void FinishedHeyHo()
+    private void FinishedHeyHo()    //
     {
-        _mechaMarathonGameManager._heyHoFinished++;
+        _mechaMarathonGameManager._heyHoFinished++;     // // 현재 헤이호의 움직임에 필요한 계산이 끝난 헤이호의 수 올려주기
     }
 
     private IEnumerator StartTimingCoroutine()  // 헤이호가 움직이기 시작하는 타이밍 함수
