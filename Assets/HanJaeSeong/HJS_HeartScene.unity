@@ -3046,7 +3046,7 @@ MonoBehaviour:
   changeShaderEvent:
     m_PersistentCalls:
       m_Calls: []
-  refeatTime: 5
+  refeatTime: 1
   isExplain: 0
   explainUI: {fileID: 1313042434}
   scoreUIs:

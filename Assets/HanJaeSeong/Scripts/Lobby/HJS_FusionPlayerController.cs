@@ -10,7 +10,7 @@ using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class HJS_FusionPlayerController : NetworkBehaviour
+public class HJS_FusionPlayerController : NetworkBehaviour, IAfterSpawned
 {
     private CharacterController _controller;
 
@@ -35,6 +35,8 @@ public class HJS_FusionPlayerController : NetworkBehaviour
             camera.Priority = 15;
             name = PhotonNetwork.LocalPlayer.NickName;
             gameObject.GetComponent<NetworkTransform>().Teleport(HJS_PlayerPosition.Instance.PlayerPos);
+            _controller.enabled = true;
+            Debug.Log($"spawnPosition { transform.position} ");
         }
        nickname.text = name;
     }
@@ -60,8 +62,9 @@ public class HJS_FusionPlayerController : NetworkBehaviour
         float rotate = moveDir.x * rotateSpeed * Runner.DeltaTime;
 
         // 위치를 동기화
-        transform.position += transform.TransformDirection(move);
         transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y + rotate, 0);
+        if(!move.Equals(Vector3.zero))
+        transform.position += transform.TransformDirection(move);
     }
 
     private void Update()
@@ -86,5 +89,10 @@ public class HJS_FusionPlayerController : NetworkBehaviour
         Debug.Log("PauseServer");
         // 연결을 멈춘다 -> 내가 사라진다
         Runner.Shutdown();
+    }
+
+    public void AfterSpawned()
+    {
+        Debug.Log($"AfterSpawnPosition {transform.position} ");
     }
 }

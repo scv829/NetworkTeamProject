@@ -1,6 +1,7 @@
 using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
+using Fusion;
 using Photon.Pun;
 using System.Collections.Generic;
 using TMPro;
@@ -8,8 +9,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class HJS_Test_LoginPanel : MonoBehaviour
+public class HJS_Test_LoginPanel : SimulationBehaviour
 {
+    [SerializeField] HJS_GameConnect connect;
+
     [SerializeField] TMP_InputField emailField;
     [SerializeField] TMP_InputField passwordField;
 
@@ -106,11 +109,15 @@ public class HJS_Test_LoginPanel : MonoBehaviour
             })
              .ContinueWithOnMainThread(task =>
              {
+                 Debug.Log("get");
                  PhotonNetwork.LocalPlayer.SetPlayerUID(uid);
                  PhotonNetwork.ConnectUsingSettings();
 
+                 // 씬 넘어가기
                  SceneManager.LoadScene("HJS_Test_MainScene");
                  PhotonNetwork.AutomaticallySyncScene = true;
              });
     }
+
+
 }
