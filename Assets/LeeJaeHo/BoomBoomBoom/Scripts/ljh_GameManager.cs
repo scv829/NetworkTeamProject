@@ -200,14 +200,22 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
         curState = State.die;
     }
 
+    public void DoorNLight()
+    {
+        photonView.RPC("RPCDNL", RpcTarget.AllViaServer);
+    }
 
+    [PunRPC]
+    public void RPCDNL()
+    {
+        door.transform.rotation = Quaternion.Euler(0, 90, 0);
+        sunLight.transform.rotation = Quaternion.Euler(130, 48, 0);
+    }
     public void GameEnd()
     {
         end = true;
-        door.transform.rotation = Quaternion.Euler(0, 90, 0);
-        sunLight.transform.rotation = Quaternion.Euler(130, 48, 0);
         cartManagerEnter.CartMoveExit();
-
+        DoorNLight();
 
         Player winner = curPhotonList[(int)myTurn];
         uiManager.ShowUiEnd();
@@ -246,15 +254,11 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             stream.SendNext(curState);
             stream.SendNext(myTurn);
-            stream.SendNext(door.transform.rotation);
-            stream.SendNext(sunLight.transform.rotation);
         }
         else
         {
             curState = (State)stream.ReceiveNext();
             myTurn = (MyTurn)stream.ReceiveNext();
-            door.transform.rotation = (Quaternion)stream.ReceiveNext();
-            sunLight.transform.rotation = (Quaternion)stream.ReceiveNext();
         }
     }
 }

@@ -53,7 +53,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
         isStarted = false;
         playerCount = 0;
         readyTimer = 3;
-        timer = 35;
+        timer = 25;
 
         curPhotonList = PhotonNetwork.PlayerList;
         isEnd = false;
