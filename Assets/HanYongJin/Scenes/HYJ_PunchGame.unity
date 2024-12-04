@@ -569,8 +569,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 270d644ce2746cb41a2605f191a2a38a, type: 2}
+  m_sharedMaterial: {fileID: -5481250746559811390, guid: 270d644ce2746cb41a2605f191a2a38a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1159,7 +1159,6 @@ MonoBehaviour:
   - {r: 1, g: 0.8970643, b: 0, a: 0}
   - {r: 0.012079239, g: 1, b: 0, a: 0}
   mainCamera: {fileID: 464996423}
-  WinPlayer: 0
 --- !u!114 &1449803485
 MonoBehaviour:
   m_ObjectHideFlags: 0
