@@ -58,6 +58,7 @@ public class ljh_PlayerController : MonoBehaviourPun, IPunObservable
                 died = true;
                 transform.tag = "Untagged";
                 rigid.constraints = RigidbodyConstraints.FreezeAll;
+                gameManager.playerCount--;
                 Dead();
                 
             }

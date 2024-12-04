@@ -1,4 +1,5 @@
 using Cinemachine;
+using Fusion.Analyzer;
 using Photon.Pun;
 using Photon.Pun.Demo.PunBasics;
 using System;
@@ -11,7 +12,7 @@ using UnityEngine.UIElements;
 
 
 
-public class ljh_InputManager : MonoBehaviourPun
+public class ljh_InputManager : MonoBehaviourPun, IPunObservable
 {
     int curUserNum;
 
@@ -87,6 +88,8 @@ public class ljh_InputManager : MonoBehaviourPun
 
         _spotlight.MovingSpotlight(buttonObj, index);
 
+        player.transform.LookAt(buttonObj[index].transform.position);
+
         return _pos[index].gameObject;
 
     }
@@ -96,6 +99,7 @@ public class ljh_InputManager : MonoBehaviourPun
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            player.GetComponent<ljh_Player>().anime.Play("Push");
             if (curPos == _pos[index].transform.position)
             {
                 buttonObj[index].GetComponent<ljh_Button>().PushedButton(buttonObj[index]);
@@ -118,6 +122,15 @@ public class ljh_InputManager : MonoBehaviourPun
 
     }
 
-
-    
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(player.transform.rotation);
+        }
+        else
+        {
+            player.transform.rotation = (Quaternion)stream.ReceiveNext();
+        }
+    }
 }

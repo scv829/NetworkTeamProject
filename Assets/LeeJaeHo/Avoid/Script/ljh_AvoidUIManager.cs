@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
 {
@@ -13,6 +14,8 @@ public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
     
     [SerializeField] public TMP_Text timerText;
     [SerializeField] public TMP_Text winnerText;
+    [SerializeField] public TMP_Text guideText;
+    [SerializeField] Image image;
 
 
     private void Start()
@@ -36,11 +39,15 @@ public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
     {
         if (gameManager.curPhase == Phase.GamePhase)
         {
+            image.gameObject.SetActive(true);
+            guideText.gameObject.SetActive(true);
             timerText.enabled = true;
         }
 
         else if (gameManager.curPhase == Phase.endPhase)
         {
+            image.gameObject.SetActive(false);
+            guideText.gameObject.SetActive(false);
             timerText.enabled = false;
             winnerText.enabled = true;
         }

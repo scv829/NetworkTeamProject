@@ -21,6 +21,8 @@ public class ljh_Player : MonoBehaviourPun
     [SerializeField] GameObject inputManager;
     [SerializeField] GameObject cartManager;
 
+    [SerializeField] public Animator anime;
+
     public PlayerNumber playerNumber;
 
     [SerializeField] GameObject exitCart;

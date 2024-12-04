@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class ljh_UIManager : MonoBehaviourPun,IPunObservable
 {
     [SerializeField] ljh_GameManager gameManager;
+    [SerializeField] ljh_BoomTestGameScene testScene;
+    [SerializeField] ljh_Player player;
 
     [SerializeField] TMP_Text turnText;
     [SerializeField] TMP_Text winnerText;
+
+    [SerializeField] TMP_Text guideText;
+    [SerializeField] Image[] keyImages;
 
     State curState;
     private void Update()
@@ -17,12 +23,45 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
         curState = gameManager.curState;
 
         ShowWhosTurn();
-        ShowUiEnd();
+        
         UIOnOff();
-
+        SelfUIOnOFf();
         
         
 
+    }
+    void SelfUIOnOFf()
+    {
+        if ((int)ljh_GameManager.instance.myTurn == PhotonNetwork.LocalPlayer.ActorNumber - 1)
+        {
+            if(curState == State.enter)
+            {
+                player.anime.Play("Walk");
+            }
+            
+            if (curState == State.choice)
+            {
+                guideText.gameObject.SetActive(true);
+                keyImages[0].gameObject.SetActive(true);
+                keyImages[1].gameObject.SetActive(true);
+            }
+
+            if (curState == State.die)
+            {
+                player.anime.Play("Idle");
+                guideText.gameObject.SetActive(false);
+                keyImages[0].gameObject.SetActive(false);
+                keyImages[1].gameObject.SetActive(false);
+            }
+
+            if (curState == State.end)
+            {
+                player.anime.Play("Walk");
+                guideText.gameObject.SetActive(false);
+                keyImages[0].gameObject.SetActive(false);
+                keyImages[1].gameObject.SetActive(false);
+            }
+        }
     }
     void UIOnOff()
     {
@@ -44,6 +83,7 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
 
         if (curState == State.end)
         {
+            ShowUiEnd();
             winnerText.gameObject.SetActive(true);
         }
     }

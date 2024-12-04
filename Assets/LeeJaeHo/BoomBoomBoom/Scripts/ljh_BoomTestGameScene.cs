@@ -45,7 +45,7 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
     public static Color[] playerColors = new Color[]
     {
         Color.red,
-        new Color(1f, 0.5f, 0f),
+        new Color(1f, 0.6f, 0f),
         Color.yellow,
         Color.green
     };
@@ -150,9 +150,6 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
         player = PhotonNetwork.Instantiate("ljh_Player", playerPos, Quaternion.identity);
         player.GetComponent<ljh_Player>().playerNumber = (PlayerNumber)index;
 
-        //Commnet : 색상 지정
-        Vector3 vectorColor = new Vector3(playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].r, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].g, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].b);
-        PhotonNetwork.LocalPlayer.SetPlayerColor(vectorColor);
 
 
 
