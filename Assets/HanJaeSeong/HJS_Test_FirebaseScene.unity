@@ -755,6 +755,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fdaf02f31103c94fa108f4b46afdfa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loginPanel: {fileID: 0}
   popupPanel: {fileID: 300212199}
   emailInputField: {fileID: 915078661}
   passwordInputField: {fileID: 855414948}
@@ -2708,6 +2709,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce4fc2fa25f6bf4ab3cd787c83975d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  matchView: {fileID: 0}
   nicknameText: {fileID: 212956371}
   descriptionText: {fileID: 1775095344}
   rateText: {fileID: 1225272776}
