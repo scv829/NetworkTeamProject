@@ -36,7 +36,7 @@ public class ljh_Player : MonoBehaviourPun
         testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_BoomTestGameScene>();
         inputManager = GameObject.FindWithTag("GameController");
         //buttonPos = inputManagerScript. 나중에 유저 4 > 3번 포즈 3명 > 3번포즈 2명 2번 포즈
-        cartManager = GameObject.FindWithTag("Respawn");
+        cartManager = GameObject.FindWithTag("EditorOnly");
 
         _curPos = testGameScene.playerPos;
         winnerCheck = false;
