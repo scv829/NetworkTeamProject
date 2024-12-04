@@ -147,8 +147,8 @@ public class HJS_UserProfile : MonoBehaviour
                  UserProfile profile = new UserProfile();
                  profile.DisplayName = newNickname;
                  my.UpdateUserProfileAsync(profile)
-                 .ContinueWithOnMainThread(task => 
-                 { 
+                 .ContinueWithOnMainThread(task =>
+                 {
                      if (task.IsCanceled || task.IsFaulted) Debug.LogError($"error : {task.Exception}");
 
                      PhotonNetwork.LocalPlayer.NickName = newNickname;
@@ -158,6 +158,6 @@ public class HJS_UserProfile : MonoBehaviour
              userProfileRef.UpdateChildrenAsync(dictionary);
 
              matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("Update complete!");
-         })
+         });
     }
 }

@@ -35,14 +35,6 @@ public class HJS_GameConnect : SimulationBehaviour, IPlayerJoined
         Init();
     }
 
-    private void Update()
-    {
-        if(!Runner.IsInSession)
-        {
-            Init();
-        }
-    }
-
     private void Init()
     {
         StartGameArgs args = new StartGameArgs();
