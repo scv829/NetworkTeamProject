@@ -79,6 +79,7 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Start()
     {
+        myTurn = MyTurn.player1;
         end = false;
         curPhotonList = PhotonNetwork.PlayerList;
 
