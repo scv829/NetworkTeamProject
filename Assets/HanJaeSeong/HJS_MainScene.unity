@@ -54805,7 +54805,7 @@ MonoBehaviour:
   AutoClients: 1
   ClientStartDelay: 0.5
   ServerPort: 0
-  DefaultRoomName: testLobbyRoom
+  DefaultRoomName: LobbyRoom
   InitialScenePath: 
   _currentStage: 0
   AutoConnectVirtualInstances: 1
