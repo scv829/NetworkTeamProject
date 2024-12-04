@@ -88,6 +88,7 @@ public class ljh_Player : MonoBehaviourPun
         //Comment : 플레이어 위치 엑싯카트 위치에 고정
         if(ljh_GameManager.instance.curState == State.end)
         {
+            if(winnerCheck)
             transform.position = exitCart.transform.position;
         }
 
