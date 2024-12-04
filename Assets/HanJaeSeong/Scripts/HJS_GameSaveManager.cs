@@ -32,7 +32,26 @@ public class HJS_GameSaveManager : MonoBehaviourPun
             Destroy(gameObject);
             return;
         }
+
+        // 여기서 시작해도 이미 파이어베이스에 연결이 된 상황이라 상관이 없다
+        SetUserData();
     }
+
+    private void SetUserData()
+    {
+        FirebaseUser user = HJS_FirebaseManager.Auth.CurrentUser;
+
+        if (user == null) { Debug.LogError("파이어베이스 연동 x"); return; }
+
+        // 연결이 되어있고 방에 들어있을 때만 한번더 호출
+        if(PhotonNetwork.IsConnected && PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LocalPlayer.NickName = user.DisplayName;
+            PhotonNetwork.LocalPlayer.SetPlayerUID(user.UserId);
+        }
+
+    }
+
 
     // 마스터 클라이언트에서 실행하므로 따로 예외처리는 없다
     public void GameOver(Player[] winners)

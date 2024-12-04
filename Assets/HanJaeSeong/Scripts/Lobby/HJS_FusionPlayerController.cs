@@ -74,11 +74,14 @@ public class HJS_FusionPlayerController : NetworkBehaviour, IAfterSpawned
 
     private void Update()
     {
+        nickname.text = name;
         // 소유권이 아니면 안하기
         if (!HasStateAuthority) return;
 
         moveDir.x = Input.GetAxis("Horizontal");
         moveDir.z = Input.GetAxis("Vertical");
+
+        name = PhotonNetwork.LocalPlayer.NickName;
     }
     public void LeaveScene()
     {
