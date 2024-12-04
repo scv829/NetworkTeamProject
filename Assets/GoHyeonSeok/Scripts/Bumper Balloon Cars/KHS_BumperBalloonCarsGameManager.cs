@@ -137,7 +137,7 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
         CurLivePlayer--;    // 현재 살아있는 플레이어 인원 1명 줄여주기
         Debug.Log($"현재 남은 플레이어 {CurLivePlayer} 명");
 
-        if( CurLivePlayer == 1) // 현재 살아있는 플레이어가 1명이라면,
+        if( CurLivePlayer <= 1) // 현재 살아있는 플레이어가 1명이라면,
         {
             StartCoroutine(DelayGameOver());    // 게임을 마무리하고 결과창을 출력하는 코루틴 함수 호출
         }

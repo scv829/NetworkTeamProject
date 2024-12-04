@@ -11,11 +11,13 @@ public class KHS_UIManager : MonoBehaviour
     [SerializeField] private WaitForSeconds _delay;     // 코루틴 딜레이를 위한 변수
     [SerializeField] private GameObject _coolTimeObj;   // 현재 'J'키를 입력할 수 있다고 표시해주는 쿨타임 오브젝트 변수
     [SerializeField] private Image _coolTimeImage;      // 쿨타임 이미지 변수
+    [SerializeField] private GameObject _howToPlay;
 
     private void Start()
     {
         _delay = new WaitForSeconds(1); // 딜레이를 1초로 설정
         _coolTimeObj.SetActive(false);  // 게임이 시작했을시에는 비활성화 상태로 게임을 실행시켜주기
+        _howToPlay.SetActive(false);
     }
 
     public void CountDownGame() // 카운트 다운 UI를 출력시키는 함수
@@ -25,6 +27,7 @@ public class KHS_UIManager : MonoBehaviour
 
     private IEnumerator CountDownCoroutine()    // 카운트 다운에 필요한 로직이 있는 코루틴 함수
     {
+        _howToPlay.SetActive(true);
         _text.text = "3";
         yield return _delay;
 
@@ -35,7 +38,7 @@ public class KHS_UIManager : MonoBehaviour
         yield return _delay;
 
         _text.text = "Game Start!";
-
+        _howToPlay.SetActive(false);
         _coolTimeObj.SetActive(true);           // 게임이 시작되면 쿨타임 오브젝트를 활성화 시켜주기
         StartCoroutine(CoolTimeCoroutine());    // 쿨타임을 출력시키는 코루틴 호출
         yield return _delay;
