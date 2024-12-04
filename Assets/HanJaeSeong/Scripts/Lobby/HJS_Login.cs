@@ -83,13 +83,13 @@ public class HJS_Login : MonoBehaviour
                 if (snapshot.Value is null)
                 {
                     HJS_UserData userData = new HJS_UserData();
-                    userData.name = userId.ToString();
+                    userData.name = HJS_FirebaseManager.Auth.CurrentUser.DisplayName;
                     userData.email = HJS_FirebaseManager.Auth.CurrentUser.Email;
                     userData.spawnPos = new Vector3(0, 0, 0);
 
                     userData.record.Reset();
 
-                    PhotonNetwork.LocalPlayer.NickName = userId.ToString();
+                    PhotonNetwork.LocalPlayer.NickName = HJS_FirebaseManager.Auth.CurrentUser.DisplayName;
 
                     string json = JsonUtility.ToJson(userData);
                     userDataRef.SetRawJsonValueAsync(json);
@@ -124,7 +124,7 @@ public class HJS_Login : MonoBehaviour
                  PhotonNetwork.ConnectUsingSettings();
 
                  // 씬 넘어가기
-                 SceneManager.LoadScene("HJS_Test_MainScene");
+                 SceneManager.LoadScene("HJS_MainScene");
                  PhotonNetwork.AutomaticallySyncScene = true;
              });
     }

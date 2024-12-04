@@ -12680,7 +12680,7 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1526071534}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -17539,7 +17539,7 @@ RectTransform:
   m_Children:
   - {fileID: 1035288937}
   m_Father: {fileID: 1526071534}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -26191,8 +26191,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 975970459}
   - {fileID: 676325470}
+  - {fileID: 975970459}
   m_Father: {fileID: 1693396871}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -30017,6 +30017,7 @@ MonoBehaviour:
   passwordField: {fileID: 947949789}
   popupPanel: {fileID: 1693396872}
   userId: tester
+  isTest: 0
 --- !u!1001 &1764319401
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using Fusion;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -107,8 +108,15 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
         foreach (HJS_PlayerEntry entry in playerEntries)        // 일단 방의 UI를 초기화 시키기
         {
             entry.SetEmpty();
-            if (entry.gameObject is null) continue;             // GameObject가 없을 때 그냥 넘어가기, PlayNubering.Awake가 더 빨리 불러져서 그런듯하다.
-            entry.gameObject.SetActive(false);                  
+            try
+            {
+                entry.gameObject.SetActive(false);                  
+            }
+            catch(Exception e)
+            {
+                Debug.Log($"에러 메시지! {e.Message}");
+                continue;
+            }
         }
 
         // 칸은 현재 룸의 최대만 가능
@@ -148,9 +156,21 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
             return;
         }
         
-        player.LeaveScene();
+        // 모두에게 보내주기
+        foreach(Player player in PhotonNetwork.PlayerList)
+        {
+            photonView.RPC("LeaveSceneRPC", player);
+        }
+        
         // 게임을 시작하는 옵션
         PhotonNetwork.LoadLevel(HJS_GameMap.instance.NextMap());
+    }
+
+    [PunRPC]
+    public void LeaveSceneRPC()
+    {
+        Debug.Log($"{HJS_FirebaseManager.Auth.CurrentUser.DisplayName} is Leave!");
+        player.LeaveScene();
     }
 
     // 방을 나가는 설정
@@ -174,6 +194,12 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
             Debug.Log("RommController의 OnRoomProperties");
             UpdatePlayers();
         }
+    }
+
+    // 방 입장에 실패했을 때
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        Debug.Log($"방 입장 실패 ! : {message}");
     }
 
 }
