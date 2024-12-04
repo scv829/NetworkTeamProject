@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class HJS_Test_LoginPanel : MonoBehaviour
+public class HJS_Login : MonoBehaviour
 {
     [SerializeField] HJS_GameConnect connect;
 
@@ -19,6 +19,9 @@ public class HJS_Test_LoginPanel : MonoBehaviour
     [SerializeField] HJS_PopupPanel popupPanel;
 
     [SerializeField] string userId = "tester";
+
+    [Header("Test")]
+    [SerializeField, Tooltip("테스트 모드 여부")] bool isTest;   // 테스트 모드일 때는 인증 상관없이 로그인 가능
 
     public void Login()
     {
@@ -41,6 +44,13 @@ public class HJS_Test_LoginPanel : MonoBehaviour
 
                 AuthResult result = task.Result;
                 Debug.Log($"유저 로그인 성공! {result.User.DisplayName} ({result.User.UserId})");
+
+                // 이메일 인증 여부 
+                if (!isTest && result.User.IsEmailVerified.Equals(false))
+                {
+                    popupPanel.ShowPopup("Please verify your email!");
+                    return;
+                }
 
                 // 인증이 됐을 때 유저 정보 확인
                 CheckUserInfo();

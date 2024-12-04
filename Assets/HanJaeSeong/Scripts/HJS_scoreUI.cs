@@ -12,8 +12,8 @@ public class HJS_scoreUI : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] TMP_Text scoreText;    // 점수 텍스트
     [SerializeField] Image profile;         // 프로필 이미지
+    [SerializeField] Image background;      // 점수 배경 이미지
 
-    [SerializeField] TMP_Text directionText;    // 방향 텍스트
 
     private StringBuilder sb;
 
@@ -27,6 +27,8 @@ public class HJS_scoreUI : MonoBehaviourPun, IPunObservable
         Color color = new Color();
         color.r = vectorColor.x; color.g = vectorColor.y; color.b = vectorColor.z; color.a = 1;
         profile.color = color;
+        color.a = 0.5f;
+        background.color = color;
     }
 
     public void SetScore(int score)
