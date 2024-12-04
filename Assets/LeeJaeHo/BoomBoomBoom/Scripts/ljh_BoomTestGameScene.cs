@@ -45,7 +45,7 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
     public static Color[] playerColors = new Color[]
     {
         Color.red,
-        new Color(1f, 0.5f, 0f),
+        new Color(1f, 0.6f, 0f),
         Color.yellow,
         Color.green
     };

@@ -11786,6 +11786,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1294189265}
+  testScene: {fileID: 0}
+  player: {fileID: 8160237723087219084, guid: c630c3590617841479af7e0e9276d29c, type: 3}
   turnText: {fileID: 251742725}
   winnerText: {fileID: 854746592}
   guideText: {fileID: 724334858}
@@ -13117,7 +13119,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 2133425116530062048}
   sceneViewId: 16
   InstantiationId: 0
   isRuntimeInstantiated: 0

@@ -9,6 +9,7 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
 {
     [SerializeField] ljh_GameManager gameManager;
     [SerializeField] ljh_BoomTestGameScene testScene;
+    [SerializeField] ljh_Player player;
 
     [SerializeField] TMP_Text turnText;
     [SerializeField] TMP_Text winnerText;
@@ -22,7 +23,7 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
         curState = gameManager.curState;
 
         ShowWhosTurn();
-        ShowUiEnd();
+        
         UIOnOff();
         SelfUIOnOFf();
         
@@ -33,6 +34,11 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
     {
         if ((int)ljh_GameManager.instance.myTurn == PhotonNetwork.LocalPlayer.ActorNumber - 1)
         {
+            if(curState == State.enter)
+            {
+                player.anime.Play("Walk");
+            }
+            
             if (curState == State.choice)
             {
                 guideText.gameObject.SetActive(true);
@@ -42,6 +48,7 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
 
             if (curState == State.die)
             {
+                player.anime.Play("Idle");
                 guideText.gameObject.SetActive(false);
                 keyImages[0].gameObject.SetActive(false);
                 keyImages[1].gameObject.SetActive(false);
@@ -49,6 +56,7 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
 
             if (curState == State.end)
             {
+                player.anime.Play("Walk");
                 guideText.gameObject.SetActive(false);
                 keyImages[0].gameObject.SetActive(false);
                 keyImages[1].gameObject.SetActive(false);
@@ -75,6 +83,7 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
 
         if (curState == State.end)
         {
+            ShowUiEnd();
             winnerText.gameObject.SetActive(true);
         }
     }
