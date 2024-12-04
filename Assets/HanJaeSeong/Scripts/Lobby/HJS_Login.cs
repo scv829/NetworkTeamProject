@@ -124,7 +124,7 @@ public class HJS_Login : MonoBehaviour
                  PhotonNetwork.ConnectUsingSettings();
 
                  // 씬 넘어가기
-                 SceneManager.LoadScene("HJS_Test_MainScene");
+                 SceneManager.LoadScene("HJS_MainScene");
                  PhotonNetwork.AutomaticallySyncScene = true;
              });
     }
