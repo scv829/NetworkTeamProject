@@ -11,9 +11,6 @@ public class HJS_JoinLobbyController : MonoBehaviourPunCallbacks
 {
     [SerializeField] HJS_MatchView matchView;
 
-    [Header("ConnectPlayer")]
-    [SerializeField] HJS_FusionPlayerController player;
-
     [Header("RoomList")]
     [SerializeField] HJS_RoomEntry roomEntryPrefab;
     private Dictionary<string, HJS_RoomEntry> roomDictionary = new Dictionary<string, HJS_RoomEntry>();
@@ -32,7 +29,7 @@ public class HJS_JoinLobbyController : MonoBehaviourPunCallbacks
     private void LeaveLobby()
     {
         Debug.Log("로비에서 나갔습니다");
-        PhotonNetwork.LeaveLobby();
+        if(PhotonNetwork.InLobby) PhotonNetwork.LeaveLobby();
     }
 
     /// <summary>

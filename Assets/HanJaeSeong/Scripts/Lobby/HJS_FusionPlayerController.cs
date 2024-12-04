@@ -41,7 +41,8 @@ public class HJS_FusionPlayerController : NetworkBehaviour, IAfterSpawned
             gameObject.GetComponent<NetworkTransform>().Teleport(HJS_PlayerPosition.Instance.PlayerPos);
             frontCanvas.layer = 26;
             backCanvas.layer = 26;
-       }
+            SetPlayer();
+        }
        nickname.text = name;
     }
 
@@ -98,5 +99,14 @@ public class HJS_FusionPlayerController : NetworkBehaviour, IAfterSpawned
     public void AfterSpawned()
     {
         _controller.enabled = true;
+    }
+
+    private void SetPlayer()
+    {
+        HJS_RoomController roomController = FindFirstObjectByType<HJS_RoomController>();
+        HJS_RandomMatchController matchController = FindFirstObjectByType<HJS_RandomMatchController>();
+
+        roomController.Player = this;
+        matchController.Player = this;
     }
 }

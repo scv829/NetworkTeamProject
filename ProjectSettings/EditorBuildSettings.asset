@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Common/Test/TestConnectScene.unity
-    guid: 6ef0db6b71c61c440a9fb5c4d20f9df5
+    path: Assets/HanJaeSeong/HJS_LoginScene.unity
+    guid: 5af962861f0033f4489c3128844d0c46
+  - enabled: 1
+    path: Assets/HanJaeSeong/HJS_MainScene.unity
+    guid: 3c5b791e0c0dedd4d8d7e23e709ccc4e
   - enabled: 1
     path: Assets/GoHyeonSeok/Sceans/Mecha Marathon.unity
     guid: 7f66d31e38a4efc42b2a6654f706bc0e
@@ -30,9 +33,6 @@ EditorBuildSettings:
     path: Assets/LeeJaeHo/Avoid/Scene/Avoid getting twisted.unity
     guid: f66767948cd7d1445a238721ff1d3bb0
   - enabled: 1
-    path: Assets/HanJaeSeong/HJS_Test_LoginScene.unity
-    guid: 5af962861f0033f4489c3128844d0c46
-  - enabled: 1
-    path: Assets/HanJaeSeong/HJS_Test_MainScene.unity
-    guid: 3c5b791e0c0dedd4d8d7e23e709ccc4e
+    path: Assets/Common/Test/TestConnectScene.unity
+    guid: 6ef0db6b71c61c440a9fb5c4d20f9df5
   m_configObjects: {}

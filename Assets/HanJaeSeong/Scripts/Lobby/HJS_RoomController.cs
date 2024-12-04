@@ -21,6 +21,8 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
 
     [Header("ConnectPlayer")]
     [SerializeField] HJS_FusionPlayerController player;
+    public HJS_FusionPlayerController Player { get { return player; } set { player = value; } }
+
 
     [Header("PlayerEntry")]
     [SerializeField] HJS_PlayerEntry[] playerEntries;   // 플레이어 엔트리의 수
@@ -41,12 +43,10 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
     private void OnTriggerEnter(Collider other)
     {
         // 플레이어의 충돌만 확인할 건데
-        if (other.transform.CompareTag("Player") && player == null)
+        if (other.transform.CompareTag("Player"))
         {
             // 움직인 캐릭터의 소유자가 아닐 경우 보여줄 필요가 없다.
             if (other.transform.GetComponent<NetworkBehaviour>().HasStateAuthority == false) return;
-
-            player = other.GetComponent<HJS_FusionPlayerController>();
 
             // 포톤이 준비가 되었을 때만 아래 기능을 수행
             if (PhotonNetwork.IsConnectedAndReady)
@@ -67,21 +67,6 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
                     matchView.GetUI("JoinRoomPanel").SetActive(true);
                     UpdatePlayers();
                 }
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        // 플레이어의 충돌만 확인하는데 
-        if (other.transform.CompareTag("Player"))
-        {
-            // 움직인 캐릭터의 소유자가 아닐 경우 보여줄 필요가 없다.
-            if (other.transform.GetComponent<NetworkBehaviour>().HasStateAuthority == false) return;
-
-            if (player != null && player.Equals(other.transform.GetComponent<HJS_FusionPlayerController>()))
-            {
-                player = null;
             }
         }
     }
@@ -143,9 +128,7 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
         }
 
         if (PhotonNetwork.LocalPlayer.IsMasterClient)           // 게임 시작 버튼과 방 수정은 방장만 가능
-        {
-            matchView.GetUI<Button>("StartButton").interactable = (HJS_GameMap.instance.SceneEmpty()) ? false : true;
-
+        { 
             matchView.GetUI("StartButton").SetActive(true); // 게임 시작 버튼은 리스트가 있을 때에 본다
             matchView.GetUI("EditButton").SetActive(true);
         }
@@ -159,6 +142,12 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
     // 방을 시작하는 옵션
     private void StartGame()
     {
+        if(HJS_GameMap.instance.SceneEmpty())
+        {
+            matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("You must select at least one map.");
+            return;
+        }
+        
         player.LeaveScene();
         // 게임을 시작하는 옵션
         PhotonNetwork.LoadLevel(HJS_GameMap.instance.NextMap());

@@ -19,6 +19,7 @@ public class HJS_RandomMatchController : MonoBehaviourPunCallbacks
 
     [Header("ConnectPlayer")]
     [SerializeField] HJS_FusionPlayerController player;
+    public HJS_FusionPlayerController Player { get { return player; } set { player = value; } }
 
     [Header("SceneName")]
     [SerializeField] string sceneName;
@@ -30,26 +31,12 @@ public class HJS_RandomMatchController : MonoBehaviourPunCallbacks
     private void OnTriggerEnter(Collider other)
     {
         // 플레이어의 충돌만 확인할 건데
-        if (other.transform.CompareTag("Player") && player == null)
-        {
-            // 움직인 캐릭터의 소유자가 아닐 경우 보여줄 필요가 없다.
-            if (other.transform.GetComponent<NetworkBehaviour>().HasStateAuthority == false) return;
-
-            player = other.GetComponent<HJS_FusionPlayerController>();
-            matchView.GetUI("RandomMatchPanel").SetActive(true);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        // 플레이어의 충돌만 확인하는데 
         if (other.transform.CompareTag("Player"))
         {
             // 움직인 캐릭터의 소유자가 아닐 경우 보여줄 필요가 없다.
             if (other.transform.GetComponent<NetworkBehaviour>().HasStateAuthority == false) return;
 
-            if(player != null && player.Equals(other.transform.GetComponent<HJS_FusionPlayerController>()))
-                player = null;
+            matchView.GetUI("RandomMatchPanel").SetActive(true);
         }
     }
 
@@ -118,9 +105,19 @@ public class HJS_RandomMatchController : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.CurrentRoom.PlayerCount.Equals(PhotonNetwork.CurrentRoom.MaxPlayers))
         {
+            // 넘버링 갱신을 제거하고
             PlayerNumbering.OnPlayerNumberingChanged -= UpdateRandomPlayers;
+            // 플레이어가 광장에서 나간다.
             player.LeaveScene();
-            PhotonNetwork.LoadLevel(sceneName);
+            // 혹시 모를 선택한 리스트를 제거하고
+            HJS_GameMap.instance.ResetList();
+            
+            // 방장만 맵 옮기기 요청
+            if(PhotonNetwork.IsMasterClient)
+            {
+                // 맵들 중 랜덤으로 하나로 들어가기
+                PhotonNetwork.LoadLevel(HJS_GameMap.instance.GetName(Random.Range(0 ,HJS_GameMap.instance.SceneLength)));
+            }
         }
     }
     
