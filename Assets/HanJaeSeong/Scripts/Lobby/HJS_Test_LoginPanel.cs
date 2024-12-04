@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class HJS_Test_LoginPanel : SimulationBehaviour
+public class HJS_Test_LoginPanel : MonoBehaviour
 {
     [SerializeField] HJS_GameConnect connect;
 

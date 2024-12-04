@@ -1,5 +1,8 @@
+using Photon.Pun;
 using System.Text;
 using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class HJS_MatchView : HJS_BaseUI
@@ -49,9 +52,26 @@ public class HJS_MatchView : HJS_BaseUI
 
         GetUI("OptionPanel").SetActive(false);
         GetUI<Button>("CloseOptionButton").onClick.AddListener(CloseOptionPanel);
-
+        GetUI<Button>("UpdateProfileButton").onClick.AddListener(
+            GetUI<HJS_UserProfile>("OptionPanel").UpdateProfile);
 
         #endregion
+
+        #region 게임 종료
+
+        GetUI<Button>("LogoutButton").onClick.AddListener(Logout);
+        GetUI<Button>("ExitButton").onClick.AddListener(ExitGame);
+
+        #endregion
+    }
+
+    private void Update()
+    {
+        if( Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(!GetUI("OptionPanel").activeSelf) GetUI<HJS_UserProfile>("OptionPanel").GetUserProfile();
+            GetUI("OptionPanel").SetActive(!GetUI("OptionPanel").activeSelf);
+        }
     }
 
     private void ShowRandomMatchStopUI()
@@ -107,5 +127,18 @@ public class HJS_MatchView : HJS_BaseUI
     private void CloseOptionPanel()
     {
         GetUI("OptionPanel").SetActive(false);
+    }
+
+    private void ExitGame()
+    {
+        Debug.Log("게임 종료");
+        Application.Quit();
+    }
+
+    private void Logout()
+    {
+        PhotonNetwork.Disconnect();
+        HJS_FirebaseManager.Auth.CurrentUser.Dispose();
+        SceneManager.LoadScene("HJS_Test_LoginScene");
     }
 }

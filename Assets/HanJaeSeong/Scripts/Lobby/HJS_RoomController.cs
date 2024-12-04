@@ -144,9 +144,9 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.LocalPlayer.IsMasterClient)           // 게임 시작 버튼과 방 수정은 방장만 가능
         {
-            if(!HJS_GameMap.instance.SceneEmpty()) 
-                matchView.GetUI("StartButton").SetActive(true); // 게임 시작 버튼은 리스트가 있을 때에 본다
-            
+            matchView.GetUI<Button>("StartButton").interactable = (HJS_GameMap.instance.SceneEmpty()) ? false : true;
+
+            matchView.GetUI("StartButton").SetActive(true); // 게임 시작 버튼은 리스트가 있을 때에 본다
             matchView.GetUI("EditButton").SetActive(true);
         }
         else

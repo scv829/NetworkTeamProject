@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using WebSocketSharp;
 
 public class HJS_UserProfile : MonoBehaviour
 {
@@ -27,7 +29,7 @@ public class HJS_UserProfile : MonoBehaviour
     /// 유저의 프로필을 불러오는 함수
     /// </summary>
     /// <param name="key">유저 식별자</param>
-    public void getUserProfile(string key = "my")
+    public void GetUserProfile(string key = "my")
     {
         // 일단 자신의 유저를 가져고
         FirebaseUser my = HJS_FirebaseManager.Auth.CurrentUser;
@@ -70,8 +72,11 @@ public class HJS_UserProfile : MonoBehaviour
                     double rate = 0;
 
                     sb.Clear();sb.Append(snapshot.Child("name").Value);
+                    matchView.GetUI<TMP_InputField>("PlayerNicknameInputField").text = sb.ToString();
                     nicknameText.SetText(sb);
+                    
                     sb.Clear(); sb.Append(snapshot.Child("description").Value);
+                    matchView.GetUI<TMP_InputField>("PlayerDescriptionInputField").text = sb.ToString();
                     descriptionText.SetText(sb);
 
                     sb.Clear(); 
@@ -101,15 +106,50 @@ public class HJS_UserProfile : MonoBehaviour
         // 일단 자신의 유저를 가져고
         FirebaseUser my = HJS_FirebaseManager.Auth.CurrentUser;
 
+
         // 만약 로그인이 안됐을 때 호출은 안되게 설정
         if (my == null)
             return;
 
-        // 데이터베이스에 요청
-        userDateRef = HJS_FirebaseManager.Database.RootReference.Child("UserData").Child(my.UserId);
+        string uid = my.UserId;
 
-        
-        
+        // 데이터베이스에 요청
+        DatabaseReference userRef = HJS_FirebaseManager.Database.RootReference.Child("UserData");
+        DatabaseReference userProfileRef = userRef.Child(uid);
+
+        userRef.GetValueAsync()
+         .ContinueWithOnMainThread(task =>
+         {
+
+             if (task.IsCanceled || task.IsFaulted) Debug.LogError($"error : {task.Exception}");
+
+             DataSnapshot snapShot = task.Result;
+
+             // 설명은 중복이 필요없으니 바로 저장하고
+             Dictionary<string, object> dictionary = new Dictionary<string, object>();
+             dictionary["/description"] = matchView.GetUI<TMP_InputField>("PlayerDescriptionInputField").text;
+
+             // UserData의 uid를 다 불러와서
+             string newNickname = matchView.GetUI<TMP_InputField>("PlayerNicknameInputField").text;
+
+             if(!snapShot.Child(uid).Child("name").Value.Equals(newNickname) && !newNickname.IsNullOrEmpty())
+             {
+                 foreach (DataSnapshot data in snapShot.Children)
+                 {
+                     if (data.Child("name").Value.Equals(newNickname))
+                     {
+                         matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("Already using Nickname!");
+                         return;
+                     }
+                 }
+                 dictionary["/name"] = matchView.GetUI<TMP_InputField>("PlayerNicknameInputField").text;
+             }
+
+             userProfileRef.UpdateChildrenAsync(dictionary);
+
+             matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("Update complete!");
+         });
+
 
     }
 }

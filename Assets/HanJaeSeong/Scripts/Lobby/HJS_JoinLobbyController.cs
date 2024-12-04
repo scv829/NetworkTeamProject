@@ -23,19 +23,22 @@ public class HJS_JoinLobbyController : MonoBehaviourPunCallbacks
     private void Start()
     {
         matchView.GetUI<Button>("JoinLobbyCloseButton").onClick.AddListener(LeaveLobby);
+        matchView.GetUI<Button>("LobbyRefreshButton").onClick.AddListener(RefreshLobby);
     }
 
+    /// <summary>
+    /// 로비에서 나가는 함수
+    /// </summary>
     private void LeaveLobby()
     {
         Debug.Log("로비에서 나갔습니다");
-        if(PhotonNetwork.InLobby) PhotonNetwork.LeaveLobby();
-        if (PhotonNetwork.InRoom)
-        {
-            PhotonNetwork.LeaveRoom();
-            Debug.Log("JoinLobbyController의 LeaveLobby");
-        }
+        PhotonNetwork.LeaveLobby();
     }
 
+    /// <summary>
+    /// 방 리스트가 업데이트 되는 부분
+    /// </summary>
+    /// <param name="roomList">갱신된 방 리스트</param>
     public void UpdateRoomList(List<RoomInfo> roomList)
     {
         foreach (RoomInfo info in roomList)
@@ -68,6 +71,9 @@ public class HJS_JoinLobbyController : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary>
+    /// 모든 방을 삭제
+    /// </summary>
     public void ClearRoomEntries()
     {
         foreach (string name in roomDictionary.Keys)
@@ -77,15 +83,26 @@ public class HJS_JoinLobbyController : MonoBehaviourPunCallbacks
         roomDictionary.Clear();
     }
 
+    // 방 업데이트 하는 콜백함수
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        Debug.Log("JoinLobby의 RommListUpdate");
         UpdateRoomList(roomList);
     }
 
+    // 로비에서 나갔을 때 콜백함수
     public override void OnLeftLobby()
     {
         Debug.Log("로비 퇴장 성공");
         ClearRoomEntries();
+    }
+
+    private void RefreshLobby()
+    {
+        if (!PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.JoinLobby();
+        }
     }
 
 }
