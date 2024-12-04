@@ -55,6 +55,7 @@ public class ljh_InputManager : MonoBehaviourPun
         curUserNum = ljh_GameManager.instance.curUserNum;
     }
 
+    //Comment : 현재 플레이어 찾아주는 함수
     public GameObject FindPlayer(GameObject _player)
     {
         if (player == null)
@@ -68,6 +69,7 @@ public class ljh_InputManager : MonoBehaviourPun
         return null;
     }
 
+    // comment : 초이스 상태에서 A 또는 D 키로 이동 함수
     public GameObject ChoiceAnswer()
     {
         curUserNum = ljh_GameManager.instance.curUserNum;
@@ -89,7 +91,7 @@ public class ljh_InputManager : MonoBehaviourPun
 
     }
 
-
+    //Comment : 현재 선택하려는 버튼 지정 함수
     public void SelectButton(Vector3 curPos)
     {
         if (Input.GetKeyDown(KeyCode.Space))

@@ -542,6 +542,11 @@ MonoBehaviour:
   gameManager: {fileID: 211594295}
   playerList: []
   index: 0
+  playerColors:
+  - {r: 1, g: 0, b: 0, a: 0}
+  - {r: 1, g: 0.6, b: 0, a: 0}
+  - {r: 1, g: 0.90713394, b: 0, a: 0}
+  - {r: 0.06549895, g: 1, b: 0, a: 0}
 --- !u!4 &211594294
 Transform:
   m_ObjectHideFlags: 0
@@ -1251,8 +1256,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d6d76d908e84df34892bb8998fe1ab77, type: 2}
+  m_sharedMaterial: {fileID: 512012986356271535, guid: d6d76d908e84df34892bb8998fe1ab77, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1850,8 +1855,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Winner
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d6d76d908e84df34892bb8998fe1ab77, type: 2}
+  m_sharedMaterial: {fileID: 512012986356271535, guid: d6d76d908e84df34892bb8998fe1ab77, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

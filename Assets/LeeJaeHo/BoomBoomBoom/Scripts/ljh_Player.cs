@@ -50,18 +50,18 @@ public class ljh_Player : MonoBehaviourPun
         if (!photonView.IsMine)
             return;
 
-
+        //Comment : 플레이어 위치 카트 위치에 고정
         if(ljh_GameManager.instance.curState == State.idle || ljh_GameManager.instance.curState == State.enter)
         {
             transform.position = testGameScene.cartArray[testGameScene.index].transform.position;
         }
-
+        //Comment : 플레이어 위치 엑싯카트 위치에 고정
         if(ljh_GameManager.instance.curState == State.end)
         {
             transform.position = exitCart.transform.position;
         }
 
-
+        // Comment 내 턴일때만 플레이어 이동
         if ((int)ljh_GameManager.instance.myTurn == (int)this.playerNumber)
         {
             if (ljh_GameManager.instance.curState == State.choice)
@@ -70,6 +70,7 @@ public class ljh_Player : MonoBehaviourPun
             }
         }
 
+        //Comment : 내 턴일 때만 플레이 가능
         if ((int)playerNumber == (int)ljh_GameManager.instance.myTurn)
         {
             PlayingPlayer();

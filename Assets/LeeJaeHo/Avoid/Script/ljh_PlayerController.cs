@@ -33,7 +33,6 @@ public class ljh_PlayerController : MonoBehaviourPun, IPunObservable
         gameManager = GameObject.FindWithTag("GameController").GetComponent<ljh_AvoidGameManager>();
         uiManager = GameObject.FindWithTag("Finish").GetComponent<ljh_AvoidUIManager>();
 
-        //myName = PhotonNetwork.LocalPlayer.NickName;
     }
     void Update()
     {
@@ -48,6 +47,7 @@ public class ljh_PlayerController : MonoBehaviourPun, IPunObservable
 
     }
 
+    // Comment : 플레이어 사망 처리 함수
     private void OnCollisionEnter(Collision collision)
     {
         if (CompareTag("Player"))
@@ -64,19 +64,13 @@ public class ljh_PlayerController : MonoBehaviourPun, IPunObservable
         }
     }
 
-    
-
-    public void DeletePlayer()
-    {
-        gameManager.playerCount--;
-    }
-
+    //Comment 플레이어 사망시 처리 함수
     private void Dead()
     {
         onPlayerDead.Invoke();
     }
 
-
+    //Comment : 플레이어 이동 함수
     public void Move()
     {
         float x = Input.GetAxisRaw("Horizontal");
@@ -86,19 +80,6 @@ public class ljh_PlayerController : MonoBehaviourPun, IPunObservable
             transform.forward = new Vector3(x, 0, z);
 
         transform.Translate(new Vector3(x, 0, z).normalized * moveSpeed * Time.deltaTime, Space.World);
-        //photonView.RPC("RPCMove", RpcTarget.AllViaServer);
-    }
-
-    [PunRPC]
-    public void RPCMove()
-    {
-
-        float x = Input.GetAxisRaw("Horizontal");
-        float z = Input.GetAxisRaw("Vertical");
-
-        transform.Translate(new Vector3(x, 0, z));
-
-
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

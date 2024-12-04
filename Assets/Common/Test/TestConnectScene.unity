@@ -577,6 +577,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce4fc2fa25f6bf4ab3cd787c83975d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  matchView: {fileID: 0}
   nicknameText: {fileID: 999586040}
   descriptionText: {fileID: 639513670}
   rateText: {fileID: 1393939597}

@@ -82,7 +82,7 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
         end = false;
         curPhotonList = PhotonNetwork.PlayerList;
 
-        UserNumCalculate(curUserNum - deathCount);
+        //UserNumCalculate(curUserNum - deathCount);
 
 
         if (player != null)

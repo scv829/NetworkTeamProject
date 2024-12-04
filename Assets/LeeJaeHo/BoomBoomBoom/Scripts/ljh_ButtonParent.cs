@@ -13,9 +13,6 @@ public class ljh_ButtonParent : MonoBehaviourPun,IPunObservable
 
     int WinNum;
 
-    private void Start()
-    {
-    }
     public void OnEnable()
     {
         buttonArray = GetComponentsInChildren<ljh_Button>();
@@ -27,9 +24,6 @@ public class ljh_ButtonParent : MonoBehaviourPun,IPunObservable
         }
             buttonArray[WinNum].GetComponent<ljh_Button>().WinButton = true;
         
-
-
-
     }
 
     public void SelectedButtonAction(ljh_Button _button)
@@ -58,7 +52,6 @@ public class ljh_ButtonParent : MonoBehaviourPun,IPunObservable
 
             return;
         }
-        //ToDo : 폭탄 터지는 내용 구현해야함
 
     }
 

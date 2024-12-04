@@ -14,8 +14,6 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
 {
     public const string RoomName = "Testroom";
 
-    [SerializeField] GameObject playerPrefab;
-    [SerializeField] ljh_InputManager inputManager;
 
     [SerializeField] GameObject playerSpawner1;
     [SerializeField] GameObject playerSpawner2;
@@ -27,16 +25,8 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
     Vector3 playerPos3;
     Vector3 playerPos4;
 
-    Color playerColor1;
-    Color playerColor2;
-    Color playerColor3;
-    Color playerColor4;
 
     [SerializeField] public GameObject[] cartArray;
-    [SerializeField] GameObject cart1;
-    [SerializeField] GameObject cart2;
-    [SerializeField] GameObject cart3;
-    [SerializeField] GameObject cart4;
 
     public int curUserNum;
     public GameObject player;
@@ -46,11 +36,19 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
 
 
     [SerializeField] public Vector3 playerPos;
-    Color playerColor;
 
     public int index;
 
     public Vector3[] vectorPlayerSpawn;
+
+    [SerializeField]
+    public static Color[] playerColors = new Color[]
+    {
+        Color.red,
+        new Color(1f, 0.5f, 0f),
+        Color.yellow,
+        Color.green
+    };
 
 
     private void Start()
@@ -58,17 +56,16 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
         
 
         playerArray = new GameObject[4];
+
         vectorPlayerSpawn = new Vector3[4];
 
+        //Comment 플레이어 스폰 위치 설정
         playerPos1 = playerSpawner1.transform.position;
         playerPos2 = playerSpawner2.transform.position;
         playerPos3 = playerSpawner3.transform.position;
         playerPos4 = playerSpawner4.transform.position;
 
-        playerColor1 = new (1, 0, 0);
-        playerColor2 = new (0, 0, 1);
-        playerColor3 = new (0, 1, 0);
-        playerColor4 = new (0, 0, 0);
+        
 
         //PhotonNetwork.LocalPlayer.NickName = $"Player{Random.Range(0000,9999)}"; // 이거 지우고
         //PhotonNetwork.ConnectUsingSettings(); // 이거 지우고
@@ -142,6 +139,7 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
         }
     }
 
+    //Comment 플레이어 스폰
     private void PlayerSpawn()
     {
         
@@ -151,12 +149,11 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
         playerPos = new Vector3(vectorPlayerSpawn[index].x, 0, vectorPlayerSpawn[index].z);
         player = PhotonNetwork.Instantiate("ljh_Player", playerPos, Quaternion.identity);
         player.GetComponent<ljh_Player>().playerNumber = (PlayerNumber)index;
-        Debug.Log(player.GetComponent<ljh_Player>().playerNumber);
 
-        Color[] vectorColor = { playerColor1, playerColor2, playerColor3, playerColor4 };
-        playerColor = new Color(vectorColor[index].r, vectorColor[index].g, vectorColor[index].b, 1);
+        //Commnet : 색상 지정
+        Vector3 vectorColor = new Vector3(playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].r, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].g, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].b);
+        PhotonNetwork.LocalPlayer.SetPlayerColor(vectorColor);
 
-        player.GetComponentInChildren<Renderer>().material.color = playerColor;
 
 
     }
