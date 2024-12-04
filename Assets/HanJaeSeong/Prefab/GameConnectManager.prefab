@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeController: {fileID: 793839354760725600}
-  sceneName: TestConnectScene
+  sceneName: HJS_MainScene
 --- !u!114 &793839353327308203
 MonoBehaviour:
   m_ObjectHideFlags: 0
