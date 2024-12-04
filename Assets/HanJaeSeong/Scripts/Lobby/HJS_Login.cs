@@ -2,9 +2,11 @@ using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
 using Fusion;
+using NanoSockets;
 using Photon.Pun;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -39,6 +41,27 @@ public class HJS_Login : MonoBehaviour
                 if (task.IsFaulted)
                 {
                     Debug.Log($"로그인 에러, 사유 : {task.Exception}");
+
+
+                    // 아이디가 없을 때
+                    if(task.Exception.Message.Contains("An email address must be provided"))
+                    {
+                        popupPanel.ShowPopup("모든 내용을 입력해주세요.");
+                    }
+                    // 비밀번호가 입력
+                    else if(task.Exception.Message.Contains("A password must be provided"))
+                    {
+                        popupPanel.ShowPopup("모든 내용을 입력해주세요.");
+                    }
+                    else if(task.Exception.Message.Contains("The email address is badly formatted"))
+                    {
+                        popupPanel.ShowPopup("이메일 주소 형식으로 입력해주세요.");
+                    }
+                    else if(task.Exception.Message.Contains("An internal error has occurred"))
+                    {
+                        popupPanel.ShowPopup("아이디 혹은 비밀번호가 맞지 않습니다.");
+                    }
+
                     return;
                 }
 
