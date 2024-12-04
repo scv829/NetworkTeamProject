@@ -131,12 +131,12 @@ public class ljh_AvoidTestGameScene : MonoBehaviourPunCallbacks
 
     public void ColorChange()
     {
-        if (photonView.IsMine)
-        {
+        
             Color color = playerColors[PhotonNetwork.LocalPlayer.ActorNumber - 1];
             player.GetComponentInChildren<Renderer>().material.color = color;
             photonView.RPC("RPCColor", RpcTarget.AllViaServer, color.r, color.g, color.b);
-        }
+        
+
     }
 
     [PunRPC]

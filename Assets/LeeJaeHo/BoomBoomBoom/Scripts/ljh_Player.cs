@@ -31,6 +31,34 @@ public class ljh_Player : MonoBehaviourPun
 
     public bool winnerCheck;
 
+    public Color[] playerColors = new Color[]
+    {
+        Color.red,
+        Color.blue,
+        Color.yellow,
+        Color.green
+    };
+
+    private void OnEnable()
+    {
+        ColorChange();
+    }
+
+    public void ColorChange()
+    {
+
+        Color color = playerColors[PhotonNetwork.LocalPlayer.ActorNumber - 1];
+        GetComponentInChildren<Renderer>().material.color = color;
+        photonView.RPC("RPCColor", RpcTarget.AllViaServer, color.r, color.g, color.b);
+
+
+    }
+
+    [PunRPC]
+    public void RPCColor(float r, float g, float b)
+    {
+        GetComponentInChildren<Renderer>().material.color = new(r, g, b);
+    }
     private void Start()
     {
         testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_BoomTestGameScene>();
