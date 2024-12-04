@@ -32,8 +32,23 @@ public class HJS_GameConnect : SimulationBehaviour, IPlayerJoined
     private void Start()
     {
         Debug.Log("login init");
+        Init();
+    }
+
+    private void Update()
+    {
+        if(!Runner.IsInSession)
+        {
+            Init();
+        }
+    }
+
+    private void Init()
+    {
         StartGameArgs args = new StartGameArgs();
         args.GameMode = GameMode.Shared;
+        args.SessionName = "KGA-c8045daa-c92e-4fba-8299-527d770cf5ea";
+        args.CustomLobbyName = "LobbyRoom";
 
         transform.GetComponent<NetworkRunner>().StartGame(args);
     }

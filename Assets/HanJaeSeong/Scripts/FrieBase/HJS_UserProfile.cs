@@ -1,6 +1,7 @@
 using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -106,7 +107,6 @@ public class HJS_UserProfile : MonoBehaviour
         // 일단 자신의 유저를 가져고
         FirebaseUser my = HJS_FirebaseManager.Auth.CurrentUser;
 
-
         // 만약 로그인이 안됐을 때 호출은 안되게 설정
         if (my == null)
             return;
@@ -132,7 +132,7 @@ public class HJS_UserProfile : MonoBehaviour
              // UserData의 uid를 다 불러와서
              string newNickname = matchView.GetUI<TMP_InputField>("PlayerNicknameInputField").text;
 
-             if(!snapShot.Child(uid).Child("name").Value.Equals(newNickname) && !newNickname.IsNullOrEmpty())
+             if (!snapShot.Child(uid).Child("name").Value.Equals(newNickname) && !newNickname.IsNullOrEmpty())
              {
                  foreach (DataSnapshot data in snapShot.Children)
                  {
@@ -142,14 +142,22 @@ public class HJS_UserProfile : MonoBehaviour
                          return;
                      }
                  }
-                 dictionary["/name"] = matchView.GetUI<TMP_InputField>("PlayerNicknameInputField").text;
+                 dictionary["/name"] = newNickname;
+
+                 UserProfile profile = new UserProfile();
+                 profile.DisplayName = newNickname;
+                 my.UpdateUserProfileAsync(profile)
+                 .ContinueWithOnMainThread(task => 
+                 { 
+                     if (task.IsCanceled || task.IsFaulted) Debug.LogError($"error : {task.Exception}");
+
+                     PhotonNetwork.LocalPlayer.NickName = newNickname;
+                 });
              }
 
              userProfileRef.UpdateChildrenAsync(dictionary);
 
              matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("Update complete!");
-         });
-
-
+         })
     }
 }
