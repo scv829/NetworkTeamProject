@@ -5,6 +5,7 @@ using Photon.Pun;
 using System.Threading;
 using UnityEngine.Events;
 using Photon.Pun.Demo.Cockpit;
+using Photon.Realtime;
 
 public class ljh_PlayerController : MonoBehaviourPun, IPunObservable
 {
@@ -26,12 +27,26 @@ public class ljh_PlayerController : MonoBehaviourPun, IPunObservable
 
     public string myName;
 
+    public Color[] playerColors = new Color[]
+    {
+        Color.red,
+        Color.blue,
+        Color.yellow,
+        Color.green
+    };
+
+
+    private void OnEnable()
+    {
+        ColorChange();
+    }
     private void Start()
     {
         died = false;
         rigid = GetComponent<Rigidbody>();
         gameManager = GameObject.FindWithTag("GameController").GetComponent<ljh_AvoidGameManager>();
         uiManager = GameObject.FindWithTag("Finish").GetComponent<ljh_AvoidUIManager>();
+
 
     }
     void Update()
@@ -40,11 +55,27 @@ public class ljh_PlayerController : MonoBehaviourPun, IPunObservable
         if (!photonView.IsMine)
             return;
 
+
         if (!died)
             Move();
 
 
 
+    }
+    public void ColorChange()
+    {
+
+        Color color = playerColors[PhotonNetwork.LocalPlayer.ActorNumber - 1];
+        GetComponentInChildren<Renderer>().material.color = color;
+        photonView.RPC("RPCColor", RpcTarget.AllViaServer, color.r, color.g, color.b);
+
+
+    }
+
+    [PunRPC]
+    public void RPCColor(float r, float g, float b)
+    {
+        GetComponentInChildren<Renderer>().material.color = new(r, g, b);
     }
 
     // Comment : 플레이어 사망 처리 함수

@@ -16,7 +16,6 @@ public class ljh_InputManager : MonoBehaviourPun, IPunObservable
 {
     int curUserNum;
 
-    [SerializeField] ljh_SpotLight _spotlight;
     [SerializeField] ljh_ButtonParent buttonParent;
 
     [SerializeField] GameObject player;
@@ -86,7 +85,6 @@ public class ljh_InputManager : MonoBehaviourPun, IPunObservable
             minus--;
         }
 
-        _spotlight.MovingSpotlight(buttonObj, index);
 
         player.transform.LookAt(buttonObj[index].transform.position);
 
