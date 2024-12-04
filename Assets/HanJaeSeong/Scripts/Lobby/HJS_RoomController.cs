@@ -161,7 +161,8 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
         {
             photonView.RPC("LeaveSceneRPC", player);
         }
-        
+
+        if (PhotonNetwork.IsMasterClient == false) return;
         // 게임을 시작하는 옵션
         PhotonNetwork.LoadLevel(HJS_GameMap.instance.NextMap());
     }
