@@ -1,8 +1,6 @@
 using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
-using Fusion;
-using NanoSockets;
 using Photon.Pun;
 using System.Collections.Generic;
 using TMPro;
@@ -42,9 +40,8 @@ public class HJS_Login : MonoBehaviour
                 {
                     Debug.Log($"로그인 에러, 사유 : {task.Exception}");
 
-
                     // 아이디가 없을 때
-                    if(task.Exception.Message.Contains("An email address must be provided"))
+                    if (task.Exception.Message.Contains("An email address must be provided"))
                     {
                         popupPanel.ShowPopup("모든 내용을 입력해주세요.");
                     }
@@ -137,7 +134,7 @@ public class HJS_Login : MonoBehaviour
                         Debug.Log($"spawnPos's {data} : {data.Value}");
                     }
 
-                    HJS_PlayerPosition.Instance.PlayerPos = new Vector3 (float.Parse(list[0]), float.Parse(list[1]), float.Parse(list[2]));
+                    HJS_PlayerPosition.Instance.PlayerPos = new Vector3(float.Parse(list[0]), float.Parse(list[1]), float.Parse(list[2]));
                 }
             })
              .ContinueWithOnMainThread(task =>

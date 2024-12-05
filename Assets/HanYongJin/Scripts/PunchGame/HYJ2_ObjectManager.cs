@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
@@ -25,8 +26,9 @@ public class HYJ2_ObjectManager : MonoBehaviour
             isStart = false;
             //GameObject mainCamera = GameObject.FindWithTag("MainCamera");
             //mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(0,35,0), 25f);
-            
-            GameObject.FindWithTag("GameController").GetComponent<HYJ2_GameScene>().GameEnd(PhotonNetwork.LocalPlayer.ActorNumber);
+
+            //GameObject.FindWithTag("GameController").GetComponent<HYJ2_GameScene>().GameEnd(PhotonNetwork.LocalPlayer.ActorNumber);
+            GameObject.FindWithTag("GameController").GetComponent<HYJ2_GameScene>().GameEnd(PhotonNetwork.LocalPlayer.GetPlayerNumber());
         }
 
         if (isStart)

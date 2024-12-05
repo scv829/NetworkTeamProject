@@ -21,52 +21,56 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
     [SerializeField] private Player[] _curPhotonPlayer;
     public Player[] CurPhotonPlayer { get { return _curPhotonPlayer; } set { _curPhotonPlayer = value; } }
 
-    void Start()
-    {
-        PhotonNetwork.LocalPlayer.NickName = $"Player {Random.Range(1000, 10000)}";
-        
-        // TODO : 재성님에게 물어봐서 플레이어 컬러 적용법 배우기
-        Vector3 vectorColor = new Vector3(playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].r, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].g, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].b);
-        PhotonNetwork.LocalPlayer.SetPlayerColor(vectorColor);
-        PhotonNetwork.LocalPlayer.SetLoad(true);
+ //  void Start()
+ //  {
+ //      PhotonNetwork.LocalPlayer.NickName = $"Player {Random.Range(1000, 10000)}";
+ //      
+ //      // TODO : 재성님에게 물어봐서 플레이어 컬러 적용법 배우기
+ //      Vector3 vectorColor = new Vector3(playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].r, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].g, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].b);
+ //      PhotonNetwork.LocalPlayer.SetPlayerColor(vectorColor);
+ //      PhotonNetwork.LocalPlayer.SetLoad(true);
+ //
+ //      CurPhotonPlayer = PhotonNetwork.PlayerList;
+ //  }
+ //
+ //  public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
+ //  {
+ //      if (changedProps.ContainsKey(HJS_CustomProperty.LOAD))
+ //      {
+ //          Debug.Log($"{targetPlayer.NickName} 이 로딩이 완료되었습니다. ");
+ //          bool allLoaded = CheckAllLoad();
+ //          Debug.Log($"모든 플레이어 로딩 완료 여부 : {allLoaded} ");
+ //          if (allLoaded)
+ //          {
+ //              Debug.Log(PhotonNetwork.PlayerList.Length);
+ //              // 게임 진행코드
+ //              StartCoroutine(GameStart());
+ //          }
+ //      }
+ //  }
 
-        CurPhotonPlayer = PhotonNetwork.PlayerList;
-    }
+    public void SetPlayer() => CurPhotonPlayer = PhotonNetwork.PlayerList;
 
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
-    {
-        if (changedProps.ContainsKey(HJS_CustomProperty.LOAD))
-        {
-            Debug.Log($"{targetPlayer.NickName} 이 로딩이 완료되었습니다. ");
-            bool allLoaded = CheckAllLoad();
-            Debug.Log($"모든 플레이어 로딩 완료 여부 : {allLoaded} ");
-            if (allLoaded)
-            {
-                Debug.Log(PhotonNetwork.PlayerList.Length);
-                // 게임 진행코드
-                StartCoroutine(GameStart());
-            }
-        }
-    }
+    public void StartRoutine() => StartCoroutine(GameStart());
 
-    private bool CheckAllLoad()
-    {
-        foreach (Player player in PhotonNetwork.PlayerList)
-        {
-            if (player.GetLoad() == false)
-                return false;
-        }
-        return true;
-    }
+//   private bool CheckAllLoad()
+//   {
+//       foreach (Player player in PhotonNetwork.PlayerList)
+//       {
+//           if (player.GetLoad() == false)
+//               return false;
+//       }
+//       return true;
+//   }
 
-    public override void OnConnectedToMaster()
-    {
-        RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 4;
-        options.IsVisible = false;
-
-        PhotonNetwork.JoinOrCreateRoom(RoomName,options,TypedLobby.Default);
-    }
+ //   public override void OnConnectedToMaster()
+ //   {
+ //       RoomOptions options = new RoomOptions();
+ //       options.MaxPlayers = 4;
+ //       options.IsVisible = false;
+ //
+ //       PhotonNetwork.JoinOrCreateRoom(RoomName,options,TypedLobby.Default);
+ //   }
 
     IEnumerator GameStart()
     {
@@ -108,20 +112,19 @@ public class HYJ2_GameScene : MonoBehaviourPunCallbacks
 
     public void GameEnd(int _playerNumber)
     {
-        if(_playerNumber != 0)
-        {
-            GameObject.FindWithTag("Player").SetActive(false);
-            photonView.RPC("HYJ2_GameEnd", RpcTarget.All, _playerNumber);
-        }
+        GameObject.FindWithTag("Player").SetActive(false);
+        photonView.RPC("HYJ2_GameEnd", RpcTarget.All, _playerNumber);
     }
+
 
     [PunRPC]
     public void HYJ2_GameEnd(int playerNumber)
     {
         _gameUIText.gameObject.SetActive(true);
-        _gameUIText.text = $"{playerNumber}P is Winner!";
+        Player winner = CurPhotonPlayer[playerNumber];
+        _gameUIText.text = $"{winner.NickName} is Winner!";
         mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(0, 35, 0), 25f);
-        Player winner = CurPhotonPlayer[playerNumber - 1];
         HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
     }
+
 }

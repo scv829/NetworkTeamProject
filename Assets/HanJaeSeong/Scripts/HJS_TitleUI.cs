@@ -36,13 +36,18 @@ public class HJS_TitleUI : MonoBehaviourPun, IPunObservable
         // 변수 데이터를 보내는 경우
         if (stream.IsWriting)
         {
+
             stream.SendNext(countText.text);
         }
         // 변수 데이터를 받는 경우
         else if (stream.IsReading)
         {
+            string input = (string)stream.ReceiveNext();
+
+            if (input.Contains('0')) return;
+
             sb.Clear();
-            sb.Append((string)stream.ReceiveNext());
+            sb.Append(input);
             countText.SetText(sb);
         }
     }

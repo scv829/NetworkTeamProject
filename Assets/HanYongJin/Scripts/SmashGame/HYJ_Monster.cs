@@ -1,7 +1,4 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Purchasing;
 using UnityEngine;
 
 public class HYJ_Monster : MonoBehaviourPun
@@ -28,7 +25,7 @@ public class HYJ_Monster : MonoBehaviourPun
         {
             Hp = 3;
         }
-        else if(monsterBodyType == bodyType.Head)
+        else if (monsterBodyType == bodyType.Head)
         {
             Hp = 10;
         }
@@ -36,7 +33,7 @@ public class HYJ_Monster : MonoBehaviourPun
 
     private void Update()
     {
-        if(Hp <= 0)
+        if (Hp <= 0)
         {
             Destroy(gameObject);
             transform.GetComponentInParent<HYJ_MonsterController>().MonsterBodyDown();

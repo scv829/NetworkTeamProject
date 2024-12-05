@@ -801,7 +801,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 793839353331160787, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
       propertyPath: m_Color.a
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 793839354760725600, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: autoStart
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4760626746665050580, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
       propertyPath: m_Enabled
