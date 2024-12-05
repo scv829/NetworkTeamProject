@@ -27,12 +27,14 @@ public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
 
     private void Update()
     {
-        if(gameManager._alivePlayer != null)
-        winnerText.text = $"살아남은 생존자는.... {gameManager._alivePlayer.myName}입니다!!!";
-
         TextOnOff();
-
     }
+
+   // [PunRPC]
+   // public void RPCWinner(string name)
+   // {
+   //     winnerText.text = $"살아남은 생존자는.... {name}입니다!!!";
+   // }
 
 
     public void TextOnOff()
@@ -59,14 +61,11 @@ public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
         {
             stream.SendNext(timerText.enabled);
             stream.SendNext(winnerText.enabled);
-            stream.SendNext(gameManager._alivePlayer?.myName);
         }
         else
         {
             timerText.enabled = (bool)stream.ReceiveNext();
             winnerText.enabled = (bool)stream.ReceiveNext();
-            if(gameManager._alivePlayer != null)
-                gameManager._alivePlayer.myName = (string)stream.ReceiveNext();
 
         }
     }

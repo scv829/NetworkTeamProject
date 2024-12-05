@@ -222,6 +222,7 @@ MonoBehaviour:
   - {r: 1, g: 0.6, b: 0, a: 1}
   - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   - {r: 0, g: 1, b: 0, a: 1}
+  playerNum: 0
 --- !u!136 &7996549769078944148
 CapsuleCollider:
   m_ObjectHideFlags: 0

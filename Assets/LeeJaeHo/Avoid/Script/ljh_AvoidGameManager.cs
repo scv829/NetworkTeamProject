@@ -15,7 +15,7 @@ public enum Phase
 public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
 {   //Todo: 오프닝(후순위), 점수 표기, 1등 가리기, 엔딩
 
-
+    [SerializeField] public ljh_Player player;
 
 
     [SerializeField] public Phase curPhase;
@@ -47,6 +47,8 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
 
     int index;
 
+    bool textOn;
+
     private void Start()
     {
         curPhase = Phase.phase0;
@@ -57,10 +59,14 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
 
         curPhotonList = PhotonNetwork.PlayerList;
         isEnd = false;
+        textOn = false;
     }
 
     private void Update()
     {
+        if(textOn)
+        Invoke("winnerText", 0.3f);
+
         if (!PhotonNetwork.IsMasterClient)
             return;
 
@@ -95,12 +101,20 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
     void AlivePlayer()
     {
         photonView.RPC("RPCAP", RpcTarget.AllViaServer);
+            
+
     }
 
     [PunRPC]
     void RPCAP()
     {
         _alivePlayer = GameObject.FindWithTag("Player").GetComponent<ljh_PlayerController>();
+        textOn = true;
+    }
+
+    void winnerText()
+    {
+        uiManager.winnerText.text = $"살아남은 생존자는.... {_alivePlayer.myName}입니다!!!";
     }
 
     //Comment : 비석 공격 코루틴
@@ -169,7 +183,6 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
 
         if (attackRoutine != null) return;
         attackRoutine = StartCoroutine(AttackCo());
-
     }
 
     // 페이즈 변경 함수
@@ -189,16 +202,22 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
     public void EndPhase()
     {
         isEnd = true;
-        index = WinnerCalc();
 
         photonView.RPC("RPCEndPhase", RpcTarget.AllViaServer);
 
     }
 
+    [PunRPC]
     public void RPCEndPhase()
     {
-        Player winner = _alivePlayer.GetComponent<Player>();//curPhotonList[index];
-        HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
+        for (int i = 0; i < 4; i++)
+        {
+            if (_alivePlayer.playerNum == i)
+            {
+                Player winner = curPhotonList[i];
+                HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
+            }
+        }
     }
 
     //Comment 승자 계산 함수

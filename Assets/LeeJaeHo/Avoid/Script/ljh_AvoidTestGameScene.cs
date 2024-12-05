@@ -21,6 +21,7 @@ public class ljh_AvoidTestGameScene : MonoBehaviourPunCallbacks
     public int index;
     GameObject player;
 
+
     public Color[] playerColors = new Color[]
     {
         Color.red,
@@ -120,7 +121,7 @@ public class ljh_AvoidTestGameScene : MonoBehaviourPunCallbacks
         photonView.RPC("RPCPL", RpcTarget.AllViaServer);
 
         ColorChange();
-
+        player.GetComponent<ljh_PlayerController>().playerNum = index;
 
 
         //Color[] vectorColor = { playerColor1, playerColor2, playerColor3, playerColor4 };

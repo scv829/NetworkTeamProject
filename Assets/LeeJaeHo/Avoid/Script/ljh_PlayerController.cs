@@ -35,6 +35,8 @@ public class ljh_PlayerController : MonoBehaviourPun, IPunObservable
         Color.green
     };
 
+    public int playerNum;
+
 
     private void OnEnable()
     {
