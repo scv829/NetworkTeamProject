@@ -79,6 +79,7 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Start()
     {
+        myTurn = MyTurn.player1;
         end = false;
         curPhotonList = PhotonNetwork.PlayerList;
 
@@ -218,7 +219,7 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
         DoorNLight();
 
         Player winner = curPhotonList[(int)myTurn];
-        uiManager.ShowUiEnd();
+        uiManager.RPCEND();
         HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
 
 

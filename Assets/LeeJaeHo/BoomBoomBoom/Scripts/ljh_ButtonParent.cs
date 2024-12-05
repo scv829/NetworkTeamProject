@@ -20,9 +20,9 @@ public class ljh_ButtonParent : MonoBehaviourPun,IPunObservable
         //Comment : 랜덤한 버튼에 윈버튼 넣어줌
         if (PhotonNetwork.IsMasterClient)
         {
-            WinNum = Random.Range(0, buttonArray.Length - 1);
+            //WinNum = Random.Range(0, buttonArray.Length - 1);
         }
-            buttonArray[WinNum].GetComponent<ljh_Button>().WinButton = true;
+            buttonArray[2/*WinNum*/].GetComponent<ljh_Button>().WinButton = true;
         
     }
 

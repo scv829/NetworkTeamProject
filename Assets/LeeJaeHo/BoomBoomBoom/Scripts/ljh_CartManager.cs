@@ -34,7 +34,8 @@ public class ljh_CartManager : MonoBehaviourPun
     public void CartMoveExit()
     {
         exitCart.GetComponent<CinemachineDollyCart>().enabled = true;
-        player.transform.position = exitCart.transform.position;
+        if ((int)ljh_GameManager.instance.myTurn == PhotonNetwork.LocalPlayer.ActorNumber - 1)
+            player.transform.position = exitCart.transform.position;
     }
 
     

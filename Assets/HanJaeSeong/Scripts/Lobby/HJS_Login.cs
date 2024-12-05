@@ -4,6 +4,7 @@ using Firebase.Extensions;
 using Photon.Pun;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -45,15 +46,15 @@ public class HJS_Login : MonoBehaviour
                         popupPanel.ShowPopup("모든 내용을 입력해주세요.");
                     }
                     // 비밀번호가 입력
-                    else if (task.Exception.Message.Contains("A password must be provided"))
+                    else if(task.Exception.Message.Contains("A password must be provided"))
                     {
                         popupPanel.ShowPopup("모든 내용을 입력해주세요.");
                     }
-                    else if (task.Exception.Message.Contains("The email address is badly formatted"))
+                    else if(task.Exception.Message.Contains("The email address is badly formatted"))
                     {
                         popupPanel.ShowPopup("이메일 주소 형식으로 입력해주세요.");
                     }
-                    else if (task.Exception.Message.Contains("An internal error has occurred"))
+                    else if(task.Exception.Message.Contains("An internal error has occurred"))
                     {
                         popupPanel.ShowPopup("아이디 혹은 비밀번호가 맞지 않습니다.");
                     }

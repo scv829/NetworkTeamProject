@@ -102,47 +102,45 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
         // TODO: 모두 제거했는데 계속 작동 왜?
         if (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ROOM_TYPE)) return;
 
-        foreach (HJS_PlayerEntry entry in playerEntries)        // 일단 방의 UI를 초기화 시키기
+        try
         {
-            entry.SetEmpty();
-            try
+
+            foreach (HJS_PlayerEntry entry in playerEntries)        // 일단 방의 UI를 초기화 시키기
             {
                 entry.SetEmpty();
                 entry.gameObject.SetActive(false);
-
             }
-            catch(Exception e)
+
+            // 칸은 현재 룸의 최대만 가능
+            for (int i = 0; i < PhotonNetwork.CurrentRoom.MaxPlayers; i++)
             {
-                Debug.Log($"에러 메시지! {e.Message}");
-                continue;
+                sb.Clear();
+                sb.Append($"Player_{i}");
+                matchView.GetUI(sb.ToString()).SetActive(true);
+            }
+
+            foreach (Player player in PhotonNetwork.PlayerList)     // 방에 있는 플레이어의 수만큼
+            {
+                if (player.GetPlayerNumber() == -1) continue;       // 아직 할당을 안받았으면 넘어가기
+
+                int number = player.GetPlayerNumber();              // 플레이어의 번호를 가져와서
+                playerEntries[number].SetPlayer(player);            // 그 위치에 있다고 설정
+            }
+
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)           // 게임 시작 버튼과 방 수정은 방장만 가능
+            {
+                matchView.GetUI("StartButton").SetActive(true); // 게임 시작 버튼은 리스트가 있을 때에 본다
+                matchView.GetUI("EditButton").SetActive(true);
+            }
+            else
+            {
+                matchView.GetUI("StartButton").SetActive(false);
+                matchView.GetUI("EditButton").SetActive(false);
             }
         }
-
-        // 칸은 현재 룸의 최대만 가능
-        for (int i = 0; i < PhotonNetwork.CurrentRoom.MaxPlayers; i++)
+        catch (Exception e)
         {
-            sb.Clear();
-            sb.Append($"Player_{i}");
-            matchView.GetUI(sb.ToString()).SetActive(true);
-        }
-
-        foreach (Player player in PhotonNetwork.PlayerList)     // 방에 있는 플레이어의 수만큼
-        {
-            if (player.GetPlayerNumber() == -1) continue;       // 아직 할당을 안받았으면 넘어가기
-
-            int number = player.GetPlayerNumber();              // 플레이어의 번호를 가져와서
-            playerEntries[number].SetPlayer(player);            // 그 위치에 있다고 설정
-        }
-
-        if (PhotonNetwork.LocalPlayer.IsMasterClient)           // 게임 시작 버튼과 방 수정은 방장만 가능
-        { 
-            matchView.GetUI("StartButton").SetActive(true); // 게임 시작 버튼은 리스트가 있을 때에 본다
-            matchView.GetUI("EditButton").SetActive(true);
-        }
-        else
-        {
-            matchView.GetUI("StartButton").SetActive(false);
-            matchView.GetUI("EditButton").SetActive(false);
+            Debug.Log($"에러 메시지! {e.Message}");
         }
     }
 
@@ -160,7 +158,8 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
         {
             photonView.RPC("LeaveSceneRPC", player);
         }
-        
+
+        if (PhotonNetwork.IsMasterClient == false) return;
         // 게임을 시작하는 옵션
         PhotonNetwork.LoadLevel(HJS_GameMap.instance.NextMap());
     }

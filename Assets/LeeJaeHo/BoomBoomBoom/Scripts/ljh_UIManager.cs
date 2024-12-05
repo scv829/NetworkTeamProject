@@ -34,10 +34,6 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
     {
         if ((int)ljh_GameManager.instance.myTurn == PhotonNetwork.LocalPlayer.ActorNumber - 1)
         {
-            if(curState == State.enter)
-            {
-                player.anime.Play("Walk");
-            }
             
             if (curState == State.choice)
             {
@@ -48,7 +44,6 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
 
             if (curState == State.die)
             {
-                player.anime.Play("Idle");
                 guideText.gameObject.SetActive(false);
                 keyImages[0].gameObject.SetActive(false);
                 keyImages[1].gameObject.SetActive(false);
@@ -56,7 +51,6 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
 
             if (curState == State.end)
             {
-                player.anime.Play("Walk");
                 guideText.gameObject.SetActive(false);
                 keyImages[0].gameObject.SetActive(false);
                 keyImages[1].gameObject.SetActive(false);
@@ -83,9 +77,19 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
 
         if (curState == State.end)
         {
-            ShowUiEnd();
             winnerText.gameObject.SetActive(true);
         }
+    }
+
+    void END()
+    {
+        photonView.RPC("RPCEND", RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    public void RPCEND()
+    {
+        winnerText.text = $"승자는... {gameManager.curPhotonList[(int)gameManager.myTurn].NickName}입니다!!!";
     }
 
     public void ShowWhosTurn()
@@ -93,11 +97,6 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
         turnText.text =$"{gameManager.myTurn.ToString()}의 차례입니다.";
     }
     
-
-    public void ShowUiEnd()
-    {
-        winnerText.text = $"승자는... {gameManager.curPhotonList[(int)gameManager.myTurn].NickName}입니다!!!";
-    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
