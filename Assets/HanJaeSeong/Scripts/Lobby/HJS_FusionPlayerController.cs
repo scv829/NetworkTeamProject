@@ -1,11 +1,6 @@
 using Cinemachine;
-using Firebase.Auth;
-using Firebase.Database;
-using Firebase.Extensions;
 using Fusion;
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -34,8 +29,8 @@ public class HJS_FusionPlayerController : NetworkBehaviour, IAfterSpawned
 
     public override void Spawned()
     {
-       if(HasStateAuthority)
-       {
+        if (HasStateAuthority)
+        {
             camera.Priority = 15;
             name = PhotonNetwork.LocalPlayer.NickName;
             gameObject.GetComponent<NetworkTransform>().Teleport(HJS_PlayerPosition.Instance.PlayerPos);
@@ -43,7 +38,7 @@ public class HJS_FusionPlayerController : NetworkBehaviour, IAfterSpawned
             backCanvas.layer = 26;
             SetPlayer();
         }
-       nickname.text = name;
+        nickname.text = name;
     }
 
     // 접속이 끊어질 때 <- 파괴가 된다 <- 그때 데이터에 저장aa
@@ -68,8 +63,8 @@ public class HJS_FusionPlayerController : NetworkBehaviour, IAfterSpawned
 
         // 위치를 동기화
         transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y + rotate, 0);
-        if(!move.Equals(Vector3.zero))
-        transform.position += transform.TransformDirection(move);
+        if (!move.Equals(Vector3.zero))
+            transform.position += transform.TransformDirection(move);
     }
 
     private void Update()

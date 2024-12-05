@@ -97,6 +97,15 @@ public class HJS_UserProfile : MonoBehaviour
                     rateText.SetText(sb);
 
                 }
+            })
+            .ContinueWithOnMainThread(task => 
+            {
+                if (task.IsCanceled || task.IsFaulted)
+                {
+                    Debug.LogWarning($"오류 발생 : {task.Exception.Message}");
+                    return;
+                }
+
                 // 모든 정보가 세팅이 되면 보여주기
                 gameObject.SetActive(true);
             });
@@ -138,7 +147,7 @@ public class HJS_UserProfile : MonoBehaviour
                  {
                      if (data.Child("name").Value.Equals(newNickname))
                      {
-                         matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("Already using Nickname!");
+                         matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("이미 사용중인 닉네임입니다!");
                          return;
                      }
                  }
@@ -155,9 +164,18 @@ public class HJS_UserProfile : MonoBehaviour
                  });
              }
 
-             userProfileRef.UpdateChildrenAsync(dictionary);
+             userProfileRef.UpdateChildrenAsync(dictionary)
+             .ContinueWithOnMainThread(task => 
+             {
+                 if (task.IsCanceled || task.IsFaulted)
+                 {
+                     Debug.LogWarning($"오류 발생 : {task.Exception.Message}");
+                     return;
+                 }
 
-             matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("Update complete!");
+                 matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("정보 업데이트 완료!");
+             });
+
          });
     }
 }

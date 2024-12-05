@@ -46,7 +46,7 @@ public class HJS_LoginPanel : MonoBehaviour
                 // 이메일 인증 여부 
                 if(!isTest && result.User.IsEmailVerified.Equals(false))
                 {
-                    popupPanel.ShowPopup("Please verify your email!");
+                    popupPanel.ShowPopup("이메일 인증을 받아주세요.");
                     return;
                 }
 

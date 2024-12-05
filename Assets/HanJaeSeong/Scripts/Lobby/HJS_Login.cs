@@ -2,6 +2,7 @@ using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
 using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -67,9 +68,12 @@ public class HJS_Login : MonoBehaviour
                 // 이메일 인증 여부 
                 if (!isTest && result.User.IsEmailVerified.Equals(false))
                 {
-                    popupPanel.ShowPopup("Please verify your email!");
+                    popupPanel.ShowPopup("이메일 인증을 받아주세요.");
                     return;
                 }
+
+                popupPanel.ShowPopup("로그인 중....");
+
 
                 // 인증이 됐을 때 유저 정보 확인
                 CheckUserInfo();
@@ -138,14 +142,22 @@ public class HJS_Login : MonoBehaviour
             })
              .ContinueWithOnMainThread(task =>
              {
-                 Debug.Log("get");
-                 PhotonNetwork.LocalPlayer.SetPlayerUID(uid);
-                 PhotonNetwork.ConnectUsingSettings();
-
-                 // 씬 넘어가기
-                 SceneManager.LoadScene("HJS_MainScene");
-                 PhotonNetwork.AutomaticallySyncScene = true;
+                 StartCoroutine(DelayConnectRoutine(uid));
              });
+    }
+
+    private IEnumerator DelayConnectRoutine(string uid)
+    {
+        PhotonNetwork.LocalPlayer.SetPlayerUID(uid);
+
+        yield return new WaitForSeconds(1f);
+
+        // 연결이 될때까지 기달 린 후
+        yield return new WaitUntil(() => { return PhotonNetwork.ConnectUsingSettings(); });
+
+        // 씬 넘어가기
+        SceneManager.LoadScene("HJS_MainScene");
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
 

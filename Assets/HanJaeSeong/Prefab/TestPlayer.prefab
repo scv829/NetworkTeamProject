@@ -629,10 +629,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7733295017122051540}
   - component: {fileID: 8493851079376406228}
-  - component: {fileID: 1767809609632589551}
   - component: {fileID: -3876833634329790059}
   - component: {fileID: 1591876897780073320}
   - component: {fileID: 3753356025077916975}
+  - component: {fileID: 322447667327391019}
   m_Layer: 0
   m_Name: TestPlayer
   m_TagString: Player
@@ -677,24 +677,6 @@ MonoBehaviour:
   backCanvas: {fileID: 5460302346214181357}
   playerSpeed: 5
   rotateSpeed: 180
---- !u!143 &1767809609632589551
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7733295017122051536}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 0
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &-3876833634329790059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -752,6 +734,24 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 0
+--- !u!143 &322447667327391019
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7733295017122051536}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 1
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &8273193302444985286
 GameObject:
   m_ObjectHideFlags: 0

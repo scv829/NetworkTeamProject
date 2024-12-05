@@ -36,6 +36,8 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
         matchView.GetUI<Button>("StartButton").onClick.AddListener(StartGame);
         // 나가는 버튼에 이벤트 장착
         matchView.GetUI<Button>("LeaveButton").onClick.AddListener(LeaveRoom);
+
+        if (PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom) PhotonNetwork.CurrentRoom.IsVisible = true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -49,21 +51,25 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
             // 포톤이 준비가 되었을 때만 아래 기능을 수행
             if (PhotonNetwork.IsConnectedAndReady)
             {
-                // 만약 해당 트리거에 충돌이 되었을 때
-                if (!PhotonNetwork.InLobby)
-                {
-                    PhotonNetwork.JoinLobby(); // <- 여기 문제 (일단 연결이 되었는지 확인 필요)
-                    matchView.GetUI("JoinLobbyPanel").SetActive(true);
-                    Debug.Log("RoomController의 Ontrigger의 Inlobby");
-                }
                 // 로비에 있어서 들어갔는데 <- 현재 내가 방안에 있을 때(게임 씬 -> 광장 씬 넘어올 때)
                 if (PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ROOM_TYPE))
                 {
-                    Debug.Log("RoomController의 Ontrigger의 inROOM");
-                    PhotonNetwork.LeaveLobby();
+                    // Debug.Log("RoomController의 Ontrigger의 inROOM");
+                    // PhotonNetwork.LeaveLobby();
+
+                    // 방의 이름 설정
+                    matchView.GetUI<TMP_Text>("JoinRoomTitle").text = PhotonNetwork.CurrentRoom.Name;
+
                     matchView.GetUI("JoinLobbyPanel").SetActive(false);
                     matchView.GetUI("JoinRoomPanel").SetActive(true);
+
                     UpdatePlayers();
+                }
+                else if (!PhotonNetwork.InLobby) // 로비에 접속하고
+                {
+                    // PhotonNetwork.JoinLobby();
+                    matchView.GetUI("JoinLobbyPanel").SetActive(true);
+                    Debug.Log("RoomController의 Ontrigger의 Inlobby");
                 }
             }
         }
@@ -75,14 +81,18 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
         if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ROOM_TYPE))
         {
             // 넘버링 동기화
-            Debug.Log("호출!");
             PlayerNumbering.OnPlayerNumberingChanged += UpdatePlayers;
-
+            // 방의 이름 설정
             matchView.GetUI<TMP_Text>("JoinRoomTitle").text = PhotonNetwork.CurrentRoom.Name;
 
             matchView.GetUI("CreateRoomPanel").SetActive(false);
             matchView.GetUI("JoinLobbyPanel").SetActive(false);
             matchView.GetUI("JoinRoomPanel").SetActive(true);
+        }
+
+        if (PhotonNetwork.InLobby == false)
+        {
+            PhotonNetwork.LeaveLobby();
         }
     }
 
@@ -90,7 +100,6 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         Debug.Log("RoomController의 OnLeftRoom");
-        PlayerNumbering.OnPlayerNumberingChanged -= UpdatePlayers;
         HJS_GameMap.instance.ResetList();
     }
 
@@ -104,7 +113,6 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
 
         try
         {
-
             foreach (HJS_PlayerEntry entry in playerEntries)        // 일단 방의 UI를 초기화 시키기
             {
                 entry.SetEmpty();
@@ -129,7 +137,7 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
 
             if (PhotonNetwork.LocalPlayer.IsMasterClient)           // 게임 시작 버튼과 방 수정은 방장만 가능
             {
-                matchView.GetUI("StartButton").SetActive(true); // 게임 시작 버튼은 리스트가 있을 때에 본다
+                matchView.GetUI("StartButton").SetActive(true);     // 게임 시작 버튼은 리스트가 있을 때에 본다
                 matchView.GetUI("EditButton").SetActive(true);
             }
             else
@@ -149,7 +157,13 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
     {
         if (HJS_GameMap.instance.SceneEmpty())
         {
-            matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("You must select at least one map.");
+            matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("하나 이상의 맵을 선택해야 합니다.");
+            return;
+        }
+
+        if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
+        {
+            matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("혼자서는 시작할 수 없습니다.");
             return;
         }
 
@@ -160,6 +174,8 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
         }
 
         if (PhotonNetwork.IsMasterClient == false) return;
+
+        PhotonNetwork.CurrentRoom.IsVisible = false;
         // 게임을 시작하는 옵션
         PhotonNetwork.LoadLevel(HJS_GameMap.instance.NextMap());
     }
@@ -174,6 +190,8 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
     // 방을 나가는 설정
     private void LeaveRoom()
     {
+        PlayerNumbering.OnPlayerNumberingChanged -= UpdatePlayers;
+
         if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ROOM_TYPE))
         {
             matchView.GetUI("JoinRoomPanel").SetActive(false);
@@ -194,9 +212,28 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
         }
     }
 
+    // 새로운 플레이어가 방에 들어왔을 때
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ROOM_TYPE))
+        {
+            UpdatePlayers();
+        }
+    }
+
+    // 플레이어가 방에서 나갔을 때
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ROOM_TYPE))
+        {
+            UpdatePlayers();
+        }
+    }
+
     // 방 입장에 실패했을 때
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
+        matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("방 입장 실패!\n 로비를 새로고침 해주세요.");
         Debug.Log($"방 입장 실패 ! : {message}");
     }
 

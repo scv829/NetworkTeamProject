@@ -39,23 +39,23 @@ public class HJS_SignUpPanel : MonoBehaviour
     {
         if (emailInputField.text.IsNullOrEmpty())
         {
-            popupPanel.ShowPopup("please Enter Email");
+            popupPanel.ShowPopup("이메일을 입력해주세요");
             return false;
         }
         else if (passwordInputField.text.IsNullOrEmpty() ||
             verifyPasswordInputField.text.IsNullOrEmpty())
         {
-            popupPanel.ShowPopup("please Enter Password");
+            popupPanel.ShowPopup("비밀번호를 입력해주세요");
             return false;
         }
         else if (nicknameInputField.text.IsNullOrEmpty())
         {
-            popupPanel.ShowPopup("please Enter nickname");
+            popupPanel.ShowPopup("닉네임을 입력해주세요");
             return false;
         }
         else if (!passwordInputField.text.Equals(verifyPasswordInputField.text))
         {
-            popupPanel.ShowPopup("Password is incorrect!");
+            popupPanel.ShowPopup("비밀번호가 서로 일치하지 않습니다.");
             return false;
         }
 
@@ -76,12 +76,12 @@ public class HJS_SignUpPanel : MonoBehaviour
                 {
                     if (data.Child("email").Value.Equals(emailInputField.text)) // 어느 유저의 이메일이 있다  이미 사용죽인 이메일이다
                     {
-                        popupPanel.ShowPopup("Already using Email!");
+                        popupPanel.ShowPopup("이미 사용중인 이메일입니다!");
                         return;
                     }
                     else if (data.Child("name").Value.Equals(nicknameInputField.text))
                     {
-                        popupPanel.ShowPopup("Already using Nickname!");
+                        popupPanel.ShowPopup("이미 사용중인 닉네임입니다!");
                         return;
                     }
                 }
@@ -134,7 +134,7 @@ public class HJS_SignUpPanel : MonoBehaviour
                     Debug.Log("setNickName");
                 });
 
-                popupPanel.ShowPopup("Send verification your email");
+                popupPanel.ShowPopup("인증 이메일을 보냈습니다\n확인해주세요");
                 gameObject.SetActive(false);
                 loginPanel.SetActive(true);
 
