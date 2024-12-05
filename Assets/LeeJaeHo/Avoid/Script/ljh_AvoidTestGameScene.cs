@@ -116,7 +116,8 @@ public class ljh_AvoidTestGameScene : MonoBehaviourPunCallbacks
         AddPlayerCount();
         player.GetComponent<ljh_PlayerController>().myName = PhotonNetwork.LocalPlayer.NickName;
         index = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-        playerList[index] = player.GetComponent<ljh_PlayerController>();
+
+        photonView.RPC("RPCPL", RpcTarget.AllViaServer);
 
         ColorChange();
 
@@ -127,6 +128,12 @@ public class ljh_AvoidTestGameScene : MonoBehaviourPunCallbacks
 
         //player.GetComponentInChildren<Renderer>().material.color = playerColor;
 
+    }
+
+    [PunRPC]
+    public void RPCPL()
+    {
+        playerList[index] = player.GetComponent<ljh_PlayerController>();
     }
 
     public void ColorChange()

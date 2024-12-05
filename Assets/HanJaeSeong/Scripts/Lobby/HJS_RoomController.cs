@@ -7,7 +7,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
-using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 using UnityEngine.UI;
 using PhotonHastable = ExitGames.Client.Photon.Hashtable;

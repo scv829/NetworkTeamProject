@@ -5,7 +5,7 @@ using TMPro;
 using Photon.Pun;
 using UnityEngine.UI;
 
-public class ljh_UIManager : MonoBehaviourPun,IPunObservable
+public class ljh_UIManager : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] ljh_GameManager gameManager;
     [SerializeField] ljh_BoomTestGameScene testScene;
@@ -23,30 +23,23 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
         curState = gameManager.curState;
 
         ShowWhosTurn();
-        
+
         UIOnOff();
         SelfUIOnOFf();
-        
-        
+
+
 
     }
     void SelfUIOnOFf()
     {
         if ((int)ljh_GameManager.instance.myTurn == PhotonNetwork.LocalPlayer.ActorNumber - 1)
         {
-            
+
             if (curState == State.choice)
             {
                 guideText.gameObject.SetActive(true);
                 keyImages[0].gameObject.SetActive(true);
                 keyImages[1].gameObject.SetActive(true);
-            }
-
-            if (curState == State.die)
-            {
-                guideText.gameObject.SetActive(false);
-                keyImages[0].gameObject.SetActive(false);
-                keyImages[1].gameObject.SetActive(false);
             }
 
             if (curState == State.end)
@@ -56,6 +49,14 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
                 keyImages[1].gameObject.SetActive(false);
             }
         }
+
+        else
+        {
+            guideText.gameObject.SetActive(false);
+            keyImages[0].gameObject.SetActive(false);
+            keyImages[1].gameObject.SetActive(false);
+        }
+
     }
     void UIOnOff()
     {
@@ -65,12 +66,12 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
     [PunRPC]
     void RPCUI()
     {
-        if (curState == State.idle || curState == State.die || curState == State.end)
+        if (curState == State.die || curState == State.end)
         {
             turnText.gameObject.SetActive(false);
         }
 
-        if (curState == State.enter)
+        if (curState == State.idle || curState == State.enter)
         {
             turnText.gameObject.SetActive(true);
         }
@@ -94,13 +95,13 @@ public class ljh_UIManager : MonoBehaviourPun,IPunObservable
 
     public void ShowWhosTurn()
     {
-        turnText.text =$"{gameManager.myTurn.ToString()}의 차례입니다.";
+        turnText.text = $"{gameManager.myTurn.ToString()}의 차례입니다.";
     }
-    
+
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting) 
+        if (stream.IsWriting)
         {
             stream.SendNext(turnText.text);
             stream.SendNext(winnerText.text);

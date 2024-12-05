@@ -1,3 +1,4 @@
+using Cinemachine;
 using Photon.Pun;
 using Photon.Pun.Demo.Cockpit;
 using Photon.Realtime;
@@ -28,7 +29,6 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] public ljh_InputManager inputManager;
     [SerializeField] public ljh_Player player;
     [SerializeField] public ljh_BoomTestGameScene scene;
-    [SerializeField] public ljh_CartManager cartManagerEnter;
     [SerializeField] public ljh_Pos posManager;
 
     public int curUserNum;
@@ -58,6 +58,9 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
     public Player[] curPhotonList;
     bool end;
 
+    [SerializeField] CinemachineDollyCart[] cartArray;
+    [SerializeField] CinemachineDollyCart exitCart;
+
     private void Awake()
     {
         if (instance == null)
@@ -79,12 +82,13 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Start()
     {
+        
         myTurn = MyTurn.player1;
         end = false;
         curPhotonList = PhotonNetwork.PlayerList;
 
         //UserNumCalculate(curUserNum - deathCount);
-
+        Debug.Log(myTurn);
 
         if (player != null)
         {
@@ -155,26 +159,27 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
                 break;
 
             case State.enter:
+                cartArray[(int)myTurn].m_Speed = 1f;
                 posManager.EndPoint();
                 break;
 
             case State.choice:
-                if ((int)ljh_GameManager.instance.myTurn == (int)this.playerNumber)
-                    cartManagerEnter.CartReset();
-
                 break;
 
             case State.die:
                 if (playingCheck)
                 {
-                    photonView.RPC("RPCNextTurn", RpcTarget.All);
                     playingCheck = false;
+                    photonView.RPC("RPCNextTurn", RpcTarget.All);
                 }
                 break;
 
             case State.end:
                 if (!end)
+                {
+                    exitCart.m_Speed = 0.33f;
                     GameEnd();
+                }
                 break;
 
         }
@@ -215,14 +220,18 @@ public class ljh_GameManager : MonoBehaviourPunCallbacks, IPunObservable
     public void GameEnd()
     {
         end = true;
-        cartManagerEnter.CartMoveExit();
         DoorNLight();
 
-        Player winner = curPhotonList[(int)myTurn];
         uiManager.RPCEND();
+        photonView.RPC("RPCGameEnd", RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    public void RPCGameEnd()
+    {
+        Debug.Log($"승자정보 : {curPhotonList[(int)myTurn]}");
+        Player winner = curPhotonList[(int)myTurn];
         HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
-
-
     }
 
     [PunRPC]
