@@ -1,3 +1,4 @@
+using Cinemachine;
 using Photon.Chat.UtilityScripts;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
@@ -26,7 +27,7 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
     Vector3 playerPos4;
 
 
-    [SerializeField] public GameObject[] cartArray;
+    [SerializeField] public CinemachineDollyCart[] cartArray;
 
     public int curUserNum;
     public GameObject player;
@@ -53,7 +54,6 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        
 
         playerArray = new GameObject[4];
 
@@ -148,7 +148,7 @@ public class ljh_BoomTestGameScene : MonoBehaviourPunCallbacks
 
         playerPos = new Vector3(vectorPlayerSpawn[index].x, 0, vectorPlayerSpawn[index].z);
         player = PhotonNetwork.Instantiate("ljh_Player", playerPos, Quaternion.identity);
-        player.GetComponent<ljh_Player>().playerNumber = (PlayerNumber)index;
+        //player.GetComponent<ljh_Player>().playerNumber = (PlayerNumber)index;
 
 
 

@@ -41,19 +41,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5312254207850949179, guid: 7a131f7863b98374d8ab4294a1ff5125, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.04845395
+      value: 0.044534713
       objectReference: {fileID: 0}
     - target: {fileID: 5312254207850949179, guid: 7a131f7863b98374d8ab4294a1ff5125, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.000027841364
+      value: -0.0010085749
       objectReference: {fileID: 0}
     - target: {fileID: 5312254207850949179, guid: 7a131f7863b98374d8ab4294a1ff5125, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.99882525
+      value: 0.9987513
       objectReference: {fileID: 0}
     - target: {fileID: 5312254207850949179, guid: 7a131f7863b98374d8ab4294a1ff5125, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0005739194
+      value: 0.022618659
       objectReference: {fileID: 0}
     - target: {fileID: 5312254207850949179, guid: 7a131f7863b98374d8ab4294a1ff5125, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -165,7 +165,6 @@ MonoBehaviour:
   testGameScene: {fileID: 0}
   inputManager: {fileID: 0}
   cartManager: {fileID: 0}
-  anime: {fileID: -3703356496148536683}
   playerNumber: 0
   exitCart: {fileID: 0}
   _curPos: {x: 0, y: 0, z: 0}
@@ -175,3 +174,4 @@ MonoBehaviour:
   - {r: 0, g: 0, b: 1, a: 1}
   - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   - {r: 0, g: 1, b: 0, a: 1}
+  cartArray: []

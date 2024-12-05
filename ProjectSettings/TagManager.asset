@@ -6,6 +6,7 @@ TagManager:
   tags:
   - EnterWay
   - ExitWay
+  - CartManager
   layers:
   - Default
   - TransparentFX

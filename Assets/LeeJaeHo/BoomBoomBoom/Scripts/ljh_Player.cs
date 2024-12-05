@@ -18,10 +18,9 @@ public enum PlayerNumber
 public class ljh_Player : MonoBehaviourPun
 {
     [SerializeField] ljh_BoomTestGameScene testGameScene;
-    [SerializeField] GameObject inputManager;
-    [SerializeField] GameObject cartManager;
+    [SerializeField] ljh_InputManager inputManager;
+    [SerializeField] ljh_CartManager cartManager;
 
-    [SerializeField] public Animator anime;
 
     public PlayerNumber playerNumber;
 
@@ -39,9 +38,14 @@ public class ljh_Player : MonoBehaviourPun
         Color.green
     };
 
+    [SerializeField] GameObject[] cartArray;
+
+
     private void OnEnable()
     {
+        playerNumber = (PlayerNumber)PhotonNetwork.LocalPlayer.ActorNumber - 1;
         ColorChange();
+        Debug.Log(playerNumber);
     }
 
     public void ColorChange()
@@ -61,15 +65,22 @@ public class ljh_Player : MonoBehaviourPun
     }
     private void Start()
     {
+        cartArray = new GameObject[4];
+        cartArray[0] = GameObject.Find("Cart1");
+        cartArray[1] = GameObject.Find("Cart2");
+        cartArray[2] = GameObject.Find("Cart3");
+        cartArray[3] = GameObject.Find("Cart4");
+
+
         testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_BoomTestGameScene>();
-        inputManager = GameObject.FindWithTag("GameController");
+        inputManager = GameObject.Find("InputManager").GetComponent<ljh_InputManager>();
         //buttonPos = inputManagerScript. 나중에 유저 4 > 3번 포즈 3명 > 3번포즈 2명 2번 포즈
-        cartManager = GameObject.FindWithTag("EditorOnly");
+        cartManager = GameObject.FindWithTag("CartManager").GetComponent<ljh_CartManager>();
 
         _curPos = testGameScene.playerPos;
         winnerCheck = false;
-        exitCart = ljh_GameManager.instance.cartManagerEnter.exitCart;
 
+        exitCart = cartManager.exitCart;
     }
 
 
@@ -80,35 +91,39 @@ public class ljh_Player : MonoBehaviourPun
         if (!photonView.IsMine)
             return;
 
-        //Comment : 플레이어 위치 카트 위치에 고정
-        if(ljh_GameManager.instance.curState == State.idle || ljh_GameManager.instance.curState == State.enter)
+        if ((int)ljh_GameManager.instance.myTurn == (int)playerNumber)
         {
-            transform.position = testGameScene.cartArray[testGameScene.index].transform.position;
-        }
-        //Comment : 플레이어 위치 엑싯카트 위치에 고정
-        if(ljh_GameManager.instance.curState == State.end)
-        {
-            if(winnerCheck)
-            transform.position = exitCart.transform.position;
-        }
+            //Comment : 플레이어 위치 카트 위치에 고정
 
-        // Comment 내 턴일때만 플레이어 이동
-        if ((int)ljh_GameManager.instance.myTurn == (int)this.playerNumber)
-        {
+            if (ljh_GameManager.instance.curState == State.idle || ljh_GameManager.instance.curState == State.enter)
+            {
+                transform.position = cartArray[PhotonNetwork.LocalPlayer.ActorNumber-1].transform.position;
+
+            }
+
+            //Comment : 플레이어 위치 엑싯카트 위치에 고정
+            if (ljh_GameManager.instance.curState == State.end)
+            {
+                if (winnerCheck)
+                    transform.position = exitCart.transform.position;
+            }
+
+            // Comment 내 턴일때만 플레이어 이동
+
             if (ljh_GameManager.instance.curState == State.choice)
             {
                 MovePlayer(_curPos);
             }
-        }
 
-        //Comment : 내 턴일 때만 플레이 가능
-        if ((int)playerNumber == (int)ljh_GameManager.instance.myTurn)
-        {
+
+            //Comment : 내 턴일 때만 플레이 가능
+
             PlayingPlayer();
+
         }
     }
 
-    
+
 
     public void PlayingPlayer()
     {
@@ -119,12 +134,10 @@ public class ljh_Player : MonoBehaviourPun
                 break;
 
             case State.enter:
-                ljh_GameManager.instance.cartManagerEnter.CartMoveEnter();
                 break;
 
             case State.choice:
-                UnRideCart();
-                _curPos = inputManager.GetComponent<ljh_InputManager>().ChoiceAnswer().transform.position;
+                _curPos = inputManager.ChoiceAnswer().transform.position;
                 ljh_GameManager.instance.inputManager.SelectButton(_curPos);
 
                 break;
@@ -134,11 +147,16 @@ public class ljh_Player : MonoBehaviourPun
 
             case State.end:
                 //ExitCart();
-                cartManager.GetComponent<ljh_CartManager>().CartMoveExit();
+                CartMoveExit();
 
                 break;
 
         }
+    }
+    public void CartMoveExit()
+    {
+        if ((int)ljh_GameManager.instance.myTurn == PhotonNetwork.LocalPlayer.ActorNumber - 1)
+            transform.position = exitCart.transform.position;
     }
 
     public void MovePlayer(Vector3 vector)
@@ -147,14 +165,7 @@ public class ljh_Player : MonoBehaviourPun
     }
 
 
-    public void UnRideCart()
-    {
-        ljh_BoomTestGameScene testGameScene = GameObject.FindWithTag("GameController").GetComponent<ljh_BoomTestGameScene>();
-        GameObject player = testGameScene.player;
 
-        player.transform.parent = null;
-
-    }
 
 
 
@@ -171,7 +182,9 @@ public class ljh_Player : MonoBehaviourPun
 
     }
 
-    
+
+
+
 
 
 

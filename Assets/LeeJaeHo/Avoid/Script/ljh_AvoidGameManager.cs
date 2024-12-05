@@ -6,7 +6,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public enum Phase
@@ -30,7 +29,6 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
     [SerializeField] public ljh_AvoidTestGameScene testScene;
 
     public int playerCount;
-    public Queue<ljh_PlayerController> playerQ;
 
     //타이머
     public float readyTimer;
@@ -46,6 +44,8 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
 
     public ljh_PlayerController _alivePlayer;
     bool isEnd;
+
+    int index;
 
     private void Start()
     {
@@ -189,11 +189,16 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
     public void EndPhase()
     {
         isEnd = true;
-        int index = WinnerCalc();
+        index = WinnerCalc();
 
-        Player winner = curPhotonList[index];
+        photonView.RPC("RPCEndPhase", RpcTarget.AllViaServer);
+
+    }
+
+    public void RPCEndPhase()
+    {
+        Player winner = _alivePlayer.GetComponent<Player>();//curPhotonList[index];
         HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
-
     }
 
     //Comment 승자 계산 함수
@@ -228,6 +233,7 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
                 break;
         }
     }
+
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
