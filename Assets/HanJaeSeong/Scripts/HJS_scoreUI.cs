@@ -40,16 +40,19 @@ public class HJS_scoreUI : MonoBehaviourPun, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        // 변수 데이터를 보내는 경우
         if (stream.IsWriting)
         {
+            // 방장이 데이터를 전송
             stream.SendNext(int.Parse(scoreText.text));
         }
-        // 변수 데이터를 받는 경우
         else if (stream.IsReading)
         {
+            // 클라이언트가 데이터를 수신
+            int receivedScore = (int)stream.ReceiveNext();
+            if (receivedScore.Equals(0)) return;
+
             sb.Clear();
-            sb.Append((int)stream.ReceiveNext());
+            sb.Append(receivedScore);
             scoreText.SetText(sb);
         }
     }

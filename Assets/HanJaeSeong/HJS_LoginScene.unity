@@ -30017,7 +30017,7 @@ MonoBehaviour:
   passwordField: {fileID: 947949789}
   popupPanel: {fileID: 1693396872}
   userId: tester
-  isTest: 0
+  isTest: 1
 --- !u!1001 &1764319401
 PrefabInstance:
   m_ObjectHideFlags: 0

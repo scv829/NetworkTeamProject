@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -39,7 +40,6 @@ public class HYJ_PlayerController : MonoBehaviourPun
             return;
         }
         
-        
         if (monster.monsterCount > 0)
         {
             Debug.Log("공격가능");
@@ -52,8 +52,7 @@ public class HYJ_PlayerController : MonoBehaviourPun
         if (monster.monsterCount <= 0 && time > 0)
         {
             //TODO : 전원 멈추고 승자가 누군지 알려주기
-            GameObject.FindWithTag("GameController").GetComponent<HYJ_TestGameScene>().GameEnd(PhotonNetwork.LocalPlayer.ActorNumber);
-            
+            GameObject.FindWithTag("GameController").GetComponent<HYJ_TestGameScene>().GameEnd(PhotonNetwork.LocalPlayer.GetPlayerNumber());
         }
     }
 
@@ -65,5 +64,5 @@ public class HYJ_PlayerController : MonoBehaviourPun
         transform.Rotate(new Vector3(0, 90, 0));
     }
 
-    
+
 }

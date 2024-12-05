@@ -3,8 +3,6 @@ using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -52,14 +50,14 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
             if (PhotonNetwork.IsConnectedAndReady)
             {
                 // 만약 해당 트리거에 충돌이 되었을 때
-                if (!PhotonNetwork.InLobby) 
+                if (!PhotonNetwork.InLobby)
                 {
                     PhotonNetwork.JoinLobby(); // <- 여기 문제 (일단 연결이 되었는지 확인 필요)
                     matchView.GetUI("JoinLobbyPanel").SetActive(true);
                     Debug.Log("RoomController의 Ontrigger의 Inlobby");
                 }
                 // 로비에 있어서 들어갔는데 <- 현재 내가 방안에 있을 때(게임 씬 -> 광장 씬 넘어올 때)
-                if(PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ROOM_TYPE))
+                if (PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ROOM_TYPE))
                 {
                     Debug.Log("RoomController의 Ontrigger의 inROOM");
                     PhotonNetwork.LeaveLobby();
@@ -87,9 +85,9 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
             matchView.GetUI("JoinRoomPanel").SetActive(true);
         }
     }
-    
+
     // 방에서 나갔을 때
-    public override void OnLeftRoom() 
+    public override void OnLeftRoom()
     {
         Debug.Log("RoomController의 OnLeftRoom");
         PlayerNumbering.OnPlayerNumberingChanged -= UpdatePlayers;
@@ -102,15 +100,15 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
     public void UpdatePlayers()
     {
         // TODO: 모두 제거했는데 계속 작동 왜?
-        if(!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ROOM_TYPE)) return;
+        if (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ROOM_TYPE)) return;
 
         try
         {
 
             foreach (HJS_PlayerEntry entry in playerEntries)        // 일단 방의 UI를 초기화 시키기
             {
-               entry.SetEmpty();
-               entry.gameObject.SetActive(false);
+                entry.SetEmpty();
+                entry.gameObject.SetActive(false);
             }
 
             // 칸은 현재 룸의 최대만 가능
@@ -149,14 +147,14 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
     // 방을 시작하는 옵션
     private void StartGame()
     {
-        if(HJS_GameMap.instance.SceneEmpty())
+        if (HJS_GameMap.instance.SceneEmpty())
         {
             matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("You must select at least one map.");
             return;
         }
-        
+
         // 모두에게 보내주기
-        foreach(Player player in PhotonNetwork.PlayerList)
+        foreach (Player player in PhotonNetwork.PlayerList)
         {
             photonView.RPC("LeaveSceneRPC", player);
         }
@@ -189,7 +187,7 @@ public class HJS_RoomController : MonoBehaviourPunCallbacks
     public override void OnRoomPropertiesUpdate(PhotonHastable propertiesThatChanged)
     {
         // 여기다
-        if(PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ROOM_TYPE))
+        if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ROOM_TYPE))
         {
             Debug.Log("RommController의 OnRoomProperties");
             UpdatePlayers();

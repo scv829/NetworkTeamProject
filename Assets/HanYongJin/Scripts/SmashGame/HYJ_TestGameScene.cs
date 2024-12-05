@@ -6,6 +6,7 @@ using Photon.Realtime;
 using TMPro;
 using Photon.Pun.UtilityScripts;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
+using System.Runtime.ExceptionServices;
 
 public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
 {
@@ -20,31 +21,38 @@ public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
 
     [SerializeField] private Player[] _curPhotonPlayer;
     public Player[] CurPhotonPlayer { get { return _curPhotonPlayer; } set { _curPhotonPlayer = value; } }
-    void Start()
-    {
-        PhotonNetwork.LocalPlayer.NickName = $"Player {Random.Range(1000, 10000)}";
-        //PhotonNetwork.ConnectUsingSettings(); //게임 씬 테스트용
 
-        Vector3 vectorColor = new Vector3(playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].r, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].g, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].b);
-        PhotonNetwork.LocalPlayer.SetPlayerColor(vectorColor);
-        PhotonNetwork.LocalPlayer.SetLoad(true);
+    [Header("GameEnd")] bool isOver;
+    [SerializeField]
+ //  void Start()
+ //  {
+ //      PhotonNetwork.LocalPlayer.NickName = $"Player {Random.Range(1000, 10000)}";
+ //      //PhotonNetwork.ConnectUsingSettings(); //게임 씬 테스트용
+ //
+ //      Vector3 vectorColor = new Vector3(playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].r, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].g, playerColors[PhotonNetwork.LocalPlayer.GetPlayerNumber()].b);
+ //      PhotonNetwork.LocalPlayer.SetPlayerColor(vectorColor);
+ //      PhotonNetwork.LocalPlayer.SetLoad(true);
+ //
+ //      CurPhotonPlayer = PhotonNetwork.PlayerList;
+ //  }
+ //
+ //  public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
+ //  {
+ //      if (changedProps.ContainsKey(HJS_CustomProperty.LOAD))
+ //      {
+ //          Debug.Log($"{targetPlayer.NickName} 이 로딩이 완료되었습니다. ");
+ //          bool allLoaded = CheckAllLoad();
+ //          Debug.Log($"모든 플레이어 로딩 완료 여부 : {allLoaded} ");
+ //          if (allLoaded)
+ //          {
+ //              StartLoading();
+ //          }
+ //      }
+ //  }
+ //
+    public void SetPlayers() => CurPhotonPlayer = PhotonNetwork.PlayerList;
 
-        CurPhotonPlayer = PhotonNetwork.PlayerList;
-    }
-
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
-    {
-        if (changedProps.ContainsKey(HJS_CustomProperty.LOAD))
-        {
-            Debug.Log($"{targetPlayer.NickName} 이 로딩이 완료되었습니다. ");
-            bool allLoaded = CheckAllLoad();
-            Debug.Log($"모든 플레이어 로딩 완료 여부 : {allLoaded} ");
-            if (allLoaded)
-            {
-                StartCoroutine(StartDelayRoutine());
-            }
-        }
-    }
+    public void StartLoading() => StartCoroutine(StartDelayRoutine());
 
     private bool CheckAllLoad()
     {
@@ -67,7 +75,7 @@ public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
     */
     IEnumerator StartDelayRoutine()
     {
-        yield return new WaitForSeconds(2f); // 로딩기다리기
+        yield return new WaitForSeconds(0.5f); // 로딩기다리기
         
         gameStartCountText.text = "3";
         yield return new WaitForSeconds(1f);
@@ -93,19 +101,28 @@ public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
 
     public void GameEnd(int _winnerNumber)
     {
-        if(_winnerNumber != 0)
-        {
-            GameObject.FindWithTag("Player").SetActive(false);
-            photonView.RPC("HYJ_GameEnd", RpcTarget.All, _winnerNumber);
-        }
+        GameObject.FindWithTag("Player").SetActive(false);
+        photonView.RPC("HYJ_GameEnd", RpcTarget.MasterClient, _winnerNumber);
     }
 
     [PunRPC]
     public void HYJ_GameEnd(int winnerNumber)
     {
-        gameStartCountText.gameObject.SetActive(true);
-        gameStartCountText.text = $"{winnerNumber}P is Winner!!!";
-        Player winner = CurPhotonPlayer[winnerNumber-1];
-        HJS_GameSaveManager.Instance.GameOver(new Player[] {winner});
+        if (isOver) return;
+        isOver = true;
+
+        StartCoroutine(GameEndRoutine(winnerNumber));
     }
+
+    private IEnumerator GameEndRoutine(int winnerNumber)
+    {
+        gameStartCountText.gameObject.SetActive(true);
+        Player winner = CurPhotonPlayer[winnerNumber];
+        gameStartCountText.text = $"{winner.NickName} is Winner!!!";
+
+        yield return new WaitForSeconds(1f);
+
+        HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
+    }
+    
 }

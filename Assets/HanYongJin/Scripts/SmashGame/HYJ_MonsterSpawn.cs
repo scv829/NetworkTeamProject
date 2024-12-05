@@ -1,7 +1,4 @@
 using Photon.Pun;
-using Photon.Realtime;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HYJ_MonsterSpawn : MonoBehaviourPun
@@ -19,13 +16,13 @@ public class HYJ_MonsterSpawn : MonoBehaviourPun
         Vector3 monsterSpawnPoint = SetMonsterPoint();
         for (int i = 0; i < 9; i++) // 생성된 바디 프리팹을 하나씩 위로 쌓기
         {
-            Vector3 pos = new Vector3(0,0.5f + (float)i,0);
-            GameObject body = PhotonNetwork.Instantiate("HYJ_GameObject/HYJ_MonsterBody", monsterSpawnPoint+pos, Quaternion.identity);
-            photonView.RPC("MonsterParentSetRPC",RpcTarget.All,body.GetComponent<PhotonView>().ViewID);
+            Vector3 pos = new Vector3(0, 0.5f + (float)i, 0);
+            GameObject body = PhotonNetwork.Instantiate("HYJ_GameObject/HYJ_MonsterBody", monsterSpawnPoint + pos, Quaternion.identity);
+            photonView.RPC("MonsterParentSetRPC", RpcTarget.All, body.GetComponent<PhotonView>().ViewID);
         }
 
         //몬스터 머리 프리팹 생성, 자식 오브젝트로 이동 및 가장 위에 쌓기
-        GameObject head = PhotonNetwork.Instantiate("HYJ_GameObject/HYJ_MonsterHead", monsterSpawnPoint+new Vector3(0,9.5f,0), Quaternion.identity);
+        GameObject head = PhotonNetwork.Instantiate("HYJ_GameObject/HYJ_MonsterHead", monsterSpawnPoint + new Vector3(0, 9.5f, 0), Quaternion.identity);
         photonView.RPC("MonsterParentSetRPC", RpcTarget.All, head.GetComponent<PhotonView>().ViewID);
     }
 

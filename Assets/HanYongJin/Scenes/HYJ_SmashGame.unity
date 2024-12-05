@@ -2058,8 +2058,77 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameConnectManager
       objectReference: {fileID: 0}
+    - target: {fileID: 793839353331160787, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+--- !u!1 &1731403107 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 793839353327308206, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+  m_PrefabInstance: {fileID: 1731403106}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1731403108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731403107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3db7e2b7755d0d24eaadd812f51af707, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameInitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1307179377}
+        m_TargetAssemblyTypeName: HYJ_TestGameScene, Assembly-CSharp
+        m_MethodName: SetPlayers
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  gameStartEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1307179377}
+        m_TargetAssemblyTypeName: HYJ_TestGameScene, Assembly-CSharp
+        m_MethodName: StartLoading
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  isOver: 0
+  playerColors:
+  - {r: 1, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0.22047567, b: 1, a: 0}
+  - {r: 0.976465, g: 1, b: 0, a: 0}
+  - {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 0}
+  fadeController: {fileID: 1731403109}
+--- !u!114 &1731403109 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 793839354760725600, guid: 26c135414dbb3cd4b985eaaa8c44cef7, type: 3}
+  m_PrefabInstance: {fileID: 1731403106}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70069514369b0264ba172d00c43bee93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2004962130
 GameObject:
   m_ObjectHideFlags: 0
