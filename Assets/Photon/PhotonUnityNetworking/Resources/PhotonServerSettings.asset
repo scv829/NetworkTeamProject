@@ -102,6 +102,9 @@ MonoBehaviour:
   - LeaveSceneRPC
   - RPCEND
   - RPCGameEnd
+  - RPCPL
+  - RPCEndPhase
+  - RPCWinner
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
