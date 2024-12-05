@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -61,7 +62,7 @@ public class HJS_CreateRoomController : MonoBehaviour
 
         if (roomName == "")
         {
-            matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("Room name is required");
+            matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("방 이름을 입력해주세요.");
             return;
         }
 
@@ -80,7 +81,7 @@ public class HJS_CreateRoomController : MonoBehaviour
         // 맵은 하나라도 선택을 해야한다
         if(scenes.Count < 1)
         {
-            matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("You must select at least one map.");
+            matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("하나 이상의 맵을 선택해야 합니다.");
             return;
         }
 
@@ -111,6 +112,12 @@ public class HJS_CreateRoomController : MonoBehaviour
         // 최대 플레이어 수
         float maxPlayer = matchView.GetUI<Slider>("PlayerCountSlider").value;
 
+        if(maxPlayer < PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("설정한 방의 크기가\n 현재 플레이어의 수보다 많습니다.");
+            return;
+        }
+
         // 선택한 방의 맵들
         List<string> scenes = new List<string>();
 
@@ -129,6 +136,15 @@ public class HJS_CreateRoomController : MonoBehaviour
 
         HJS_GameMap.instance.SetSelectMap(scenes);
         PhotonNetwork.CurrentRoom.MaxPlayers = (int)maxPlayer;
+
+        int index = 0;
+
+        foreach(Player player in PhotonNetwork.PlayerList)
+        {
+            PlayerNumberingExtensions.SetPlayerNumber(player, index++);
+        }
+
+        matchView.CloseEditSetting();
     }
     
 

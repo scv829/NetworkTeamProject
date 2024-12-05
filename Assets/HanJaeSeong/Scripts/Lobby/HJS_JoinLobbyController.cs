@@ -94,9 +94,10 @@ public class HJS_JoinLobbyController : MonoBehaviourPunCallbacks
         ClearRoomEntries();
     }
 
+    // 로비를 갱신하는 함수 -> 로비에 재접속
     private void RefreshLobby()
     {
-        if (!PhotonNetwork.InLobby)
+        if (!PhotonNetwork.InLobby && !PhotonNetwork.InRoom)
         {
             PhotonNetwork.JoinLobby();
         }
