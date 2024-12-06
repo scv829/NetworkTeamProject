@@ -39,7 +39,7 @@ public class ljh_InputManager : MonoBehaviourPun, IPunObservable
 
     private void Start()
     {
-        defaultIndex = ljh_GameManager.instance.defaultIndex ;// 4인일땐 2 3인일땐 2로 
+        defaultIndex = ljh_GameManager.instance.defaultIndex;// 4인일땐 2 3인일땐 2로 
         minus = 0;
 
         buttonObj = buttonParents.GetComponent<ljh_ButtonParent>().buttonArray;
@@ -79,7 +79,7 @@ public class ljh_InputManager : MonoBehaviourPun, IPunObservable
         {
             minus++;
         }
-        else if (Input.GetKeyDown(KeyCode.D) && index < buttonObj.Length-1)
+        else if (Input.GetKeyDown(KeyCode.D) && index < buttonObj.Length - 1)
         {
             minus--;
         }
@@ -94,14 +94,17 @@ public class ljh_InputManager : MonoBehaviourPun, IPunObservable
     //Comment : 현재 선택하려는 버튼 지정 함수
     public void SelectButton(Vector3 curPos)
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (!buttonObj[index].isPushed)
         {
-            if (curPos == _pos[index].transform.position)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                buttonObj[index].GetComponent<ljh_Button>().PushedButton(buttonObj[index]);
-                if (_boomCoroutine == null)
-                    // 선택한 버튼의 붐코루틴을 발동함
-                    _boomCoroutine = StartCoroutine(BoomCoroutine(buttonObj[index]));
+                if (curPos == _pos[index].transform.position)
+                {
+                    buttonObj[index].GetComponent<ljh_Button>().PushedButton(buttonObj[index]);
+                    if (_boomCoroutine == null)
+                        // 선택한 버튼의 붐코루틴을 발동함
+                        _boomCoroutine = StartCoroutine(BoomCoroutine(buttonObj[index]));
+                }
             }
         }
     }
@@ -112,8 +115,8 @@ public class ljh_InputManager : MonoBehaviourPun, IPunObservable
     {
         boom.GetComponent<ljh_Boom>().Vibe();
 
-        yield return new WaitForSeconds(UnityEngine.Random.Range(1.5f,2.5f));
-        
+        yield return new WaitForSeconds(UnityEngine.Random.Range(1.5f, 2.5f));
+
         buttonParent.SelectedButtonAction(_button);
 
     }
