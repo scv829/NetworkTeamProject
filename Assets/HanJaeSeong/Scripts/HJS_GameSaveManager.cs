@@ -79,6 +79,8 @@ public class HJS_GameSaveManager : MonoBehaviourPun
 
         Debug.Log(sceneName);
 
+        PhotonNetwork.DestroyAll();
+
         if (HJS_GameMap.instance is null || HJS_GameMap.instance.SceneEmpty())
         {
             PhotonNetwork.LoadLevel(sceneName);    // 초기 설정한 씬으로 이동
