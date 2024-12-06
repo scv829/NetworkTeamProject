@@ -243,7 +243,6 @@ public class ljh_AvoidGameManager : MonoBehaviourPun, IPunObservable
             case Phase.GamePhase:
                 TimerStart();
                 GamePhase();
-                PhaseChange();
                 break;
 
             case Phase.endPhase:

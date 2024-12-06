@@ -43,7 +43,7 @@ public class ljh_AvoidUIManager : MonoBehaviourPun, IPunObservable
         {
             image.gameObject.SetActive(true);
             guideText.gameObject.SetActive(true);
-            timerText.enabled = true;
+            timerText.enabled = false; // 타이머 폐기
         }
 
         else if (gameManager.curPhase == Phase.endPhase)
