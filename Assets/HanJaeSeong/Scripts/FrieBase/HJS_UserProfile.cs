@@ -140,12 +140,15 @@ public class HJS_UserProfile : MonoBehaviour
 
              // UserData의 uid를 다 불러와서
              string newNickname = matchView.GetUI<TMP_InputField>("PlayerNicknameInputField").text;
+             string cutName = (string)snapShot.Child(uid).Child("name").Value;
 
-             if (!snapShot.Child(uid).Child("name").Value.Equals(newNickname) && !newNickname.IsNullOrEmpty())
+             if (!cutName.Equals(newNickname) && !newNickname.IsNullOrEmpty())
              {
                  foreach (DataSnapshot data in snapShot.Children)
                  {
-                     if (data.Child("name").Value.Equals(newNickname))
+                     sb.Clear();
+                     sb.Append((string)data.Child("name").Value);
+                     if (sb.ToString().Equals(newNickname))
                      {
                          matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("이미 사용중인 닉네임입니다!");
                          return;
@@ -161,21 +164,22 @@ public class HJS_UserProfile : MonoBehaviour
                      if (task.IsCanceled || task.IsFaulted) Debug.LogError($"error : {task.Exception}");
 
                      PhotonNetwork.LocalPlayer.NickName = newNickname;
+                 })
+                 .ContinueWithOnMainThread(task =>
+                 {
+                     userProfileRef.UpdateChildrenAsync(dictionary)
+                    .ContinueWithOnMainThread(task =>
+                    {
+                        if (task.IsCanceled || task.IsFaulted)
+                        {
+                            Debug.LogWarning($"오류 발생 : {task.Exception.Message}");
+                            return;
+                        }
+
+                        matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("정보 업데이트 완료!");
+                    });
                  });
              }
-
-             userProfileRef.UpdateChildrenAsync(dictionary)
-             .ContinueWithOnMainThread(task => 
-             {
-                 if (task.IsCanceled || task.IsFaulted)
-                 {
-                     Debug.LogWarning($"오류 발생 : {task.Exception.Message}");
-                     return;
-                 }
-
-                 matchView.GetUI<HJS_PopupPanel>("PopupPanel").ShowPopup("정보 업데이트 완료!");
-             });
-
          });
     }
 }

@@ -34,78 +34,50 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - BoomRPC
+  - ChangeShaderRPC
   - ClickRpc
   - DestroyRpc
   - DestroySpaceship
-  - Fire
-  - RespawnSpaceship
-  - SpawnerPickRPC
-  - RPC_Ready
-  - PlayerReady
-  - ReadyRPC
-  - ReadyHeyHoRPC
-  - CheckAnswerPun
-  - SettingRPC
-  - StartInputRPC
-  - StopInputRPC
-  - StartRPC
-  - FinishRPC
-  - FinishGame
-  - SendAnswerRPC
-  - SlotSettingRPC
-  - ChangeShaderRPC
-  - SetAnimationRPC
-  - SetRenderTextureRPC
-  - ShowExplainRPC
-  - RPCAddPlayerList
-  - ljh_RPCSpotlightMove
-  - SpotlightMove
-  - TurnOffButton
-  - TurnOffButtonRPC
-  - GetOnOffButton
-  - GetOnOffButtonRPC
-  - RPCTurnOffButton
-  - RPCPlayerDied
-  - BoomRPC
-  - NoBoomRPC
   - FinishedHeyHo
-  - PlayerSpawnRPC
-  - MonsterSpawnRPC
-  - PlayerParentSetRPC
-  - MonsterParentSetRPC
-  - PlayerTimeRecord
-  - MonsterUpdateRPC
-  - PlayerRecord
-  - KHS_DistroyBallon
-  - RPCNextTurn
-  - RPCMove
+  - FinishGame
+  - Fire
+  - HYJ_GameEnd
+  - HYJ2_GameEnd
+  - HYJ2_TouchRPC
   - KHS_BumperCartGameStart
   - KHS_CartReadyRPC
+  - KHS_DistroyBallon
   - KHS_StunMove
-  - HYJ2_Touch
-  - HYJ2_TouchRPC
-  - SaveResultRPC
-  - RPCPhaseCalc
-  - RPCGamePhase
-  - RPCPhaseChange
-  - RPCWait
-  - RPCTextOnOff
-  - RPCMOP
+  - LeaveSceneRPC
+  - MonsterParentSetRPC
+  - MonsterUpdateRPC
+  - NoBoomRPC
+  - PlayerParentSetRPC
+  - ReadyHeyHoRPC
+  - ReadyRPC
+  - RespawnSpaceship
   - RPCAddPlayerCount
   - RPCAP
-  - HYJ2_GameEnd
-  - HYJ_GameEnd
-  - RPCUI
-  - RPCAddPL
-  - RPCDNL
   - RPCColor
-  - LeaveSceneRPC
+  - RPCDNL
   - RPCEND
-  - RPCGameEnd
-  - RPCPL
   - RPCEndPhase
-  - RPCWinner
+  - RPCGameEnd
+  - RPCNextTurn
+  - RPCPL
+  - RPCPlayerDied
   - RPCpushed
+  - RPCTurnOffButton
+  - RPCUI
+  - SaveResultRPC
+  - SendAnswerRPC
+  - SetAnimationRPC
+  - ShowExplainRPC
+  - SlotSettingRPC
+  - StartInputRPC
+  - StartRPC
+  - StopInputRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
