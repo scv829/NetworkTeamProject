@@ -16,6 +16,12 @@ public class ljh_Button : MonoBehaviourPun
     public void PushedButton(ljh_Button button)
     {
         button.transform.position = button.transform.position + new Vector3(0, 1, 0);
+        photonView.RPC("RPCpushed", RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    public void RPCpushed()
+    {
         isPushed = true;
     }
 
