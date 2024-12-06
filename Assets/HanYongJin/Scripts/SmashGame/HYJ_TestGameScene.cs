@@ -102,7 +102,7 @@ public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
     public void GameEnd(int _winnerNumber)
     {
         GameObject.FindWithTag("Player").SetActive(false);
-        photonView.RPC("HYJ_GameEnd", RpcTarget.MasterClient, _winnerNumber);
+        photonView.RPC("HYJ_GameEnd", RpcTarget.All, _winnerNumber);
     }
 
     [PunRPC]
@@ -111,18 +111,21 @@ public class HYJ_TestGameScene : MonoBehaviourPunCallbacks
         if (isOver) return;
         isOver = true;
 
-        StartCoroutine(GameEndRoutine(winnerNumber));
-    }
-
-    private IEnumerator GameEndRoutine(int winnerNumber)
-    {
         gameStartCountText.gameObject.SetActive(true);
         Player winner = CurPhotonPlayer[winnerNumber];
         gameStartCountText.text = $"{winner.NickName} is Winner!!!";
 
+        if(PhotonNetwork.IsMasterClient)
+        {
+            StartCoroutine(GameEndRoutine(winnerNumber));
+        }
+    }
+
+    private IEnumerator GameEndRoutine(int winnerNumber)
+    {
         yield return new WaitForSeconds(1f);
 
-        HJS_GameSaveManager.Instance.GameOver(new Player[] { winner });
+        HJS_GameSaveManager.Instance.GameOver(new Player[] { CurPhotonPlayer[winnerNumber] });
     }
     
 }

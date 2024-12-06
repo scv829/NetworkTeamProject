@@ -73,11 +73,6 @@ public class KHS_BumperBalloonCarsGameManager : MonoBehaviourPunCallbacks, IPunO
     }
 
 
-    public override void OnJoinedRoom() // 방에 접속되었을 때
-    {
-        PlayerSpawn();
-    }
-
     private Vector3 SetPosition()   // 플레이어(카트) 위치를 위한 함수
     {
         // 현재 자신의 ActorNumber 대로 위치 설정
